@@ -13,13 +13,5 @@
 
 int main(void) {
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
-	printf ("SCIAAA"); //dajee
-
-
-
-	//questo commento serve a commentare il commento fatto
-
-	printf("Altra modifica");
-
 	return 0;
 }
