@@ -13,6 +13,6 @@
 
 int main(void) {
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
-	printf("Ole");
+	printf ("SCIAAA"); //dajee
 	return 0;
 }
