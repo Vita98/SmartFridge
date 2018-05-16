@@ -12,6 +12,16 @@
 #include <stdlib.h>
 
 int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+
+	printf("Benvenuto in SMARTFRIDGE\n\n");
+	printf("Hai a dispozione varie scelte, cosa desideri?\n");
+	printf("1 - Visualizzazione (Ricetta/");
+
+
+
+	//suggerimento (spesa, ricetta(visualizzazione)
+	//aggiunta/Modifica/cancellazione (Alimento ,ricetta, menu settimanale)
+	//Visualizzazione (ordinamnto ricette( x alimento, kcal, per preferiti, per scadenza)
+	//ricerca (ricetta x alimento, per nome, di un alimento)
 	return 0;
 }
