@@ -15,7 +15,7 @@ int main(void) {
 
 	printf("Benvenuto in SMARTFRIDGE\n\n");
 	printf("Hai a dispozione varie scelte, cosa desideri?\n");
-	printf("1 - Visualizzazione (Ricetta/");
+	printf("1 - Suggerimento (Ricetta/Spesa)\n2 - Visualizzazione");
 
 
 
