@@ -4,7 +4,7 @@
  Author      : Vitandrea Sorino
  Version     :
  Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
+ Description : Hel1lo World in C, Ansi-style
  ============================================================================
  */
 
