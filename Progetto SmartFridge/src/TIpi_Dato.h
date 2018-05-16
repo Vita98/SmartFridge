@@ -70,6 +70,8 @@ typedef struct{
 	double Kcal_Pezzo;
 	int Peso;					//Peso in grammi
 	scadenza Scadenze[LUNGHEZZA_VET_SCADENZE];
+	int Quantita;
+	int Utilizzo;
 	boolean Visibilita;
 
 }alimento;
@@ -85,6 +87,7 @@ typedef struct{
 	char Nome[LUNGHEZZA_STRINGA];
 	double Kcal_Porzione;
 	int Alimenti_Quantita[NUMERO_MAX_ALIMENTI][NUMERO_MAX_ALIMENTI];
+	int Frequenza;
 	boolean Visibilita;
 
 }ricette;
