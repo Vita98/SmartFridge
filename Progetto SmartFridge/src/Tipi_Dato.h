@@ -93,11 +93,11 @@ typedef struct{
 	int ID_Ricetta;
 	char Nome[LUNGHEZZA_STRINGA];
 	double Kcal_Porzione;
-	int Alimenti_Quantita[NUMERO_MAX_ALIMENTI][NUMERO_MAX_ALIMENTI];
+	int Alimenti_Quantita[2][NUMERO_MAX_ALIMENTI];
 	int Frequenza;
 	boolean Visibilita;
 
-}ricette;
+}ricetta;
 
 
 

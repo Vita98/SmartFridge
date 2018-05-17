@@ -55,6 +55,7 @@ int main(void) {
 					"1 - Visualizza il Menù Settimanale\n2 - Aggiungi Pasto\n3 - Modifica Pasto\n"
 					"4 - Cancella Pasto\n\n0 - Indietro\n****************************************\nScelta: ";
 
+
 	int NumScelta;
 
 	printf("Benvenuto in SMARTFRIDGE\n");
