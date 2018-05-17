@@ -16,5 +16,7 @@ void Genera_Ricette();
 
 void Visualizza_Ricette();
 
+void Carica_Configurazione();
+
 #endif /* GEN_FILE_H_ */
 

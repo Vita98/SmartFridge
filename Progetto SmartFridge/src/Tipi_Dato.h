@@ -12,12 +12,13 @@
 #define LUNGHEZZA_STRINGA 50
 #define LUNGHEZZA_VET_SCADENZE 10
 #define NUMERO_MAX_ALIMENTI 20
+#define SOGLIA_SPESA 2
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "String_Tools.h"
 
-
+int limite_spesa;
 
 
 
@@ -123,6 +124,7 @@ typedef struct{
  * SPESA E NELLA LISTA DELLA SPESA    */
 typedef struct{
 
+	char Nome[LUNGHEZZA_STRINGA];	//sembra inutile, ma per la visualizzazione del file Lista_spesa, evito di ciclare nel file alimenti
 	int ID_Alimento;
 	data_ora Data_Ora;
 	int Quantita;

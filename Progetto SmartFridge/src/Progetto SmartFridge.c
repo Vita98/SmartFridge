@@ -21,6 +21,7 @@ int main(void) {
 
 
 	int NumScelta;
+	Carica_Configurazione();
 
 	printf("Benvenuto in SMARTFRIDGE\n");
 	do {
@@ -33,18 +34,29 @@ int main(void) {
 			NumScelta = FaiScelta(MenuSuggerimentoSpesa);
 
 			while (NumScelta != 0){
+
 				switch (NumScelta) {
 				case 1:
+					Genera_Lista_Spesa();
+					//NumScelta = 0; 	//Torni al menu pincipale
+					NumScelta = FaiScelta(MenuSuggerimentoSpesa);
 					break;
 				case 2:
+					Visualizza_Lista_Spesa();
+					//NumScelta = 0;
+					NumScelta = FaiScelta(MenuSuggerimentoSpesa);
 					break;
 				case 3:
+					Modifica_Soglia_Spesa();
+					//NumScelta = 0;
+					NumScelta = FaiScelta(MenuSuggerimentoSpesa);
 					break;
 				default:
-					NumScelta = FaiScelta("Riprova: ");
+					NumScelta = FaiScelta("Scelta errata, riprova: ");
 					break;
 				}
-			 };
+
+			 }
 
 
 			break;
