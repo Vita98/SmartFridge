@@ -17,10 +17,10 @@ int main(void) {
 
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-	printf("Benvenuto in SMARTFRIDGE\n\n");
+	/*printf("Benvenuto in SMARTFRIDGE\n\n");
 	printf("Hai a dispozione varie scelte, cosa desideri?\n");
 	printf("1 - Suggerimento (Ricetta/Spesa)\n2 - Visualizzazione(Alimento/Ricetta/Menu Settimanale)\n"
-			"3 - ");
+			"3 - ");*/
 
 	int NumScelta;
 
