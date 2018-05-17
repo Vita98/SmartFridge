@@ -12,3 +12,4 @@ int isNumber(char[]);
 int toNumber(char[]);
 
 #endif /* STRING_TOOLS_H_ */
+
