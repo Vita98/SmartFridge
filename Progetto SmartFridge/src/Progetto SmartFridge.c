@@ -11,6 +11,7 @@
 #include "Tipi_Dato.h"
 #include "Gen_File.h"
 #include "Messaggi_Menu.h"
+#include "Spesa_Tools.h"
 
 int FaiScelta(char[]);
 
@@ -31,6 +32,19 @@ int main(void) {
 
 			NumScelta = FaiScelta(MenuSuggerimentoSpesa);
 
+			while (NumScelta != 0){
+				switch (NumScelta) {
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				default:
+					NumScelta = FaiScelta("Riprova: ");
+					break;
+				}
+			 };
 
 
 			break;
@@ -68,23 +82,12 @@ int main(void) {
 }
 
 
-
-
-
-
-
-
-
-
-
 /*FUNZIONE CHE SI METTE IN ATTESA CHE   *
  *L'UTENTE PREMA QUALCHE TASTO			*/
 void pressToContinue() {
 	printf("Premi per continuare....");
 	getchar();
 }
-
-
 
 
 
