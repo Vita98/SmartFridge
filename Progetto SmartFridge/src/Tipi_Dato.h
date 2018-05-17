@@ -12,6 +12,10 @@
 #define LUNGHEZZA_VET_SCADENZE 10
 #define NUMERO_MAX_ALIMENTI 20
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "String_Tools.h"
+
 
 
 
