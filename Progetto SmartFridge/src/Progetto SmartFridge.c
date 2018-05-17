@@ -9,6 +9,7 @@
  */
 
 #include "Tipi_Dato.h"
+#include "Gen_File.h"
 
 int FaiScelta(char[]);
 
@@ -20,14 +21,58 @@ int main(void) {
 	printf("Hai a dispozione varie scelte, cosa desideri?\n");
 	printf("1 - Suggerimento (Ricetta/Spesa)\n2 - Visualizzazione");
 
+	int NumScelta;
 
 
+	do{
+		NumScelta=FaiScelta("Messaggio Menu Principale");
+
+		switch(NumScelta){
+			case 1:
+
+				break;
+
+			case 2:
+
+				break;
+
+			case 3:
+
+				break;
+		}
+
+	}while(NumScelta!=7);
+
+
+
+	system("pause");
 
 	//suggerimento (spesa, ricetta(visualizzazione)
 	//aggiunta/Modifica/cancellazione (Alimento ,ricetta, menu settimanale)
 	//Visualizzazione (ordinamnto ricette( x alimento, kcal, per preferiti, per scadenza)
 	//ricerca (ricetta x alimento, per nome, di un alimento)
 	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*FUNZIONE CHE SI METTE IN ATTESA CHE   *
+ *L'UTENTE PREMA QUALCHE TASTO			*/
+void pressToContinue(){
+	printf("Premi per continuare....");
+	getchar();
 }
 
 

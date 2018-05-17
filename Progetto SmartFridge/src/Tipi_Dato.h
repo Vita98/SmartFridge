@@ -20,6 +20,7 @@
 
 
 
+
 /* DEFINIZIONE DELLA STRUTTURA PER   	    *
  * LA MEMORIZZAZIONE  DELLA DATA E L'ORA	*/
 typedef struct{
@@ -70,11 +71,11 @@ typedef enum{
  * MEMORIZZAZIONE DEGLI ALIMENTI		*/
 typedef struct{
 
+	int ID_Alimento;
 	char Nome[LUNGHEZZA_STRINGA];
 	double Kcal_Pezzo;
 	int Peso;					//Peso in grammi
 	scadenza Scadenze[LUNGHEZZA_VET_SCADENZE];
-	int Quantita;
 	int Utilizzo;
 	boolean Visibilita;
 
@@ -88,6 +89,7 @@ typedef struct{
  * MEMORIZZAZIONE DELLE RICETTE			*/
 typedef struct{
 
+	int ID_Ricetta;
 	char Nome[LUNGHEZZA_STRINGA];
 	double Kcal_Porzione;
 	int Alimenti_Quantita[NUMERO_MAX_ALIMENTI][NUMERO_MAX_ALIMENTI];
