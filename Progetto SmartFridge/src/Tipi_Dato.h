@@ -12,6 +12,11 @@
 #define LUNGHEZZA_VET_SCADENZE 10
 #define NUMERO_MAX_ALIMENTI 20
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "String_Tools.h"
+
+
 
 
 
@@ -66,10 +71,12 @@ typedef enum{
  * MEMORIZZAZIONE DEGLI ALIMENTI		*/
 typedef struct{
 
+	int ID_Alimento;
 	char Nome[LUNGHEZZA_STRINGA];
 	double Kcal_Pezzo;
 	int Peso;					//Peso in grammi
 	scadenza Scadenze[LUNGHEZZA_VET_SCADENZE];
+	int Utilizzo;
 	boolean Visibilita;
 
 }alimento;
@@ -82,9 +89,11 @@ typedef struct{
  * MEMORIZZAZIONE DELLE RICETTE			*/
 typedef struct{
 
+	int ID_Ricetta;
 	char Nome[LUNGHEZZA_STRINGA];
 	double Kcal_Porzione;
 	int Alimenti_Quantita[NUMERO_MAX_ALIMENTI][NUMERO_MAX_ALIMENTI];
+	int Frequenza;
 	boolean Visibilita;
 
 }ricette;
