@@ -10,10 +10,10 @@
 
 #include "Tipi_Dato.h"
 #include "Gen_File.h"
-#include "Messaggi_Menu.h"
 #include "Spesa_Tools.h"
 
-int FaiScelta(char[]);
+
+void pressToContinue();
 
 int main(void) {
 
@@ -28,62 +28,37 @@ int main(void) {
 		NumScelta = FaiScelta(MenuPrincipale);
 
 		switch (NumScelta) {
+			case 1:		//Suggerimento spesa
 
-		case 1:		//Suggerimento spesa
+				Scelte_Spesa();
 
-			NumScelta = FaiScelta(MenuSuggerimentoSpesa);
+				break;
 
-			while (NumScelta != 0){
+			case 2:		//Suggerimento Ricette
 
-				switch (NumScelta) {
-				case 1:
-					Genera_Lista_Spesa();
-					//NumScelta = 0; 	//Torni al menu pincipale
-					NumScelta = FaiScelta(MenuSuggerimentoSpesa);
-					break;
-				case 2:
-					Visualizza_Lista_Spesa();
-					//NumScelta = 0;
-					NumScelta = FaiScelta(MenuSuggerimentoSpesa);
-					break;
-				case 3:
-					Modifica_Soglia_Spesa();
-					//NumScelta = 0;
-					NumScelta = FaiScelta(MenuSuggerimentoSpesa);
-					break;
-				default:
-					NumScelta = FaiScelta("Scelta errata, riprova: ");
-					break;
-				}
+				break;
 
-			 }
+			case 3:		//Ricerca Ricette
 
+				break;
+			case 4:		//Opzioni Alimenti
+				//NumScelta = FaiScelta(MenuAlimenti);
 
-			break;
+				break;
+			case 5:		//Opzioni Ricette
+				//NumScelta = FaiScelta(MenuRicette);
 
-		case 2:		//Suggerimento Ricette
+				break;
+			case 6:		//Opzioni Pasti
+				//NumScelta = FaiScelta(MenuPasti);
 
-			break;
+				break;
 
-		case 3:		//Ricerca Ricette
+			case 7:
+				break;
 
-			break;
-		case 4:		//Opzioni Alimenti
-			NumScelta = FaiScelta(MenuAlimenti);
-
-			break;
-		case 5:		//Opzioni Ricette
-			NumScelta = FaiScelta(MenuRicette);
-
-			break;
-		case 6:		//Opzioni Pasti
-			NumScelta = FaiScelta(MenuPasti);
-
-			break;
-
-		default:
-			printf("\nScelta non valida!\n");
-			break;
+			default:
+				printf("\nScelta non valida!\n");
 		}
 
 	} while (NumScelta != 7);
@@ -106,35 +81,4 @@ void pressToContinue() {
 
 
 
-/*FUNZIONE UTILIZZATA PER PRENDERE IN INPUT				*
- *UN VALORE INTERO										*
- *														*
- *LA FUNZIONE VISUALIZZA IL MESSAGGIO PASSATO COME 		*
- *PARAMETRO E CHIEDE IN INPUT UN NUMERO DI CUI VENGONO	*
- *FATTI TUTTI I CONTROLLI								*
- *														*
- *LA FUNZIONE RITORNA IL NUMERO INTERO CHIESTO			*
- *IN INPUT ALL'UTENTE									*/
-int FaiScelta(char text[]) {
 
-	char scelta[LUNGHEZZA_STRINGA];
-
-	do {
-		//Stampo il messaggio passato come parametro
-		printf(text);
-		fgets(scelta, LUNGHEZZA_STRINGA, stdin);
-
-		//Svuoto il buffer nel caso venga inserita una stringa piu grande della lunghezza massima
-		fflush(stdin);
-
-		//Se la stringa presa in input non e' un numero scrivo un messaggio di errore
-		//altrimenti la funzione ritorna il numero preso in input convertito in intero
-		if (!isNumber(scelta))
-			printf("Scelta errata!\n");
-		else
-			return toNumber(scelta);
-
-		//continuo a chiedere in input la scelta fino a che non e' valida
-	} while (!isNumber(scelta));
-	return 0;
-}

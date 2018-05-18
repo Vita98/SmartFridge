@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "String_Tools.h"
+#include "Messaggi_Menu.h"
 
 int limite_spesa;
 

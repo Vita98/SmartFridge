@@ -152,25 +152,21 @@ void Visualizza_Ricette() {
 	}
 }
 
-void Carica_Configurazione() {
+int Carica_Configurazione() {
 	FILE *file;
 
 	if ((file = fopen("src/Config.txt", "r+")) == NULL) {
 																//In caso di errore, apre il file in scrittura (lo crea)
-
-		if ((file = fopen("src/Config.txt", "w")) == NULL) {
-			printf("Errore nell'apertura del file!\n");
-
-		} else{
+		if((file = fopen("src/Config.txt", "w")) == NULL) return 0;
+		else{
 			limite_spesa = SOGLIA_SPESA;											//stabilisce la soglia e la scrive sul file
 			fprintf(file,"%d ",limite_spesa);
 		}
-
-	} else {
-		fscanf(file,"%d ",&limite_spesa);								//lettura della soglia da file
-	}
+	} else 	fscanf(file,"%d ",&limite_spesa);								//lettura della soglia da file
 
 	fclose(file);
+
+	return 1;
 
 }
 

@@ -11,5 +11,7 @@ int isNumber(char[]);
 
 int toNumber(char[]);
 
+int FaiScelta(char[]);
+
 #endif /* STRING_TOOLS_H_ */
 
