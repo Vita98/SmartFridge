@@ -14,12 +14,14 @@
 #define NUMERO_MAX_ALIMENTI 20
 #define SOGLIA_SPESA 2
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "String_Tools.h"
 #include "Messaggi_Menu.h"
 
 int limite_spesa;
+int lunghezza_vettore_alimenti;
 
 
 

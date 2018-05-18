@@ -12,7 +12,6 @@
 #include "Gen_File.h"
 #include "Spesa_Tools.h"
 
-
 void pressToContinue();
 
 int main(void) {
@@ -20,6 +19,14 @@ int main(void) {
 	setvbuf(stdout, NULL, _IONBF, 0);
 
 	int NumScelta;
+
+	//HO FATTO SOLO QUESTO, si capisce, e nella console funziona (bug sull'ultimo)
+	lunghezza_vettore_alimenti = Lunghezza_Alimenti();
+	alimento alimenti[lunghezza_vettore_alimenti];
+
+	Carica_Alimenti(alimenti);
+	Visualizza_Alimenti(alimenti, lunghezza_vettore_alimenti);
+
 	Carica_Configurazione();
 
 	printf("Benvenuto in SMARTFRIDGE\n");
@@ -27,37 +34,37 @@ int main(void) {
 		NumScelta = FaiScelta(MenuPrincipale);
 
 		switch (NumScelta) {
-			case 1:		//Suggerimento spesa
+		case 1:		//Suggerimento spesa
 
-				Scelte_Spesa();
+			Scelte_Spesa();
 
-				break;
+			break;
 
-			case 2:		//Suggerimento Ricette
+		case 2:		//Suggerimento Ricette
 
-				break;
+			break;
 
-			case 3:		//Ricerca Ricette
+		case 3:		//Ricerca Ricette
 
-				break;
-			case 4:		//Opzioni Alimenti
-				//NumScelta = FaiScelta(MenuAlimenti);
+			break;
+		case 4:		//Opzioni Alimenti
+			//NumScelta = FaiScelta(MenuAlimenti);
 
-				break;
-			case 5:		//Opzioni Ricette
-				//NumScelta = FaiScelta(MenuRicette);
+			break;
+		case 5:		//Opzioni Ricette
+			//NumScelta = FaiScelta(MenuRicette);
 
-				break;
-			case 6:		//Opzioni Pasti
-				//NumScelta = FaiScelta(MenuPasti);
+			break;
+		case 6:		//Opzioni Pasti
+			//NumScelta = FaiScelta(MenuPasti);
 
-				break;
+			break;
 
-			case 7:
-				break;
+		case 7:
+			break;
 
-			default:
-				printf("\nScelta non valida!\n");
+		default:
+			printf("\nScelta non valida!\n");
 		}
 	} while (NumScelta != 7);
 
@@ -66,7 +73,6 @@ int main(void) {
 	return 0;
 }
 
-
 /*FUNZIONE CHE SI METTE IN ATTESA CHE   *
  *L'UTENTE PREMA QUALCHE TASTO			*/
 void pressToContinue() {
@@ -74,10 +80,4 @@ void pressToContinue() {
 	getchar();
 	system("cls");
 }
-
-
-
-
-
-
 

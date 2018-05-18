@@ -18,5 +18,11 @@ void Visualizza_Ricette();
 
 void Carica_Configurazione();
 
+int Carica_Alimenti(alimento alimenti[]);
+
+int Lunghezza_Alimenti();
+
+int Visualizza_Alimenti(alimento alimenti[],int n);
+
 #endif /* GEN_FILE_H_ */
 

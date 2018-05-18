@@ -182,3 +182,66 @@ int Carica_Configurazione() {
 
 }
 
+
+
+
+//Ho preso solo alcuni dati per verificare se effettivamente l'avesse caricato
+
+int Visualizza_Alimenti(alimento alimenti[],int n){
+
+	int i;
+
+	printf("VETTORE LETTO:\n");
+	for (i=0;i<n;i++){
+		printf("%d - %s \t| Peso: %d \t| Id: %d\n", i, alimenti[i].Nome,
+				alimenti[i].Peso , alimenti[i].ID_Alimento);
+	}
+	return 1;
+}
+
+//Leggo il file solo per sapere la lunghezza, da poter poi dichiarare il vettore alimenti, una BOIATA ma per ora va così
+//bisognerà aggiungere poi un TOT in più per le possibili AGGIUNTE, altrimenti bisogna dichiararlo tutte le volte da 0 il vettore
+int Lunghezza_Alimenti(){
+
+	FILE *file;
+	int i = 0;
+	alimento alimento;
+
+			if ((file = fopen("src/Alimenti.sf", "rb")) == NULL) {
+				printf("Errore nell'apertura del file!\n");
+				return 0;
+
+			} else {
+
+				while (!feof(file)) {
+					fread(&alimento, sizeof(alimento), 1, file);
+					i++;
+				}
+
+				return i;
+				fclose(file);
+			}
+}
+
+//Legge il file e carica il vettore che viene passato dal MAIN
+//Gli errori vedi se non li trovi ahah, sono stanco
+int Carica_Alimenti(alimento alimenti[]){
+
+	FILE *file;
+	int i = 0;
+
+		if ((file = fopen("src/Alimenti.sf", "rb")) == NULL) {
+			printf("Errore nell'apertura del file!\n");
+			return 0;
+		} else {
+
+			while (!feof(file)) {
+				fread(&alimenti[i], sizeof(alimento), 1, file);
+				i++;
+			}
+
+			return 1;
+			fclose(file);
+		}
+}
+
