@@ -27,8 +27,11 @@ int Genera_Lista_Spesa() {
 		while (!feof(file_alimenti)) {
 			fread(&alimento, sizeof(alimento), 1, file_alimenti);
 
+			quantita=0;
+
 			for (i = 0; i < LUNGHEZZA_VET_SCADENZE; i++) {//calcolo delle quantità, solo che non è inizializzato tutto a 0
 				quantita += alimento.Scadenze[i].Quantita;
+				//printf("\nQuantita: %d\n",alimento.Scadenze[i].Quantita);
 			}
 
 			if (quantita < SOGLIA_SPESA) {

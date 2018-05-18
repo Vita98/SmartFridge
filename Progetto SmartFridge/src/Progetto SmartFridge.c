@@ -19,7 +19,6 @@ int main(void) {
 
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-
 	int NumScelta;
 	Carica_Configurazione();
 
@@ -60,7 +59,6 @@ int main(void) {
 			default:
 				printf("\nScelta non valida!\n");
 		}
-
 	} while (NumScelta != 7);
 
 	system("pause");
@@ -74,6 +72,7 @@ int main(void) {
 void pressToContinue() {
 	printf("Premi per continuare....");
 	getchar();
+	system("cls");
 }
 
 

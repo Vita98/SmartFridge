@@ -12,7 +12,7 @@
 #define LUNGHEZZA_STRINGA 50
 #define LUNGHEZZA_VET_SCADENZE 10
 #define NUMERO_MAX_ALIMENTI 20
-#define SOGLIA_SPESA 2
+#define SOGLIA_SPESA 5
 
 #include <stdio.h>
 #include <stdlib.h>

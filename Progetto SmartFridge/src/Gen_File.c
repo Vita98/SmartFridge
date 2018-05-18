@@ -13,7 +13,7 @@ void Generazione_Alimenti() {
 
 	FILE *file;
 
-	if ((file = fopen("src/Alimenti.sf", "ab")) == NULL) {
+	if ((file = fopen("src/Alimenti.sf", "wb")) == NULL) {
 		printf("Errore nell'apertura del file!\n");
 	} else {
 		srand(time(NULL));
@@ -45,13 +45,23 @@ void Generazione_Alimenti() {
 			scanf("%d", &NumeroScadenze);
 
 			int j;
-			for (j = 0; j < NumeroScadenze; j++) {
-				printf("\nQuantita: ");
-				scanf("%d", &alimento.Scadenze[j].Quantita);
+			for (j = 0; j < LUNGHEZZA_VET_SCADENZE; j++) {
 
-				alimento.Scadenze[j].Data_Scadenza.Anno = 2018 + (rand() % 10);
-				alimento.Scadenze[j].Data_Scadenza.Mese = (rand() % 12) + 1;
-				alimento.Scadenze[j].Data_Scadenza.Giorno = (rand() % 31) + 1;
+				if(j<NumeroScadenze){
+					printf("\nQuantita: ");
+					scanf("%d", &alimento.Scadenze[j].Quantita);
+
+					alimento.Scadenze[j].Data_Scadenza.Anno = 2018 + (rand() % 10);
+					alimento.Scadenze[j].Data_Scadenza.Mese = (rand() % 12) + 1;
+					alimento.Scadenze[j].Data_Scadenza.Giorno = (rand() % 31) + 1;
+
+				}else{
+					alimento.Scadenze[j].Quantita=0;
+					alimento.Scadenze[j].Data_Scadenza.Anno = 0;
+					alimento.Scadenze[j].Data_Scadenza.Mese = 0;
+					alimento.Scadenze[j].Data_Scadenza.Giorno = 0;
+				}
+
 
 			}
 
