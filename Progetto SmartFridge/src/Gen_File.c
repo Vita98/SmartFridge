@@ -162,6 +162,8 @@ void Visualizza_Ricette() {
 	}
 }
 
+
+
 int Carica_Configurazione() {
 	FILE *file;
 
