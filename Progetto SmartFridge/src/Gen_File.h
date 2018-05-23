@@ -20,9 +20,7 @@ void Carica_Configurazione();
 
 int Carica_Alimenti(alimento alimenti[]);
 
-int Lunghezza_Alimenti();
-
-int Visualizza_Alimenti(alimento alimenti[],int n);
+int Get_Lunghezza_File_Alimenti();
 
 #endif /* GEN_FILE_H_ */
 

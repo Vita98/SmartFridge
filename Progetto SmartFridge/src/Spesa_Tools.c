@@ -9,6 +9,9 @@
 #include <time.h>
 //#include "Messaggi_Menu.h"
 
+
+
+
 int Genera_Lista_Spesa() {
 
 	FILE *file_alimenti;
@@ -34,7 +37,7 @@ int Genera_Lista_Spesa() {
 				//printf("\nQuantita: %d\n",alimento.Scadenze[i].Quantita);
 			}
 
-			if (quantita < SOGLIA_SPESA) {
+			if (quantita < limite_spesa) {
 				elemento.Quantita = quantita;
 				elemento.ID_Alimento = alimento.ID_Alimento;
 				strcpy(elemento.Nome, alimento.Nome);
@@ -165,6 +168,7 @@ int Scelte_Spesa(){
 
 	return 0;
 }
+
 
 
 

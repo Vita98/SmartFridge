@@ -11,6 +11,8 @@
 #include "Tipi_Dato.h"
 #include "Gen_File.h"
 #include "Spesa_Tools.h"
+#include "Ricette_Tools.h"
+#include "Alimenti_Tools.h"
 
 void pressToContinue();
 
@@ -21,12 +23,12 @@ int main(void) {
 	int NumScelta;
 
 	//HO FATTO SOLO QUESTO, si capisce, e nella console funziona (bug sull'ultimo)
-	lunghezza_vettore_alimenti = Lunghezza_Alimenti();
+	lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();
 	alimento alimenti[lunghezza_vettore_alimenti];
-
 	Carica_Alimenti(alimenti);
-	Visualizza_Alimenti(alimenti, lunghezza_vettore_alimenti);
 
+
+	//Caricamento delle impostazioni dal file di configurazione
 	Carica_Configurazione();
 
 	printf("Benvenuto in SMARTFRIDGE\n");
@@ -42,17 +44,21 @@ int main(void) {
 
 		case 2:		//Suggerimento Ricette
 
+
+
 			break;
 
 		case 3:		//Ricerca Ricette
 
 			break;
 		case 4:		//Opzioni Alimenti
-			//NumScelta = FaiScelta(MenuAlimenti);
+
+			Scelta_Opzioni_Alimenti(alimenti,lunghezza_vettore_alimenti);
 
 			break;
 		case 5:		//Opzioni Ricette
-			//NumScelta = FaiScelta(MenuRicette);
+
+			Scelta_Opzioni_Ricette();
 
 			break;
 		case 6:		//Opzioni Pasti
@@ -68,10 +74,14 @@ int main(void) {
 		}
 	} while (NumScelta != 7);
 
-	system("pause");
+	//system("pause");
 
 	return 0;
 }
+
+
+
+
 
 /*FUNZIONE CHE SI METTE IN ATTESA CHE   *
  *L'UTENTE PREMA QUALCHE TASTO			*/
