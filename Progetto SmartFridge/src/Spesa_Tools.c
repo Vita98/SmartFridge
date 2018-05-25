@@ -12,46 +12,41 @@
 
 
 
-int Genera_Lista_Spesa() {
+int Genera_Lista_Spesa(alimento alimenti[],int n) {
 
-	FILE *file_alimenti;
+
 	FILE *file_spesa;
-	int i,j=0, quantita = 0;
+	int i,j, quantita = 0;
 
-	if ((file_alimenti = fopen("src/Alimenti.sf", "rb")) == NULL) return 0;
-	else if ((file_spesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
+	if ((file_spesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
 	else {
 
-		alimento alimento;
 		elemento_spesa elemento;
 
 		printf("\nGli Alimenti che si trovano sotto la soglia prevista, sono:\n");
 
-		while (!feof(file_alimenti)) {
-			fread(&alimento, sizeof(alimento), 1, file_alimenti);
+		for(i=0;i<n;i++) {
 
 			quantita=0;
 
-			for (i = 0; i < LUNGHEZZA_VET_SCADENZE; i++) {//calcolo delle quantità, solo che non è inizializzato tutto a 0
-				quantita += alimento.Scadenze[i].Quantita;
+			for (j = 0; j < LUNGHEZZA_VET_SCADENZE; j++) {//calcolo delle quantità, solo che non è inizializzato tutto a 0
+				quantita += alimenti[i].Scadenze[j].Quantita;
 				//printf("\nQuantita: %d\n",alimento.Scadenze[i].Quantita);
 			}
 
 			if (quantita < limite_spesa) {
 				elemento.Quantita = quantita;
-				elemento.ID_Alimento = alimento.ID_Alimento;
-				strcpy(elemento.Nome, alimento.Nome);
+				elemento.ID_Alimento = alimenti[i].ID_Alimento;
+				strcpy(elemento.Nome, alimenti[i].Nome);
 				//elemento.Data_Ora = 			//aggiungere con date_Time,
 
 				fwrite(&elemento, sizeof(elemento_spesa), 1, file_spesa);
-				printf("%d - %s \t| quantità: %d \t| Id: %d\n", j, elemento.Nome,
+				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, elemento.Nome,
 						elemento.Quantita, elemento.ID_Alimento);
-				j++;
 			}
 		}
 
 		fclose(file_spesa);
-		fclose(file_alimenti);
 		return 1;
 	}
 
@@ -140,7 +135,7 @@ int Modifica_Soglia_Spesa() {
 
 
 
-int Scelte_Spesa(){
+int Scelte_Spesa(alimento alimenti[],int n){
 
 	int NumScelta;
 
@@ -149,7 +144,7 @@ int Scelte_Spesa(){
 
 		switch(NumScelta){
 			case 1:
-				if(!Genera_Lista_Spesa()) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
+				if(!Genera_Lista_Spesa(alimenti, n)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
 				break;
 			case 2:
 				if(!Visualizza_Lista_Spesa()) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");

@@ -38,7 +38,7 @@ int main(void) {
 		switch (NumScelta) {
 		case 1:		//Suggerimento spesa
 
-			Scelte_Spesa();
+			Scelte_Spesa(alimenti,lunghezza_vettore_alimenti);
 
 			break;
 
