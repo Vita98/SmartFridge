@@ -5,10 +5,10 @@
  *      Author: giutu
  */
 #include "Tipi_Dato.h"
+#include "Alimenti_Tools.h"
 #include <string.h>
 #include <time.h>
 //#include "Messaggi_Menu.h"
-
 
 
 
@@ -16,7 +16,7 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 
 
 	FILE *file_spesa;
-	int i,j, quantita = 0;
+	int i, quantita = 0;
 
 	if ((file_spesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
 	else {
@@ -27,12 +27,8 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 
 		for(i=0;i<n;i++) {
 
-			quantita=0;
+			quantita=getQuantita(alimenti[i]);
 
-			for (j = 0; j < LUNGHEZZA_VET_SCADENZE; j++) {//calcolo delle quantità, solo che non è inizializzato tutto a 0
-				quantita += alimenti[i].Scadenze[j].Quantita;
-				//printf("\nQuantita: %d\n",alimento.Scadenze[i].Quantita);
-			}
 
 			if (quantita < limite_spesa) {
 				elemento.Quantita = quantita;

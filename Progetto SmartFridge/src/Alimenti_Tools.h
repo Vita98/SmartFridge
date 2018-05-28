@@ -16,4 +16,6 @@ int Visualizza_Alimenti(alimento[],int);
 
 int Modifica_Alimento(alimento[],int);
 
+int getQuantita (alimento);
+
 #endif /* ALIMENTI_TOOLS_H_ */
