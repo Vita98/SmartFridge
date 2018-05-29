@@ -217,6 +217,54 @@ int Get_Lunghezza_File_Alimenti(){
 
 
 
+//Leggo il file solo per sapere la lunghezza, da poter poi dichiarare il vettore alimenti, una BOIATA ma per ora va così
+//bisognerà aggiungere poi un TOT in più per le possibili AGGIUNTE, altrimenti bisogna dichiararlo tutte le volte da 0 il vettore
+int Get_Lunghezza_File_Ricette(){
+
+	FILE *file;
+	int i = 0;
+	ricetta ricet;
+
+	if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
+		printf("Errore nell'apertura del file!\n");
+		return 0;
+	} else {
+		while (!feof(file)) {
+			fread(&ricet, sizeof(ricetta), 1, file);
+			i++;
+		}
+		return i;
+		fclose(file);
+	}
+}
+
+
+
+
+//Legge il file e carica il vettore che viene passato dal MAIN
+//Gli errori vedi se non li trovi ahah, sono stanco
+int Carica_Ricette(ricetta ricette[]){
+
+	FILE *file;
+	int i = 0;
+
+		if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
+			printf("Errore nell'apertura del file!\n");
+			return 0;
+		} else {
+
+			while (!feof(file)) {
+				fread(&ricette[i], sizeof(ricetta), 1, file);
+				i++;
+			}
+
+			return 1;
+			fclose(file);
+		}
+}
+
+
+
 
 
 //Legge il file e carica il vettore che viene passato dal MAIN

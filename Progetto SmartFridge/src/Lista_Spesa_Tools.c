@@ -8,7 +8,20 @@
 #include "Alimenti_Tools.h"
 #include <string.h>
 #include <time.h>
-//#include "Messaggi_Menu.h"
+#include "Data_Tools.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -34,7 +47,10 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 				elemento.Quantita = quantita;
 				elemento.ID_Alimento = alimenti[i].ID_Alimento;
 				strcpy(elemento.Nome, alimenti[i].Nome);
-				//elemento.Data_Ora = 			//aggiungere con date_Time,
+
+				elemento.Data_Ora.Giorno=getData('D');
+				elemento.Data_Ora.Mese=getData('M');
+				elemento.Data_Ora.Anno=getData('Y');
 
 				fwrite(&elemento, sizeof(elemento_spesa), 1, file_spesa);
 				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, elemento.Nome,
@@ -42,11 +58,13 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 			}
 		}
 
+
 		fclose(file_spesa);
 		return 1;
 	}
 
 }
+
 
 
 

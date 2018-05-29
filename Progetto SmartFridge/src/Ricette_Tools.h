@@ -9,7 +9,7 @@
 #define RICETTE_TOOLS_H_
 
 
-int Scelta_Opzioni_Ricette();
+int Scelta_Opzioni_Ricette(ricetta[],int);
 
 
 #endif /* RICETTE_TOOLS_H_ */
