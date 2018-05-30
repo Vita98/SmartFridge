@@ -41,6 +41,26 @@ int toNumber(char number[]){
 
 
 
+int isDouble(char Stringa[]){
+	int cont=0;
+	int i;
+	boolean flag=false;
+	for(i=0;i<strlen(Stringa)-1;i++){
+		if(i==0 && Stringa[i] == '.') return 0;
+		else if(i==strlen(Stringa)-2 && Stringa[i] == '.') return 0;
+		if(isdigit(Stringa[i]) || (Stringa[i]=='.' && flag==false)){
+			cont++;
+			if(Stringa[i]=='.') flag=true;
+		}else break;
+	}
+	if(cont==strlen(Stringa)-1) return 1;
+	else return 0;
+}
+
+
+
+
+
 /* FUNZIONE CHE RIMUOVE GLI SPAZI ALL'INIZIO   *
  * E ALLA FINE DELLA STRINGA				   *
  *											   *

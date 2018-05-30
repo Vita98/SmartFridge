@@ -19,5 +19,7 @@ int removeFirstLastSpace(char[],char[],int);
 
 int toLowerString(char[],char[]);
 
+int isDouble(char[]);
+
 #endif /* STRING_TOOLS_H_ */
 

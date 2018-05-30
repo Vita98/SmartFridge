@@ -5,8 +5,8 @@
  *      Author: giutu
  */
 
-#ifndef SPESA_TOOLS_H_
-#define SPESA_TOOLS_H_
+#ifndef LISTA_SPESA_TOOLS_H_
+#define LISTA_SPESA_TOOLS_H_
 
 int Genera_Lista_Spesa(alimento[],int);
 
@@ -17,4 +17,7 @@ int Modifica_Soglia_Spesa();
 int Scelte_Spesa(alimento[],int);
 
 
-#endif /* SPESA_TOOLS_H_ */
+
+
+
+#endif /* LISTA_SPESA_TOOLS_H_ */

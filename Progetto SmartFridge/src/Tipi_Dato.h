@@ -14,16 +14,17 @@
 #define NUMERO_MAX_ALIMENTI 20
 #define SOGLIA_SPESA 2
 #define MASSIME_STRINGHE_ESPLOSE 25
+#define CARATTERE_ANNO 'Y'
+#define CARATTERE_MESE 'M'
+#define CARATTERE_GIORNO 'D'
 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "String_Tools.h"
 #include "Messaggi_Menu.h"
-#include "String_Tools.h"
 
 int limite_spesa;
-int lunghezza_vettore_alimenti;
 
 
 
@@ -65,7 +66,7 @@ typedef struct{
  * PER DEFINIRE IL TIPO BOOLEANO	*/
 typedef enum{
 
-	true,false
+	true=1,false=0
 
 }boolean;
 

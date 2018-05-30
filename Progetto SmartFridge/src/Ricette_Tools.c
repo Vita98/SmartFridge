@@ -37,7 +37,7 @@ int Ordina_Ricette(ricetta ricette[],char stringa[],int Vett_Ordinato[],int Lung
 
 
 
-int Scelta_Opzioni_Ricette(){
+int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette){
 
 	int NumScelta;
 
@@ -46,12 +46,24 @@ int Scelta_Opzioni_Ricette(){
 
 		switch(NumScelta){
 			case 1:
+
+				//viualizza lista ricette
+
 				break;
 			case 2:
+
+				//aggiungi ricetta
+
 				break;
 			case 3:
+
+				//modifica ricetta
+
 				break;
 			case 4:
+
+				//cancella ricetta
+
 				break;
 			case 0:
 				//case di uscita dal sottomenu

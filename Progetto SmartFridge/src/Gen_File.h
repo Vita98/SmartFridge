@@ -22,5 +22,9 @@ int Carica_Alimenti(alimento alimenti[]);
 
 int Get_Lunghezza_File_Alimenti();
 
+int Carica_Ricette(ricetta[]);
+
+int Get_Lunghezza_File_Ricette();
+
 #endif /* GEN_FILE_H_ */
 

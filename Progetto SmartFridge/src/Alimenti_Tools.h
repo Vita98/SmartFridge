@@ -18,4 +18,17 @@ int Modifica_Alimento(alimento[],int);
 
 int getQuantita (alimento);
 
+int Modifica_Nome_Alimento(alimento[],int,int[]);
+
+int Modifica_Alimento_Su_File(alimento );
+
+int Modifica_kcal_Alimento(alimento[],int);
+
+int Modifica_Peso_Alimento(alimento[],int );
+
+int Modifica_Quantita_Alimento(alimento[],int);
+
+int Modifica_Scadenze_Alimento(alimento[],int );
+
+
 #endif /* ALIMENTI_TOOLS_H_ */

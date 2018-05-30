@@ -10,9 +10,10 @@
 
 #include "Tipi_Dato.h"
 #include "Gen_File.h"
-#include "Spesa_Tools.h"
 #include "Ricette_Tools.h"
 #include "Alimenti_Tools.h"
+#include "Lista_Spesa_Tools.h"
+
 
 void pressToContinue();
 
@@ -22,10 +23,17 @@ int main(void) {
 
 	int NumScelta;
 
-	//HO FATTO SOLO QUESTO, si capisce, e nella console funziona (bug sull'ultimo)
-	lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();
+
+	//creazione e caricamento del vettore di alimenti
+	int lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();
 	alimento alimenti[lunghezza_vettore_alimenti];
 	Carica_Alimenti(alimenti);
+
+
+	//creazione e caricamento del vettore di ricette
+	int lunghezza_vettore_ricette=Get_Lunghezza_File_Ricette();
+	ricetta ricette[lunghezza_vettore_ricette];
+	Carica_Ricette(ricette);
 
 
 	//Caricamento delle impostazioni dal file di configurazione
@@ -58,7 +66,7 @@ int main(void) {
 			break;
 		case 5:		//Opzioni Ricette
 
-			Scelta_Opzioni_Ricette();
+			Scelta_Opzioni_Ricette(ricette,lunghezza_vettore_ricette);
 
 			break;
 		case 6:		//Opzioni Pasti
@@ -66,13 +74,16 @@ int main(void) {
 
 			break;
 
-		case 7:
+		case 7: //Inserisci Spesa
+			break;
+
+		case 8:
 			break;
 
 		default:
 			printf("\nScelta non valida!\n");
 		}
-	} while (NumScelta != 7);
+	} while (NumScelta != 8);
 
 	//system("pause");
 
