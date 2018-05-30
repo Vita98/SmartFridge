@@ -14,7 +14,7 @@ void Read_Alimenti();
 
 void Genera_Ricette();
 
-void Visualizza_Ricette();
+void Visualizza_RicetteF();
 
 void Carica_Configurazione();
 

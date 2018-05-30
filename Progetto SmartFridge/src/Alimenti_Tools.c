@@ -7,6 +7,22 @@
 #include "Tipi_Dato.h"
 #include <String.h>
 
+
+
+/* FUNZIONE CHE RECUPERA DAL VETTORE DELLE SCADENZE			*
+ * LA QUANTITA' DELL'ALIMENTO PASSATO TRAMITE IL PARAMETRO	*/
+int getQuantita(alimento alim) {
+
+	int quantita = 0, j;
+	for (j = 0; j < LUNGHEZZA_VET_SCADENZE; j++) {
+		quantita += alim.Scadenze[j].Quantita;
+	}
+	return quantita;
+}
+
+
+
+
 /* FUNZIONE CHE SERVE PER VERIFICARE SE ESISTE L'ALIMENTO PASSATO	*
  * COME PARAMETRO Parametri_Ricerca NEL VETTORE DI ALIMENTI			*
  * 																	*
@@ -81,19 +97,6 @@ int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
 	return 1;
 }
 
-
-
-
-/* FUNZIONE CHE RECUPERA DAL VETTORE DELLE SCADENZE			*
- * LA QUANTITA' DELL'ALIMENTO PASSATO TRAMITE IL PARAMETRO	*/
-int getQuantita(alimento alim) {
-
-	int quantita = 0, j;
-	for (j = 0; j < LUNGHEZZA_VET_SCADENZE; j++) {
-		quantita += alim.Scadenze[j].Quantita;
-	}
-	return quantita;
-}
 
 
 

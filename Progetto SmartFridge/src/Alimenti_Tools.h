@@ -8,7 +8,7 @@
 #ifndef ALIMENTI_TOOLS_H_
 #define ALIMENTI_TOOLS_H_
 
-int getAlimento(alimento[],int,char[]);\
+int getAlimento(alimento[],int,char[]);
 
 int Scelta_Opzioni_Alimenti(alimento[],int);
 

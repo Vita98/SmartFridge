@@ -11,5 +11,11 @@
 
 int Scelta_Opzioni_Ricette();
 
+int Visualizza_Ricette(ricetta[], int);
+
+int Modifica_Ricette(ricetta[],int);
+
+int Ordina_Ricette(ricetta[],char[],int[],int);
+
 
 #endif /* RICETTE_TOOLS_H_ */

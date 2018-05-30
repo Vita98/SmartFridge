@@ -144,7 +144,7 @@ void Genera_Ricette() {
 
 }
 
-void Visualizza_Ricette() {
+void Visualizza_RicetteF() {
 	FILE *file;
 
 	if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
