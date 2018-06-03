@@ -3,11 +3,12 @@
  *
  *      Author: Vitandrea Sorino
  */
+#include "Tipi_Dato.h"
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "Tipi_Dato.h"
+
 
 
 
@@ -40,7 +41,9 @@ int toNumber(char number[]){
 
 
 
-
+/* FUNZIONE CHE RITORNA 1 SE LA STRINGA PASSATA     *
+ * COME PARAMETRO E' UN NUMERO A VIRGOLA MOBILE		*
+ * ALTRIMENTI RITORNA 0 							*/
 int isDouble(char Stringa[]){
 	int cont=0;
 	int i;
@@ -161,8 +164,10 @@ int explodeString(char Stringa[],char Destination[MASSIME_STRINGHE_ESPLOSE][LUNG
 int FaiScelta(char text[]) {
 
 	char scelta[LUNGHEZZA_STRINGA];
+	boolean flag;
 
 	do {
+		flag=false;
 		//Stampo il messaggio passato come parametro
 		printf(text);
 		fgets(scelta, LUNGHEZZA_STRINGA, stdin);
@@ -172,12 +177,78 @@ int FaiScelta(char text[]) {
 
 		//Se la stringa presa in input non e' un numero scrivo un messaggio di errore
 		//altrimenti la funzione ritorna il numero preso in input convertito in intero
-		if (!isNumber(scelta))
+		if (!isNumber(scelta) || strlen(scelta)==1)
 			printf("Scelta errata!\n");
-		else
-			return toNumber(scelta);
+		else{
+			if(toNumber(scelta)<0){
+				printf("Scelta errata!\n");
+				flag=true;
+			}else return toNumber(scelta);
+		}
+
 
 		//continuo a chiedere in input la scelta fino a che non e' valida
-	} while (!isNumber(scelta));
+	} while (!isNumber(scelta) || strlen(scelta)==1 || flag==true );
 	return 0;
 }
+
+
+
+
+
+/*FUNZIONE UTILIZZATA PER PRENDERE IN INPUT				*
+ *UN VALORE DOUBLE										*
+ *														*
+ *LA FUNZIONE VISUALIZZA IL MESSAGGIO PASSATO COME 		*
+ *PARAMETRO E CHIEDE IN INPUT UN NUMERO DI CUI VENGONO	*
+ *FATTI TUTTI I CONTROLLI								*
+ *														*
+ *LA FUNZIONE RITORNA IL NUMERO INTERO CHIESTO			*
+ *IN INPUT ALL'UTENTE									*/
+double FaiSceltaDouble(char Messaggio[]){
+
+	char stringa[LUNGHEZZA_STRINGA];
+	double Kcal=0.0;
+
+	do{
+		printf(Messaggio);
+
+		fgets(stringa,LUNGHEZZA_STRINGA,stdin);
+
+		if(isDouble(stringa)){
+			Kcal=atof(stringa);
+		}
+
+	}while(Kcal == 0.0);
+
+	return Kcal;
+}
+
+
+
+
+
+
+
+/* FUNZIONE CHE CHIEDE ALL'UTENTE DI FARE UNA 	*
+ * SCELTA DI TIPO BOOLEANA CIOÈ SI O NO			*
+ * 												*
+ * COME PARAMETRO HA IL MESSAGGIO CHE DEVE 		*
+ * ESSERE STAMPATO ALL'UTENTE					*
+ * 												*
+ * LA FUNZIONE RESTITUISCE TRUE SE L'UTENTE		*
+ * HA DETTO SI, ALTRIMENTI RESTITUISCE FALSE	*/
+boolean FaiSceltaBooleana(char Messaggio[]){
+
+	char Suggerimenti[]="(1 - SI /2 o Altro - NO) = ";
+	char StringaFinal[LUNGHEZZA_STRINGA+strlen(Suggerimenti)];
+	strcpy(StringaFinal,Messaggio);
+	strcat(StringaFinal,Suggerimenti);
+
+	int scelta=FaiScelta(StringaFinal);
+
+	if(scelta==1) return true;
+	else return false;
+
+}
+

@@ -10,7 +10,7 @@
 
 int Genera_Lista_Spesa(alimento[],int);
 
-int Visualizza_Lista_Spesa();
+int Visualizza_Lista_Spesa(alimento[]);
 
 int Modifica_Soglia_Spesa();
 

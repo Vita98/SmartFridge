@@ -12,4 +12,6 @@ int ControlloData(char*,int*,int*,int*);
 
 int getData(char);
 
+int getDataInput(char*,char*,int*,char[]);
+
 #endif /* DATA_TOOLS_H_ */

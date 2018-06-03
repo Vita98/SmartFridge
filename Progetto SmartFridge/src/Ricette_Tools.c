@@ -10,6 +10,7 @@
 
 
 
+
 int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
 
 	int i;

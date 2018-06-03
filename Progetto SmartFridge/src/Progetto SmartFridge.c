@@ -13,6 +13,8 @@
 #include "Ricette_Tools.h"
 #include "Alimenti_Tools.h"
 #include "Lista_Spesa_Tools.h"
+#include "Spesa_Tools.h"
+#include "Data_Tools.h"
 
 
 void pressToContinue();
@@ -26,8 +28,9 @@ int main(void) {
 
 	//creazione e caricamento del vettore di alimenti
 	int lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();
-	alimento alimenti[lunghezza_vettore_alimenti];
+	alimento *alimenti=(alimento*) calloc(lunghezza_vettore_alimenti,sizeof(alimento));
 	Carica_Alimenti(alimenti);
+
 
 
 	//creazione e caricamento del vettore di ricette
@@ -39,8 +42,11 @@ int main(void) {
 	//Caricamento delle impostazioni dal file di configurazione
 	Carica_Configurazione();
 
+	//int *NuovoIndirizzoAlimenti=(int*) calloc(1,sizeof(int));
+	int NuovoIndirizzoAlimenti;
 	printf("Benvenuto in SMARTFRIDGE\n");
 	do {
+
 		NumScelta = FaiScelta(MenuPrincipale);
 
 		switch (NumScelta) {
@@ -75,6 +81,14 @@ int main(void) {
 			break;
 
 		case 7: //Inserisci Spesa
+
+
+			lunghezza_vettore_alimenti=Scelta_Opzioni_Spesa(alimenti,lunghezza_vettore_alimenti,&NuovoIndirizzoAlimenti);
+
+			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di un nuovo alimento
+			alimenti=(alimento *)NuovoIndirizzoAlimenti;
+
+
 			break;
 
 		case 8:
@@ -83,6 +97,7 @@ int main(void) {
 		default:
 			printf("\nScelta non valida!\n");
 		}
+
 	} while (NumScelta != 8);
 
 	//system("pause");

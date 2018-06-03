@@ -21,5 +21,9 @@ int toLowerString(char[],char[]);
 
 int isDouble(char[]);
 
+double FaiSceltaDouble(char[]);
+
+boolean FaiSceltaBooleana(char[]);
+
 #endif /* STRING_TOOLS_H_ */
 

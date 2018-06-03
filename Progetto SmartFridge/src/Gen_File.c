@@ -198,7 +198,7 @@ int Carica_Configurazione() {
 int Get_Lunghezza_File_Alimenti(){
 
 	FILE *file;
-	int i = 0;
+	int i = -1;
 	alimento alimento;
 
 	if ((file = fopen("src/Alimenti.sf", "rb")) == NULL) {

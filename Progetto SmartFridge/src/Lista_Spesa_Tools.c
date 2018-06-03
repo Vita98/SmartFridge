@@ -46,14 +46,13 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 			if (quantita < limite_spesa) {
 				elemento.Quantita = quantita;
 				elemento.ID_Alimento = alimenti[i].ID_Alimento;
-				strcpy(elemento.Nome, alimenti[i].Nome);
 
 				elemento.Data_Ora.Giorno=getData('D');
 				elemento.Data_Ora.Mese=getData('M');
 				elemento.Data_Ora.Anno=getData('Y');
 
 				fwrite(&elemento, sizeof(elemento_spesa), 1, file_spesa);
-				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, elemento.Nome,
+				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[i].Nome,
 						elemento.Quantita, elemento.ID_Alimento);
 			}
 		}
@@ -72,7 +71,7 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 
 
 //Sono commentate le righe antecedenti l'introduzione di "Nome" nella Struct "elemeto_spesa", in caso di cambio
-int Visualizza_Lista_Spesa() {
+int Visualizza_Lista_Spesa(alimento alimenti[]) {
 
 	FILE *file_spesa;
 
@@ -89,7 +88,7 @@ int Visualizza_Lista_Spesa() {
 
 			//bisogna visualizzare anche la data e l'ora della generazione
 			fread(&elemento, sizeof(elemento_spesa), 1, file_spesa);
-			printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, elemento.Nome,
+			printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[elemento.ID_Alimento].Nome,
 					elemento.Quantita, elemento.ID_Alimento);
 			i++;
 
@@ -161,7 +160,7 @@ int Scelte_Spesa(alimento alimenti[],int n){
 				if(!Genera_Lista_Spesa(alimenti, n)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
 				break;
 			case 2:
-				if(!Visualizza_Lista_Spesa()) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
+				if(!Visualizza_Lista_Spesa(alimenti)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
 				break;
 			case 3:
 				if(!Modifica_Soglia_Spesa()) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");\

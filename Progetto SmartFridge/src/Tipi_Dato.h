@@ -17,6 +17,26 @@
 #define CARATTERE_ANNO 'Y'
 #define CARATTERE_MESE 'M'
 #define CARATTERE_GIORNO 'D'
+#define CARATTERE_ORA 'H'
+#define CARATTERE_MINUTI 'm'
+#define CARATTERE_SECONDI 'S'
+
+
+
+
+
+
+/* DEFINIZIONE DI UNA ENUMERAZIONE	*
+ * PER DEFINIRE IL TIPO BOOLEANO	*/
+typedef enum{
+
+	true=1,false=0
+
+}boolean;
+
+
+
+
 
 
 #include <stdio.h>
@@ -60,15 +80,6 @@ typedef struct{
 
 
 
-
-
-/* DEFINIZIONE DI UNA ENUMERAZIONE	*
- * PER DEFINIRE IL TIPO BOOLEANO	*/
-typedef enum{
-
-	true=1,false=0
-
-}boolean;
 
 
 
@@ -130,7 +141,6 @@ typedef struct{
  * SPESA E NELLA LISTA DELLA SPESA    */
 typedef struct{
 
-	char Nome[LUNGHEZZA_STRINGA];	//sembra inutile, ma per la visualizzazione del file Lista_spesa, evito di ciclare nel file alimenti
 	int ID_Alimento;
 	data_ora Data_Ora;
 	int Quantita;
