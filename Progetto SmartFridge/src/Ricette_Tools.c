@@ -63,11 +63,6 @@ int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
 
 	double vett_appoggio[Lunghezza_Vettore];
 
-	printf("Ricette presenti:\n");
-	for (i = 0; i < Lunghezza_Vettore; i++) {
-
-
-
 	printf("Ricette presenti");
 	printf ("%d :\n",Lunghezza_Vettore);
 
@@ -689,3 +684,4 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 
 	return 0;
 }
+
