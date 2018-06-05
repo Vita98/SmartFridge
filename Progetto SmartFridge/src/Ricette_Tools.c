@@ -10,6 +10,8 @@
 #include "Alimenti_Tools.h"
 
 
+
+
 int Merging_Kcal(int inizio, int medio, int fine, ricetta a[], double b[]) {
    int l1, l2, i;
 

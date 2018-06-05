@@ -9,7 +9,7 @@
 #define MESSAGGI_MENU_H_
 
 
-#define MenuPrincipale "\nCosa desidera scegliere?\n****************************************\n1 - Suggerimento della Lista della Spesa\n2 - Suggerimento delle Ricette\n3 - Ricerca Ricette\n4 - Opzioni Alimenti\n5 - Opzioni Ricette\n6 - Opzioni Pasti\n7 - Opzioni Spesa\n\n8 - Uscita\n****************************************\nScelta: "
+#define MenuPrincipale "\nCosa desidera scegliere?\n****************************************\n1 - Suggerimento della Lista della Spesa\n2 - Suggerimento delle Ricette\n3 - Ricerca Ricette per Alimento\n4 - Opzioni Alimenti\n5 - Opzioni Ricette\n6 - Opzioni Pasti\n7 - Opzioni Spesa\n\n8 - Uscita\n****************************************\nScelta: "
 
 
 #define MenuSuggerimentoSpesa "\n****************************************\nLa Lista generata rispetterà una soglia minima stabilita\n1 - Genera la Lista della Spesa\n2 - Visualizza l'ultima Lista generata\n3 - Modifica soglia limite\n\n0 - Indietro\n****************************************\nScelta: "

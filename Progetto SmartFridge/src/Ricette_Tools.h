@@ -24,7 +24,6 @@ int Merging_Kcal(int, int, int, ricetta[], double[]);
 
 int Ordina_Ricette(ricetta[],char[],int[],int);
 
-
 int Cancella_Ricetta(ricetta[],int);
 
 int getRicetta(ricetta[],int,char[],boolean);
@@ -39,7 +38,6 @@ int Modifica_kcalPorzione_Ricetta(ricetta[],int);
 
 
 
-//decidere se tenerli qui o spostarli in Alimenti_Tools.h/.c o in altro file
 int Modifica_Alimenti_Ricetta(ricetta[],int,alimento[],int);
 
 int Visualizza_Alimenti_Ricetta(ricetta[],int,alimento[],int);

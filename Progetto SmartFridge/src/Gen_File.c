@@ -115,6 +115,7 @@ void Genera_Ricette() {
 			printf("\nKcal Per porzione: ");
 			scanf("%lf", &ricc.Kcal_Porzione);
 
+
 			ricc.Frequenza = 0;
 
 			int visibil;
