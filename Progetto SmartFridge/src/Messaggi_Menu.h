@@ -36,5 +36,7 @@
 #define MenuOpzioniSpesa "\n****************************************\n1 - Inserisci alimenti comprati\n2 - Visualizza storico spesa\n\n0 - Indietro\n****************************************\nScelta: "
 
 
+#define MENU_VISUALIZZA_ALIMENTI "\n****************************************\n1 - Ordina per Kcal\n2 - Ordina per frequenza \n\n0 - Indietro\n****************************************\nScelta: "
+
 #endif /* MESSAGGI_MENU_H_ */
 

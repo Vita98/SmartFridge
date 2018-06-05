@@ -32,6 +32,7 @@ int main(void) {
 	Carica_Alimenti(alimenti);
 
 
+	Genera_Ricette();
 
 	//creazione e caricamento del vettore di ricette
 	int lunghezza_vettore_ricette=Get_Lunghezza_File_Ricette();

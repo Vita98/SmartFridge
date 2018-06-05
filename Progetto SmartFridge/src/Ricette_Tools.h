@@ -15,7 +15,11 @@ int Visualizza_Ricette(ricetta[], int);
 
 int Modifica_Ricette(ricetta[],int);
 
-int Ordina_Ricette(ricetta[],char[],int[],int);
+int Scelta_Visualizzazione(ricetta[],int );
+
+int Sort_Merge_Kcal(int, int, ricetta[], double[]);
+
+int Merging_Kcal(int, int, int, ricetta[], double[]);
 
 
 #endif /* RICETTE_TOOLS_H_ */
