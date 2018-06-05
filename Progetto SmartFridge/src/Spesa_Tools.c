@@ -22,13 +22,13 @@ void Visualizza_Storico_Spesa(){
 
 	elemento_spesa elemento;
 
-	if ((file_storico_spesa = fopen("src/Storico_Spesa.sf", "ab+")) != NULL)
+	if ((file_storico_spesa = fopen("src/Storico_Spesa.sf", "rb")) != NULL)
 	{
 
-		while(!feof(file_storico_spesa)){
-			fread(&elemento,sizeof(elemento_spesa),1,file_storico_spesa);
-			printf("\nID %d - Quantita: %d - Ora: %d",elemento.ID_Alimento,elemento.Quantita,elemento.Data_Ora.Secondi);
-		}
+		do{
+			int a=fread(&elemento,sizeof(elemento_spesa),1,file_storico_spesa);
+			if(a>0) printf("\nID %d - Quantita: %d - Ora: %d",elemento.ID_Alimento,elemento.Quantita,elemento.Data_Ora.Minuti);
+		}while(!feof(file_storico_spesa));
 
 		fclose(file_storico_spesa);
 	}

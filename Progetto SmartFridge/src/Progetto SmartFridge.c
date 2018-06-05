@@ -25,6 +25,8 @@ int main(void) {
 
 	int NumScelta;
 
+	Visualizza_Storico_Spesa();
+
 
 	//creazione e caricamento del vettore di alimenti
 	int lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();

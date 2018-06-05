@@ -31,16 +31,6 @@ int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
 
 
 
-int Ordina_Ricette(ricetta ricette[],char stringa[],int Vett_Ordinato[],int Lunghezza_Vettore){
-
-
-
-	return 1;
-}
-
-
-
-
 
 
 /* FUNZIONE CHE APPLICA LE MODIFICHE EFFETTUATE		*
