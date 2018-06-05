@@ -25,16 +25,12 @@ int main(void) {
 
 	int NumScelta;
 
-	Visualizza_Storico_Spesa();
-
 
 	//creazione e caricamento del vettore di alimenti
 	int lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();
 	alimento *alimenti=(alimento*) calloc(lunghezza_vettore_alimenti,sizeof(alimento));
 	Carica_Alimenti(alimenti);
 
-
-	Genera_Ricette();
 
 	//creazione e caricamento del vettore di ricette
 	int lunghezza_vettore_ricette=Get_Lunghezza_File_Ricette();

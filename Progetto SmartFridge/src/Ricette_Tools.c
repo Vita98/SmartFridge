@@ -61,14 +61,12 @@ int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
 	int i;
 
 
-	double vett_appoggio[Lunghezza_Vettore];
-
 	printf("Ricette presenti");
 	printf ("%d :\n",Lunghezza_Vettore);
 
-	Sort_Merge_Kcal(0,Lunghezza_Vettore-1,ricette,vett_appoggio);
+	//Sort_Merge_Kcal(0,Lunghezza_Vettore-1,ricette,vett_appoggio);
 
-	for (i = 0; i <Lunghezza_Vettore -1 ; i++) {
+	for (i = 0; i <Lunghezza_Vettore ; i++) {
 
 
 		if (ricette[i].Visibilita==true || ricette[i].Visibilita==false){
