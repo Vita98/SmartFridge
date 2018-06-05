@@ -13,7 +13,17 @@ int Scelta_Opzioni_Ricette(ricetta[],int,alimento[],int);
 
 int Visualizza_Ricette(ricetta[], int);
 
+
+int Modifica_Ricette(ricetta[],int);
+
+int Scelta_Visualizzazione(ricetta[],int );
+
+int Sort_Merge_Kcal(int, int, ricetta[], double[]);
+
+int Merging_Kcal(int, int, int, ricetta[], double[]);
+
 int Ordina_Ricette(ricetta[],char[],int[],int);
+
 
 int Cancella_Ricetta(ricetta[],int);
 
