@@ -173,7 +173,7 @@ int Aggiungi_Alimento_Su_File(alimento alim){
  * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
  * VETTORE DI ALIMENTI CHE SU FILE E INOLTRE VIENE CONTROLLATO	*
  * SE IL NOME INSERITO DALL'UTENTE È GIA ESISTENTE E QUINDI		*
- * INUTILIZZABILE O NO			 								*
+ * UTILIZZABILE O NO			 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
 int Modifica_Nome_Alimento(alimento alimenti[],int Lunghezza_Vettore,int indice){
@@ -187,7 +187,7 @@ int Modifica_Nome_Alimento(alimento alimenti[],int Lunghezza_Vettore,int indice)
 		fgets(scelta, LUNGHEZZA_STRINGA, stdin);
 
 
-		if(getAlimento(alimenti,Lunghezza_Vettore,scelta,true) > -1){
+		if(getAlimento(alimenti,Lunghezza_Vettore,scelta,false) > -1){
 			 printf("\nQuesto nome gia esiste!\n");
 		}else flag=true;
 
@@ -410,11 +410,11 @@ int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
 
 
 /* FUNZIONE CHE EFFETTUA LA MODIFICA DI UN DETERMINATO		*
- * ALIMENTO CHIESTO IN INPUT NELLA STESSA FUNZIONE			**/
+ * ALIMENTO CHIESTO IN INPUT NELLA STESSA FUNZIONE			*/
 int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
 
 	printf("\n\n             Modifica Alimento\n");
-	printf("\n****************************************\n");
+	printf("\n%s\n",STRINGASTERISCHI);
 
 	char scelta[LUNGHEZZA_STRINGA];
 
@@ -476,7 +476,7 @@ int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
 
 
 	} else
-		printf("\n\nNon esiste nessu alimento che si chiama in quel modo!\n\n");
+		printf("\n\nNon esiste nessun alimento che si chiama in quel modo!\n\n");
 
 	return 1;
 }

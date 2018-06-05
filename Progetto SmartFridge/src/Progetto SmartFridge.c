@@ -73,7 +73,7 @@ int main(void) {
 			break;
 		case 5:		//Opzioni Ricette
 
-			Scelta_Opzioni_Ricette(ricette,lunghezza_vettore_ricette);
+			Scelta_Opzioni_Ricette(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti);
 
 			break;
 		case 6:		//Opzioni Pasti

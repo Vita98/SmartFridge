@@ -36,7 +36,19 @@
 #define MenuOpzioniSpesa "\n****************************************\n1 - Inserisci alimenti comprati\n2 - Visualizza storico spesa\n\n0 - Indietro\n****************************************\nScelta: "
 
 
+
 #define MENU_VISUALIZZA_ALIMENTI "\n****************************************\n1 - Ordina per Kcal\n2 - Ordina per frequenza \n\n0 - Indietro\n****************************************\nScelta: "
+
+
+#define STRINGASTERISCHI "****************************************"
+
+
+#define MenuModificaRicette "\n****************************************\n1 - Modifica Nome Ricetta\n2 - Modifica le kcal per porzione della Ricetta\n3 - Modifica gli alimenti che compongono la Ricetta \n\n0 - Indietro\n****************************************\nScelta: "
+
+
+#define MenuModificaAlimentiRicetta "\n****************************************\n1 - Inserisci un alimento della ricetta\n2 - Elimina un alimento della ricetta\n3 - Modifica la quantita di un alimento della ricetta\n\n0 - Indietro\n****************************************\nScelta: "
+
+
 
 #endif /* MESSAGGI_MENU_H_ */
 
