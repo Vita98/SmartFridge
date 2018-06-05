@@ -128,12 +128,17 @@ void Genera_Ricette() {
 			scanf("%d", &numeroAlim);
 
 			int j;
-			for (j = 0; j < numeroAlim; j++) {
-				printf("\nId Alimento: ");
-				scanf("%d", &ricc.Alimenti_Quantita[0][j]);
+			for (j = 0; j < NUMERO_MAX_ALIMENTI; j++) {
+				if(j<numeroAlim){
+					printf("\nId Alimento: ");
+					scanf("%d", &ricc.Alimenti_Quantita[0][j]);
 
-				printf("\nQuantita alimento: ");
-				scanf("%d", &ricc.Alimenti_Quantita[1][j]);
+					printf("\nQuantita alimento: ");
+					scanf("%d", &ricc.Alimenti_Quantita[1][j]);
+				}else{
+					ricc.Alimenti_Quantita[0][j]=-1;
+					ricc.Alimenti_Quantita[1][j]=0;
+				}
 			}
 			fwrite(&ricc, sizeof(ricetta), 1, file);
 
@@ -222,7 +227,7 @@ int Get_Lunghezza_File_Alimenti(){
 int Get_Lunghezza_File_Ricette(){
 
 	FILE *file;
-	int i = 0;
+	int i = -1;
 	ricetta ricet;
 
 	if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
