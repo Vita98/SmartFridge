@@ -8,78 +8,179 @@
 #include "Tipi_Dato.h"
 #include <String.h>
 #include "Alimenti_Tools.h"
+#include "Preferiti_Tools.h"
 
 
 
+/*	FUNZIONE CHE PERMETTE DI DIVIDERE IL VETTORE RICETTE OTTENUTO IN SOTTOVETTORI E CONFRONTARE I 		*
+ *  SINGOLI ELEMENTI PER POI SCRIVERE IL PROPRIO INDICE IN UN NUOVO VETTORE DI LUNGHEZZA PARI A QUELLO 	*
+ *  ANALIZZATO OTTENENDO UN VETTORE DI INTERI FORMATO DA INDICI, IL CONETUNO DEGLI ELEMENTI E' 			*
+ *  EQUIVALENTI ALL'ORDINAMENTO CRESCENTE DEGLI ELEMENTI DEL VETTORE RICETTE, LE SCELTE SONO DECISE 	*
+ *  DALLA MODALITA IN CUI SI DECIDE ORDINARE LE RICETTE 												*/
+int Merging_Ricette(ricetta ricette[], int inizio, int medio, int fine, int index[], int modalita)
+{
+    int i, j, k;
+    int n1 = medio - inizio + 1;
+    int n2 =  fine - medio;
 
-int Merging_Kcal(int inizio, int medio, int fine, ricetta a[], double b[]) {
-   int l1, l2, i;
+    // create temp arrays
+    int L[n1], R[n2];
 
-   for(l1 = inizio, l2 = medio + 1, i = inizio; l1 <= medio && l2 <= fine; i++) {
-      if(a[l1].Kcal_Porzione <= a[l2].Kcal_Porzione)
-         b[i] = a[l1++].Kcal_Porzione;
-      else
-         b[i] = a[l2++].Kcal_Porzione;
-   }
+    // Copy data to temp arrays L[] and R[]
+    for (i = 0; i < n1; i++)
+        L[i] = index[inizio + i];
+    for (j = 0; j < n2; j++)
+        R[j] = index[medio + 1+ j];
 
-   while(l1 <= medio)
-      b[i++] = a[l1++].Kcal_Porzione;
+    // Merge the temp arrays back into arr[inizio..r]
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = inizio; // Initial index of merged subarray
 
-   while(l2 <= fine)
-      b[i++] = a[l2++].Kcal_Porzione;
+    if (modalita == 1){
+    	while (i < n1 && j < n2)
+    	    {
+    	        if (ricette[L[i]].Kcal_Porzione < ricette[R[j]].Kcal_Porzione)
+    	        {
+    	            index[k] = L[i];
+    	            i++;
+    	        }
+    	        else
+    	        {
+    	            index[k] = R[j];
+    	            j++;
+    	        }
+    	        k++;
+    	    }
+    }else {
+    	while (i < n1 && j < n2)
+    	    {
+    	        if (ricette[L[i]].Frequenza < ricette[R[j]].Frequenza)
+    	        {
+    	            index[k] = L[i];
+    	            i++;
+    	        }
+    	        else
+    	        {
+    	            index[k] = R[j];
+    	            j++;
+    	        }
+    	        k++;
+    	    }
+    }
 
-   for(i = inizio; i <= fine; i++){
-	    a[i].Kcal_Porzione = b[i];
-   printf ("a: %.2f b: %.2f  |",a[i].Kcal_Porzione , b[i]);
-   }
 
-   printf("\n");
+    // Copy the remaining elements of L[], if there  are any
+    while (i < n1)
+    {
+        index[k] = L[i];
+        i++;
+        k++;
+    }
 
-   return 1;
+    /* Copy the remaining elements of R[], if there
+       are any*/
+    while (j < n2)
+    {
+        index[k] = R[j];
+        j++;
+        k++;
+    }
+
+    return 1;
 }
 
 
 
-int Sort_Merge_Kcal(int inizio, int fine, ricetta a[], double b[]) {
-   int medio;
 
-   if(inizio < fine) {
-      medio = (inizio + fine) / 2;
-      Sort_Merge_Kcal(inizio, medio,a,b);
-      Sort_Merge_Kcal(medio+1, fine,a,b);
 
-      Merging_Kcal(inizio, medio, fine, a, b);
-      return 0;
-   } else {
-      return 1;
-   }
+
+
+
+/* FUNZIONE CHE DIVIDE IL VETTORE DI RICETTE IN PIU SOTTO VETTORI E NE APPLICA IL MERGE  */
+
+int Merge_Sort_Ricette(ricetta ricette[], int inizio, int fine,int index[], int modalita){
+
+    if (inizio < fine)
+    {
+        // Same as (inizio+fine)/2, but avoids overflow for
+        // large inizio and h
+        int m = inizio+(fine-inizio)/2;
+
+        // Sort first and second halves
+        Merge_Sort_Ricette(ricette, inizio, m,index,modalita);
+        Merge_Sort_Ricette(ricette, m+1, fine,index,modalita);
+
+        Merging_Ricette(ricette, inizio, m, fine,index,modalita);
+        return 0;
+    }
+    return 1;
 }
 
 
 
 
-int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
+/* FUNZIONE CHE RICHIAMA IL MERGE SORT APPLICATO PASSANDO I PARAMETRI NECESSARI   */
+
+int Sort_Ricette (ricetta ricette[],int index[], int Lunghezza_Vettore, int modalita){
 
 	int i;
+	for (i=0;i<Lunghezza_Vettore;i++){
+		index[i] = ricette[i].ID_Ricetta;
+	}
+
+	Merge_Sort_Ricette(ricette,0,Lunghezza_Vettore-1,index,modalita);
+	return 1;
+}
 
 
-	printf("Ricette presenti");
-	printf ("%d :\n",Lunghezza_Vettore);
 
-	//Sort_Merge_Kcal(0,Lunghezza_Vettore-1,ricette,vett_appoggio);
 
+
+
+
+
+
+
+int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore, int modalita) {
+
+	int i;
+	int indici[Lunghezza_Vettore];
+
+	printf("Ricette presenti ");
+	printf ("(%d) :\n",Lunghezza_Vettore);
+
+
+	Sort_Ricette(ricette, indici, Lunghezza_Vettore, modalita);
+
+	/*printf("\nPrima:\n");
 	for (i = 0; i <Lunghezza_Vettore ; i++) {
 
+			if (ricette[i].Visibilita==true || ricette[i].Visibilita==false){
+				printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
+								ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
+			}
+	}*/
 
-		if (ricette[i].Visibilita==true || ricette[i].Visibilita==false){
+	printf("\nDopo:\n");
+	for (i = 0; i <Lunghezza_Vettore ; i++) {
+
+		if (ricette[indici[i]].Visibilita==true || ricette[indici[i]].Visibilita==false){
 			printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
-							ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
+							ricette[indici[i]].Nome, ricette[indici[i]].Kcal_Porzione, ricette[indici[i]].ID_Ricetta, ricette[indici[i]].Frequenza,(ricette[indici[i]].Visibilita)?"true":"false");
 		}
 
 
 	}
+
+
 	return 1;
 }
+
+
+
+
+
 
 
 
@@ -97,11 +198,12 @@ int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
 
 			case 1:
 				//ordina per kcal
-				Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
+				Visualizza_Ricette(ricette,lunghezza_vettore_ricette,1);
 				break;
 
 			case 2:
 				//ordina per frequenza
+				Visualizza_Ricette(ricette,lunghezza_vettore_ricette,2);
 				break;
 
 			default:
@@ -640,11 +742,6 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 
 
 			//viualizza lista ricette
-
-				//viualizza lista ricette
-				Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
-
-
 			Scelta_Visualizzazione(ricette, lunghezza_vettore_ricette);
 			break;
 		case 2:
@@ -672,6 +769,15 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 
 
 			break;
+
+		case 5:
+
+			//Gestione dei preferiti
+			Scelta_Opzioni_Preferiti(ricette);
+
+
+			break;
+
 		case 0:
 			//case di uscita dal sottomenu
 			break;
