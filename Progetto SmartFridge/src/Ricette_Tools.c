@@ -397,7 +397,7 @@ int Inserimento_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[
 				}
 			}
 		}
-	}else printf("\nL'alimento \"%s\" non esiste! Prima di utilizzarlo inserirlo tra gli alimenti!\n",alimenti[IndiceAlimento].Nome);
+	}else printf("\nL'alimento \"%s\" non esiste! Prima di utilizzarlo inserirlo tra gli alimenti!\n",scelta);
 
 	return 1;
 
@@ -636,14 +636,11 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 		switch (NumScelta) {
 		case 1:
 
-
 			//viualizza lista ricette
-
-				//viualizza lista ricette
-				Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
-
+			Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
 
 			Scelta_Visualizzazione(ricette, lunghezza_vettore_ricette);
+
 			break;
 		case 2:
 
@@ -652,22 +649,14 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 			break;
 		case 3:
 
-
 			//modifica ricetta
-
-				//modifica ricetta
-				Modifica_Ricetta(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti);
-
+			Modifica_Ricetta(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti);
 
 			break;
 		case 4:
 
-
 			//cancella ricetta
-
-				//cancella ricetta
-				Cancella_Ricetta(ricette,lunghezza_vettore_ricette);
-
+			Cancella_Ricetta(ricette,lunghezza_vettore_ricette);
 
 			break;
 		case 0:

@@ -20,7 +20,9 @@
 #define CARATTERE_ORA 'H'
 #define CARATTERE_MINUTI 'm'
 #define CARATTERE_SECONDI 'S'
-
+#define CARATTERE_GIORNOSETTIMANA 'W'
+#define NUMERO_MASSIMO_GIORNI 6
+#define NUMERO_GIORNI 7
 
 
 
@@ -122,7 +124,7 @@ typedef struct{
 
 
 /* DEFINIZIONE DELLA STRUTTURA PER LA 	*
- * MEMORIZZAZIONE DEI PASTI		*/
+ * MEMORIZZAZIONE DEI PASTI				*/
 typedef struct{
 
 	int ID_Ricetta;
