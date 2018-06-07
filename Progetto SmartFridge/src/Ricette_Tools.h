@@ -16,14 +16,13 @@ int Visualizza_Ricette(ricetta[], int);
 
 int Modifica_Ricette(ricetta[],int);
 
-int Scelta_Visualizzazione(ricetta[],int );
+int Scelta_Visualizzazione(ricetta[], int);
 
 int Sort_Merge_Kcal(int, int, ricetta[], double[]);
 
 int Merging_Kcal(int, int, int, ricetta[], double[]);
 
 int Ordina_Ricette(ricetta[],char[],int[],int);
-
 
 int Cancella_Ricetta(ricetta[],int);
 
@@ -37,9 +36,14 @@ int Modifica_Nome_Ricetta(ricetta[],int,int);
 
 int Modifica_kcalPorzione_Ricetta(ricetta[],int);
 
+int Sort_Ricette (ricetta[], int[], int, int);
+
+int Merge_Sort_Ricette(ricetta[], int, int, int, int);
+
+int Merging_Ricette(ricetta[], int, int, int, int, int);
 
 
-//decidere se tenerli qui o spostarli in Alimenti_Tools.h/.c o in altro file
+
 int Modifica_Alimenti_Ricetta(ricetta[],int,alimento[],int);
 
 int Visualizza_Alimenti_Ricetta(ricetta[],int,alimento[],int);
