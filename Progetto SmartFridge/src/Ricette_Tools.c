@@ -206,6 +206,10 @@ int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
 				Visualizza_Ricette(ricette,lunghezza_vettore_ricette,2);
 				break;
 
+			case 0:
+				//case di uscita dal sottomenu
+				break;
+
 			default:
 				printf("Scelta errata! Riprova!\n");
 
@@ -773,7 +777,7 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 		case 5:
 
 			//Gestione dei preferiti
-			Scelta_Opzioni_Preferiti(ricette);
+			Scelta_Opzioni_Preferiti(ricette, lunghezza_vettore_ricette);
 
 
 			break;
