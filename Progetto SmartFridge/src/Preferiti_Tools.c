@@ -166,18 +166,13 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 			while (!feof(file_preferiti)) {
 
 				fread(&ric, sizeof(ricetta), 1, file_preferiti);
-				printf("1___ ric: %s\n", ric.Nome);
 
 				if (!feof(file_preferiti)) {
 					if (ric.ID_Ricetta != ricette[IndiceRicetta].ID_Ricetta) {
 						preferiti[i] = ric;
-						printf("Aggiunto ric: %s	| preferiti[%d]: %s\n",
-								ric.Nome, i, preferiti[i].Nome);
 						i++;
 					}
 				}
-
-				printf("Giro di While \n");
 
 			}
 
@@ -192,16 +187,16 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 				for (j = 0; j < i; j++) {
 
 					fwrite(&preferiti[j], sizeof(ricetta), 1, file_preferiti);
-					printf(
-							"Preferito aggiunto  (%s | Frequenza: %d \t| Id: %d)\n",
-							preferiti[j].Nome, preferiti[j].Frequenza,
-							preferiti[j].ID_Ricetta);
+
 				}
 
 				fclose(file_preferiti);
 
+				printf("\nLa Ricetta è stata cancellata.\n");
 				return 1;
 			}
+
+
 
 		}
 
