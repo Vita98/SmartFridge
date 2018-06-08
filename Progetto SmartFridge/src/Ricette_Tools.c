@@ -212,7 +212,7 @@ int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
 			switch (NumScelta) {
 
 			case 1:
-				//ordina Normale
+				//ordinamento Normale
 				Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
 				break;
 
