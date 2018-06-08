@@ -42,7 +42,6 @@ int main(void) {
 	//Caricamento delle impostazioni dal file di configurazione
 	Carica_Configurazione();
 
-	//int *NuovoIndirizzoAlimenti=(int*) calloc(1,sizeof(int));
 	int NuovoIndirizzoAlimenti;
 	printf("Benvenuto in SMARTFRIDGE\n");
 	do {
@@ -62,7 +61,7 @@ int main(void) {
 
 			break;
 
-		case 3:		//Ricerca Ricette
+		case 3:		//Ricerca Ricette per alimento
 
 
 
