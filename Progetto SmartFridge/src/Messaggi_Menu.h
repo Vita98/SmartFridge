@@ -24,7 +24,7 @@
 #define MenuSuggerimentoAlimenti "\n****************************************\nCome desidera visualizzare gli Alimenti?\n1 - Alimenti più usati\n2 - Alimenti presenti\n\n0 - Indietro\n****************************************\nScelta: "
 
 
-#define MenuOrdinamentoRicette "\n****************************************\nCome desidera Ordinare le Ricette?\n1 - Ordinamento per kcal\n2 - Ordinamento per frequenza\n\n0 - Indietro\n****************************************\nScelta: "
+#define MenuOrdinamentoRicette "\n****************************************\nCome desidera Ordinare le Ricette?\n1 - Nessun Ordinamento\n2 - Ordinamento per kcal\n3 - Ordinamento per frequenza\n\n0 - Indietro\n****************************************\nScelta: "
 
 
 #define MenuPasti "\n****************************************\n1 - Visualizza il Menu Settimanale\n2 - Aggiungi Pasto\n3 - Modifica Pasto\n4 - Cancella Pasto\n\n0 - Indietro\n****************************************\nScelta: "
@@ -36,9 +36,6 @@
 #define MenuOpzioniSpesa "\n****************************************\n1 - Inserisci alimenti comprati\n2 - Visualizza storico spesa\n\n0 - Indietro\n****************************************\nScelta: "
 
 
-#define MENU_VISUALIZZA_ALIMENTI "\n****************************************\n1 - Ordina per Kcal\n2 - Ordina per frequenza \n\n0 - Indietro\n****************************************\nScelta: "
-
-
 #define STRINGASTERISCHI "****************************************"
 
 
@@ -48,8 +45,8 @@
 #define MenuModificaAlimentiRicetta "\n****************************************\n1 - Inserisci un alimento della ricetta\n2 - Elimina un alimento della ricetta\n3 - Modifica la quantita di un alimento della ricetta\n\n0 - Indietro\n****************************************\nScelta: "
 
 
-
 #define MenuOpzioniVisualizzazioneMenuSettimanale "Cosa vuoi vedere?\n1-Menu settimanale della settimana in corso\n2-Menu settimanale delle settimane passate\n\n0 - Indietro\n****************************************\nScelta: "
+
 
 #define MENU_GESTISCI_PREFERTI "\n****************************************\n1 - Visualizza le Ricette Preferite\n2 - Aggiungi un Preferito\n3 - Cancella un Preferito\n\n0 - Indietro\n****************************************\nScelta: "
 
