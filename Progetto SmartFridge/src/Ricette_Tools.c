@@ -750,6 +750,70 @@ int Modifica_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,alimento al
 
 
 
+/* FUNZIONE CHE CALCOLA IL NUMERO DI POSSIBILI 	*
+ * PORZIONI IN BASE ALLE QUANTITA DI ALIMENTI 	*
+ * DISPONIBILI DI UNA RICETTA PASSATA COME 		*
+ * PARAMETRO.									*
+ * 												*
+ * LA FUNZIONE RITORNA IL NUMERO DI PORZIONI	*
+ * POSSIBILI SE CI SONO,ALTRIMENTI -1			*/
+int get_Numero_Porzioni_Possibili_Ricetta(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int lunghezza_vettore_alimenti,int indiceRicetta){
+
+	int i;
+	int Porz_Poss[NUMERO_MAX_ALIMENTI];
+	int min=-1;
+
+	//for che scorre il vettore di alimenti della ricetta
+	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+		alimento alim=alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]];
+		if(getQuantita(alim) >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
+			if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0){
+				Porz_Poss[i]= (int)(getQuantita(alim)/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
+				if(min==-1) min=Porz_Poss[i];
+				if(min>Porz_Poss[i]) min=Porz_Poss[i];
+			}
+		}else return -1;
+	}
+
+	return min;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* FUNZIONE CHE HA IL COMPITO DI SOTTRARRE LE QUANTITA	*
+ * DEGLI ALIMENTI PER CONSUMARE UNA RICETTA PASSATA 	*
+ * COME PARAMETRO										*
+ * 														*
+ * LA FUNZIONE ESEGUE LE MODIFICHE SIA SUL VETTORE DI 	*
+ * ALIMENTI CHE SUL FILE								*/
+int Consuma_Ricetta_Su_Alimenti(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int lunghezza_vettore_alimenti,int indiceRicetta,int Porzioni){
+	int i;
+	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+		if(ricette[indiceRicetta].Alimenti_Quantita[0][i] > -1){
+			int quantita=ricette[indiceRicetta].Alimenti_Quantita[1][i];
+			decrementa_Quantita_Alimento(&alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]],(quantita*Porzioni));
+			Modifica_Alimento_Su_File(alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]]);
+		}
+
+	}
+	return 1;
+
+}
+
+
+
+
+
+
+
 
 
 

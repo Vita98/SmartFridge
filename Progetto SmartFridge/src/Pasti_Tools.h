@@ -11,7 +11,7 @@
 
 int Scelta_Opzioni_Pasti(ricetta[],int,alimento[],int);
 
-int Aggiungi_Pasto(ricetta[],int);
+int Aggiungi_Pasto(ricetta[],int,alimento[],int);
 
 int Aggiungi_Pasto_Su_File(int,int);
 

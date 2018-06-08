@@ -59,4 +59,9 @@ int Cancellazione_Alimento_Ricetta(ricetta[],int,alimento[],int);
 
 int Modifica_Quantita_Alimento_Ricetta(ricetta[],int,alimento[],int);
 
+
+int get_Numero_Porzioni_Possibili_Ricetta(ricetta[],int,alimento[],int,int);
+
+int Consuma_Ricetta_Su_Alimenti(ricetta[],int,alimento[],int,int,int);
+
 #endif /* RICETTE_TOOLS_H_ */

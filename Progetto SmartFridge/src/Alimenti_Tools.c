@@ -12,6 +12,8 @@
 
 
 
+
+
 /* FUNZIONE CHE RECUPERA DAL VETTORE DELLE SCADENZE			*
  * LA QUANTITA' DELL'ALIMENTO PASSATO TRAMITE IL PARAMETRO	*/
 int getQuantita(alimento alim) {
@@ -389,6 +391,39 @@ int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
 		printf("\nErrore nella modifica della quantita su file!\n");
 	}
 
+	return 1;
+}
+
+
+
+
+
+
+
+/* FUNZIONE CHE HA IL COMPITO DI SOTTRARRE AL VETTORE DI	*
+ * SCADENZE E QUANTITA DELL'ELEMENTO UNA QUANTITA PASSATA	*
+ * COME PARAMETRO. 											*
+ * 															*
+ * VIENE USATA QUANDO PER ESEMPIO VIENE CONSUMATO UN PASTO	*
+ * E BISOGNA SOTTRARRE LE QUANTITA CONSUMATE A QUELLE 		*
+ * DISPONIBILI												*/
+int decrementa_Quantita_Alimento(alimento* alim, int quantita){
+	int  j;
+	for (j = LUNGHEZZA_VET_SCADENZE-1; j >= 0; j--) {
+		if((*alim).Scadenze[j].Quantita>=quantita){
+			(*alim).Scadenze[j].Quantita-=quantita;
+			 quantita=0;
+			 if(j==0){
+				 (*alim).Visibilita=false;
+				 Modifica_Alimento_Su_File((*alim));
+			 }
+			 break;
+		}
+		else{
+			quantita=quantita-(*alim).Scadenze[j].Quantita;
+			(*alim).Scadenze[j].Quantita=0;
+		}
+	}
 	return 1;
 }
 

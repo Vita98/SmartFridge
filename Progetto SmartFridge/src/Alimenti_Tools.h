@@ -36,5 +36,7 @@ int getDataScadenza(alimento,data_ora);
 
 int Aggiungi_Alimento_Su_File(alimento);
 
+int decrementa_Quantita_Alimento(alimento*, int);
+
 
 #endif /* ALIMENTI_TOOLS_H_ */

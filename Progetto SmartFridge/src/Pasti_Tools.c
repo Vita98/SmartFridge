@@ -72,7 +72,7 @@ int Visualizza_File_Pasti(ricetta ricette[]){
 
 
 
-int Aggiungi_Pasto(ricetta ricette[],int lunghezza_vettore_ricette){
+int Aggiungi_Pasto(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int Lunghezza_vettore_alimenti){
 
 
 	printf("\n\nAggiungi un pasto\n%s\n",STRINGASTERISCHI);
@@ -93,11 +93,22 @@ int Aggiungi_Pasto(ricetta ricette[],int lunghezza_vettore_ricette){
 			if(numPorzioni==0) printf("\nScelta non valida! Riprova!\n");
 		}while(numPorzioni==0);
 
-		//incremento la frequenza del pasto
-		ricette[indice].Frequenza++;
+		int porzioniPossibili=get_Numero_Porzioni_Possibili_Ricetta(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti,indice);
 
-		if(Aggiungi_Pasto_Su_File(numPorzioni,indice)) printf("\nPasto registrato con successo! %s\n",getTipoPasto());
-		else printf("\nErrore nella memorizzazione del pasto su file!\n");
+		if(numPorzioni<=porzioniPossibili){
+			//incremento la frequenza del pasto
+			ricette[indice].Frequenza+=numPorzioni;
+			Modifica_Ricetta_Su_File(ricette[indice]);
+
+			//decremento le quantita di alimenti utilizzate nel vettore alimenti
+			Consuma_Ricetta_Su_Alimenti(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti,indice,numPorzioni);
+
+
+			if(Aggiungi_Pasto_Su_File(numPorzioni,indice)) printf("\nPasto registrato con successo! %s\n",getTipoPasto());
+			else printf("\nErrore nella memorizzazione del pasto su file!\n");
+		}else printf("\nNon hai abbastanza ingredienti per preparare quella ricetta!\n");
+
+
 
 	}else printf("\nLa ricetta inserita non esiste!\n");
 
@@ -314,6 +325,9 @@ int Cancella_Iesimo_Pasto_Da_File(int indice){
 
 		fseek(file_Storico_Pasti,indice*sizeof(pasto),SEEK_SET);
 		fwrite(&pp,sizeof(pasto),1,file_Storico_Pasti);
+
+
+
 		fclose(file_Storico_Pasti);
 	}
 
@@ -404,7 +418,7 @@ int Scelta_Opzioni_Pasti(ricetta ricette[],int lunghezza_vettore_ricette,aliment
 		case 2:
 
 			//aggiungi pasto
-			Aggiungi_Pasto(ricette,lunghezza_vettore_ricette);
+			Aggiungi_Pasto(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti);
 
 			break;
 		case 3:
