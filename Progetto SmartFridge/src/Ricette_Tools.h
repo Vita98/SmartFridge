@@ -11,6 +11,8 @@
 
 int Scelta_Opzioni_Ricette(ricetta[],int,alimento[],int);
 
+int Visualizza_Ricette_Ordinate(ricetta[], int);
+
 int Visualizza_Ricette(ricetta[], int);
 
 

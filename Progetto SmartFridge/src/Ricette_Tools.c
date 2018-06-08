@@ -37,7 +37,7 @@ int Merging_Ricette(ricetta ricette[], int inizio, int medio, int fine, int inde
     j = 0; // Initial index of second subarray
     k = inizio; // Initial index of merged subarray
 
-    if (modalita == 1){
+    if (modalita == 2){
     	while (i < n1 && j < n2)
     	    {
     	        if (ricette[L[i]].Kcal_Porzione < ricette[R[j]].Kcal_Porzione)
@@ -142,7 +142,7 @@ int Sort_Ricette (ricetta ricette[],int index[], int Lunghezza_Vettore, int moda
 
 
 
-int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore, int modalita) {
+int Visualizza_Ricette_Ordinate(ricetta ricette[], int Lunghezza_Vettore, int modalita) {
 
 	int i;
 	int indici[Lunghezza_Vettore];
@@ -153,19 +153,9 @@ int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore, int modalita) {
 
 	Sort_Ricette(ricette, indici, Lunghezza_Vettore, modalita);
 
-	/*printf("\nPrima:\n");
 	for (i = 0; i <Lunghezza_Vettore ; i++) {
 
-			if (ricette[i].Visibilita==true || ricette[i].Visibilita==false){
-				printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
-								ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
-			}
-	}*/
-
-	printf("\nDopo:\n");
-	for (i = 0; i <Lunghezza_Vettore ; i++) {
-
-		if (ricette[indici[i]].Visibilita==true || ricette[indici[i]].Visibilita==false){
+		if (ricette[indici[i]].Visibilita==true){
 			printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
 							ricette[indici[i]].Nome, ricette[indici[i]].Kcal_Porzione, ricette[indici[i]].ID_Ricetta, ricette[indici[i]].Frequenza,(ricette[indici[i]].Visibilita)?"true":"false");
 		}
@@ -182,6 +172,31 @@ int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore, int modalita) {
 
 
 
+int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
+
+	int i;
+
+	printf("Ricette presenti ");
+	printf ("(%d) :\n",Lunghezza_Vettore);
+
+
+	for (i = 0; i <Lunghezza_Vettore ; i++) {
+
+			if (ricette[i].Visibilita==true ){
+				printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
+								ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
+			}
+	}
+
+
+
+	return 1;
+}
+
+
+
+
+
 
 
 
@@ -192,18 +207,23 @@ int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
 	int NumScelta;
 
 		do {
-			NumScelta = FaiScelta(MENU_VISUALIZZA_ALIMENTI);
+			NumScelta = FaiScelta(MenuOrdinamentoRicette);
 
 			switch (NumScelta) {
 
 			case 1:
-				//ordina per kcal
-				Visualizza_Ricette(ricette,lunghezza_vettore_ricette,1);
+				//ordina Normale
+				Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
 				break;
 
 			case 2:
+				//ordina per kcal
+				Visualizza_Ricette_Ordinate(ricette,lunghezza_vettore_ricette,NumScelta);
+				break;
+
+			case 3:
 				//ordina per frequenza
-				Visualizza_Ricette(ricette,lunghezza_vettore_ricette,2);
+				Visualizza_Ricette_Ordinate(ricette,lunghezza_vettore_ricette,NumScelta);
 				break;
 
 			case 0:
