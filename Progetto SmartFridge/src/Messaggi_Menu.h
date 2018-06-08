@@ -27,7 +27,7 @@
 #define MenuOrdinamentoRicette "\n****************************************\nCome desidera Ordinare le Ricette?\n1 - Nessun Ordinamento\n2 - Ordinamento per kcal\n3 - Ordinamento per frequenza\n\n0 - Indietro\n****************************************\nScelta: "
 
 
-#define MenuPasti "\n****************************************\n1 - Visualizza il Menù Settimanale\n2 - Aggiungi Pasto\n3 - Modifica Pasto\n4 - Cancella Pasto\n\n0 - Indietro\n****************************************\nScelta: "
+#define MenuPasti "\n****************************************\n1 - Visualizza il Menu Settimanale\n2 - Aggiungi Pasto\n3 - Modifica Pasto\n4 - Cancella Pasto\n\n0 - Indietro\n****************************************\nScelta: "
 
 
 #define MenuModificaAlimenti "\n****************************************\n1 - Modifica Nome Alimento\n2 - Modifica le kcal per pezzo dell'Alimento\n3 - Modifica il peso dell'Alimento\n4 - Modifica la quantita dell'Alimento\n5 - Modifica le scadenze dell'Alimento\n\n0 - Indietro\n****************************************\nScelta: "
@@ -43,6 +43,9 @@
 
 
 #define MenuModificaAlimentiRicetta "\n****************************************\n1 - Inserisci un alimento della ricetta\n2 - Elimina un alimento della ricetta\n3 - Modifica la quantita di un alimento della ricetta\n\n0 - Indietro\n****************************************\nScelta: "
+
+
+#define MenuOpzioniVisualizzazioneMenuSettimanale "Cosa vuoi vedere?\n1-Menu settimanale della settimana in corso\n2-Menu settimanale delle settimane passate\n\n0 - Indietro\n****************************************\nScelta: "
 
 
 #define MENU_GESTISCI_PREFERTI "\n****************************************\n1 - Visualizza le Ricette Preferite\n2 - Aggiungi un Preferito\n3 - Cancella un Preferito\n\n0 - Indietro\n****************************************\nScelta: "

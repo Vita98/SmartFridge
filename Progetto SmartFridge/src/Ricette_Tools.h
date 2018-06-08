@@ -20,9 +20,6 @@ int Modifica_Ricette(ricetta[],int);
 
 int Scelta_Visualizzazione(ricetta[], int);
 
-int Sort_Merge_Kcal(int, int, ricetta[], double[]);
-
-int Merging_Kcal(int, int, int, ricetta[], double[]);
 
 int Ordina_Ricette(ricetta[],char[],int[],int);
 
@@ -37,6 +34,8 @@ int Modifica_Ricetta(ricetta[],int,alimento[],int);
 int Modifica_Nome_Ricetta(ricetta[],int,int);
 
 int Modifica_kcalPorzione_Ricetta(ricetta[],int);
+
+
 
 int Sort_Ricette (ricetta[], int[], int, int);
 

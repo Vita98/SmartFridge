@@ -15,6 +15,7 @@
 #include "Lista_Spesa_Tools.h"
 #include "Spesa_Tools.h"
 #include "Data_Tools.h"
+#include "Pasti_Tools.h"
 
 
 void pressToContinue();
@@ -63,6 +64,8 @@ int main(void) {
 
 		case 3:		//Ricerca Ricette
 
+
+
 			break;
 		case 4:		//Opzioni Alimenti
 
@@ -75,7 +78,8 @@ int main(void) {
 
 			break;
 		case 6:		//Opzioni Pasti
-			//NumScelta = FaiScelta(MenuPasti);
+
+			Scelta_Opzioni_Pasti(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti);
 
 			break;
 

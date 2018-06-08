@@ -374,28 +374,17 @@ int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
 		}
 	}while(flag);
 
-	char data[LUNGHEZZA_STRINGA];
-	int giorno,mese,anno;
+	data_ora data;
 
-	do{
-		flag=false;
-		printf("\nInserisci la nuova data di scadenza:");
-		fgets(data,LUNGHEZZA_STRINGA,stdin);
-
-		if(ControlloData(data,&giorno,&mese,&anno)){
-			 printf("\nData errata! Reinseriscila!\n");
-			 flag=true;
-		}
-
-	}while(flag);
+	getDataInput(&data.Giorno,&data.Mese,&data.Anno,"\nInserisci la nuovo data di scadenza: ");
 
 	//modifica nel vettore
-	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Anno=anno;
-	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Mese=mese;
-	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Giorno=giorno;
+	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Anno=data.Anno;
+	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Mese=data.Mese;
+	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Giorno=data.Giorno;
 
 	//modifica nel file
-	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica della quantita avvenuta con successo!\n");
+	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica della data di scadenza avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica della quantita su file!\n");
 	}
