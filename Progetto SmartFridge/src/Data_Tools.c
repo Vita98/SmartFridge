@@ -291,3 +291,5 @@ int getDataInput(char *giorno,char *mese,int *anno,char messaggio[]){
 }
 
 
+
+

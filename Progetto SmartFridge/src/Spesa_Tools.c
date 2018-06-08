@@ -15,20 +15,32 @@
 
 
 
-/* FUNZIONE TEMPORANEA PER VERIFICARE COME VENGONO MEMORIZZATE	*
- * LE COSE ALL'INTERNO DEL FILE STORICO SPESA*/
-void Visualizza_Storico_Spesa(){
+/* FUNZIONE PER LA VISUALIZZAZIONE DI TUTTO LO STORICO SPESA	*
+ * E QUINDI DI TUTTE LE SPESE EFFETTUATE						*/
+void Visualizza_Storico_Spesa(alimento alimenti[],int lunghezza_vettore_alimenti){
 	FILE *file_storico_spesa;
 
 	elemento_spesa elemento;
 
+	boolean flag=false;
+
 	if ((file_storico_spesa = fopen("src/Storico_Spesa.sf", "rb")) != NULL)
 	{
+		printf("\n\nStorico Spesa\n%s\n",STRINGASTERISCHI);
+		printf("%20s | %20s | %20s","Alimento Acquistato","Quantita Acquistata","Data di Acquisto");
+		printf("\n-----------------------------------------------------------------");
 
 		do{
 			int a=fread(&elemento,sizeof(elemento_spesa),1,file_storico_spesa);
-			if(a>0) printf("\nID %d - Quantita: %d - Ora: %d",elemento.ID_Alimento,elemento.Quantita,elemento.Data_Ora.Minuti);
+			if(a>0){
+				flag=true;
+				printf("\n%20s | %20d | ",alimenti[elemento.ID_Alimento].Nome,elemento.Quantita);
+				printf("%d/%d/%d %d:%d",elemento.Data_Ora.Giorno,elemento.Data_Ora.Mese,elemento.Data_Ora.Anno,elemento.Data_Ora.Ora,elemento.Data_Ora.Minuti);
+			}
 		}while(!feof(file_storico_spesa));
+
+		if(!flag) printf("\n\nNon e' mai stata effettuata la spesa! Registro Vuoto!\n\n");
+		else printf("\n\n");
 
 		fclose(file_storico_spesa);
 	}
@@ -262,6 +274,7 @@ int Scelta_Opzioni_Spesa(alimento alimenti[],int Lunghezza_Vettore_Alimenti,int 
 	(*NuovoIndirizzoAlimenti)=(int)alimenti;
 
 	do {
+		printf("\nOpzioni Spesa\n");
 		NumScelta = FaiScelta(MenuOpzioniSpesa);
 
 		switch(NumScelta){
@@ -276,6 +289,7 @@ int Scelta_Opzioni_Spesa(alimento alimenti[],int Lunghezza_Vettore_Alimenti,int 
 
 			case 2:
 				//visualizzazione dello storico spese
+				Visualizza_Storico_Spesa(alimenti,Lunghezza_Vettore_Alimenti);
 				break;
 
 			case 0:

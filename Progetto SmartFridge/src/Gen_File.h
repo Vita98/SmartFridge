@@ -26,5 +26,7 @@ int Carica_Ricette(ricetta[]);
 
 int Get_Lunghezza_File_Ricette();
 
+int Get_Lunghezza_File_Storico_Pasti();
+
 #endif /* GEN_FILE_H_ */
 

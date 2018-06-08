@@ -46,7 +46,10 @@ typedef enum{
 #include "String_Tools.h"
 #include "Messaggi_Menu.h"
 
+
 int limite_spesa;
+
+
 
 
 
@@ -130,6 +133,7 @@ typedef struct{
 	int ID_Ricetta;
 	int Porzioni;
 	data_ora Data_Ora;
+	boolean visibilita;
 
 }pasto;
 

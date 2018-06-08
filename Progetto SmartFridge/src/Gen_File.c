@@ -204,18 +204,13 @@ int Carica_Configurazione() {
 int Get_Lunghezza_File_Alimenti(){
 
 	FILE *file;
-	int i = -1;
-	alimento alimento;
 
 	if ((file = fopen("src/Alimenti.sf", "rb")) == NULL) {
 		printf("Errore nell'apertura del file!\n");
 		return 0;
 	} else {
-		while (!feof(file)) {
-			fread(&alimento, sizeof(alimento), 1, file);
-			i++;
-		}
-		return i;
+		fseek(file,0,SEEK_END);
+		return (int)(ftell(file)/sizeof(alimento));
 		fclose(file);
 	}
 }
@@ -228,18 +223,32 @@ int Get_Lunghezza_File_Alimenti(){
 int Get_Lunghezza_File_Ricette(){
 
 	FILE *file;
-	int i = -1;
-	ricetta ricet;
 
 	if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
 		printf("Errore nell'apertura del file!\n");
 		return 0;
 	} else {
-		while (!feof(file)) {
-			fread(&ricet, sizeof(ricetta), 1, file);
-			i++;
-		}
-		return i;
+		fseek(file,0,SEEK_END);
+		return (int)(ftell(file)/sizeof(ricetta));
+		fclose(file);
+	}
+}
+
+
+
+
+//Leggo il file solo per sapere la lunghezza, da poter poi dichiarare il vettore alimenti, una BOIATA ma per ora va così
+//bisognerà aggiungere poi un TOT in più per le possibili AGGIUNTE, altrimenti bisogna dichiararlo tutte le volte da 0 il vettore
+int Get_Lunghezza_File_Storico_Pasti(){
+
+	FILE *file;
+
+	if ((file = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+		printf("Errore nell'apertura del file!\n");
+		return 0;
+	} else {
+		fseek(file,0,SEEK_END);
+		return (int)(ftell(file)/sizeof(pasto));
 		fclose(file);
 	}
 }

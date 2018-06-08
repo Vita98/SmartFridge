@@ -23,5 +23,9 @@ int Visualizza_Menu_Settimane_Passate(ricetta[],int);
 
 int Stampa_Iesimo_Menu_Settimanale(ricetta[],int,int,int);
 
+int Visualizza_File_Pasti(ricetta[]);
+
+int Cancella_Pasto(ricetta[],int);
+
 
 #endif /* PASTI_TOOLS_H_ */
