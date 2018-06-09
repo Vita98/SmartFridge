@@ -525,7 +525,7 @@ int Inserimento_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[
 				}
 			}
 		}
-	}else printf("\nL'alimento \"%s\" non esiste! Prima di utilizzarlo inserirlo tra gli alimenti!\n",alimenti[IndiceAlimento].Nome);
+	}else printf("\nL'alimento \"%s\" non esiste! Prima di utilizzarlo inserirlo tra gli alimenti!\n",scelta);
 
 	return 1;
 
@@ -813,14 +813,116 @@ int Consuma_Ricetta_Su_Alimenti(ricetta ricette[],int lunghezza_vettore_ricette,
 
 
 
+/* FUNZIONE CHE SI OCCUPA DI TUTTO QUELLO CHE RIGUARDA 	*
+ * L'AGGIUNTA DELLE RICETTE ALL'INTERNO DEL VETTORE	    *
+ * E ALL'INTERNO DEL FILE								*
+ * 														*
+ * LA FUNZIONE RICEVE COME PARAMETRI IL VETTORE DI 		*
+ * RICETTE E DI ALIMENTI E LE LORO LUNGHEZZE E INOLTRE 	*
+ * UN PUNTATORE 										*
+ * AD INTERO PER LA MEMORIZZAZIONE DELL'INDIRIZZO 		*
+ * DOVE RISIEDE IL NUONO VETTORE DI RICETTE IN CASO DI	*
+ * AGGIUNTA DI UNA RICETTA IN CODA AL VETTORE			*/
+int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricetta ricette[],int Lunghezza_Vettore_Ricette,int *NuovoIndirizzoRicette){
+
+	printf("\n\n            Inserimento Ricette\n%s\n\n",STRINGASTERISCHI);
+	char scelta[LUNGHEZZA_STRINGA];
+	int indiceRicetta=-1;
+
+
+	printf("\nInserisci il nome della ricetta che vuoi aggiungere: ");
+	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
+
+	if((indiceRicetta=getRicetta(ricette,Lunghezza_Vettore_Ricette,scelta,true)) == -1){
+		//caso in cui la ricetta non è presente tra le ricette visibili
+
+		//cerco la ricetta tra le ricette cancellate con visibilita false
+		if((indiceRicetta=getRicetta(ricette,Lunghezza_Vettore_Ricette,scelta,false)) == -1){
+			//caso in cui non esiste propio la ricetta,neanche tra le ricette gia cancellate
+
+
+
+
+			//se la ricetta non è presente devo andare ad aggiungerlo al vettore
+			//prova di allungamento del vettore
+			Lunghezza_Vettore_Ricette++;
+			int j;
+			ricetta *ricette2= (ricetta*) calloc(Lunghezza_Vettore_Ricette,sizeof(ricetta));
+			for(j=0;j<Lunghezza_Vettore_Ricette-1;j++) ricette2[j]=ricette[j];
+			//Libero la memoria del vecchio vettore
+			free(ricette);
+			//ricette[Lunghezza_Vettore_Ricette-1]=alim;
+			(*NuovoIndirizzoRicette)=(int)ricette2;
+
+
+
+
+			//chiedo tutte le caratteristiche della ricetta in input
+			indiceRicetta=Lunghezza_Vettore_Ricette-1;
+
+			strcpy(ricette2[indiceRicetta].Nome,scelta);
+			ricette2[indiceRicetta].Frequenza=0;
+			ricette2[indiceRicetta].Visibilita=true;
+			ricette2[indiceRicetta].ID_Ricetta=Lunghezza_Vettore_Ricette-1;
+			ricette2[indiceRicetta].Kcal_Porzione=FaiSceltaDouble("\nInserisci le Kcal per porzione della ricetta:");
+
+			//inizializzo il vettore di alimenti della ricetta
+			for(j=0;j<NUMERO_MAX_ALIMENTI;j++){
+				ricette2[indiceRicetta].Alimenti_Quantita[0][j]=-1;
+				ricette2[indiceRicetta].Alimenti_Quantita[1][j]=0;
+			}
+
+
+
+			//aggiunta degli alimenti alla ricetta
+			printf("\nInserimento alimenti della ricetta\n");
+			boolean flag;
+			do{
+				flag=false;
+
+				Inserimento_Alimento_Ricetta(ricette2,indiceRicetta,alimenti,Lunghezza_Vettore_Alimenti);
+
+				Visualizza_Alimenti_Ricetta(ricette2,indiceRicetta,alimenti,Lunghezza_Vettore_Alimenti);
+
+				if(FaiSceltaBooleana("\n\nVuoi aggiungere un altro alimento alla ricetta? ") == true) flag=true;
+			}while(flag==true);
+
+
+			printf("\nRicetta inserita con successo!\n");
+
+
+		}else{
+
+			ricette[indiceRicetta].Visibilita=true;
+			Modifica_Ricetta_Su_File(ricette[indiceRicetta]);
+
+			//caso in cui la ricetta esiste gia nel tra le ricette eliminate
+			printf("\nLa ricetta che stai cercando di inserire era nel nostro sistema in precedenza\n");
+			printf("e non è stata rimossa del tutto! Da ora in poi la potrai vedere e modificare nel caso\n");
+			printf("alcune particolarita non vadano bene! Per farlo vai in Opzioni Ricette > Modifica Ricetta\n\n");
+		}
+
+	}else{
+		//caso in cui il nome della ricetta inserita dell'utente esiste gia quindi la ricetta esiste gia
+		printf("\nLa ricetta che stai cercando di inserire esiste gia!\n");
+	}
+
+	return Lunghezza_Vettore_Ricette;
+}
 
 
 
 
 
-int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int Lunghezza_vettore_alimenti){
+
+
+
+
+int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int Lunghezza_vettore_alimenti,int *NuovoIndirizzoRicette){
 
 	int NumScelta;
+
+	(*NuovoIndirizzoRicette)=(int)ricette;
 
 	do {
 		NumScelta = FaiScelta(MenuRicette);
@@ -828,33 +930,29 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 		switch (NumScelta) {
 		case 1:
 
-
 			//viualizza lista ricette
 			Scelta_Visualizzazione(ricette, lunghezza_vettore_ricette);
 			break;
+
 		case 2:
 
 			//aggiungi ricetta
+			lunghezza_vettore_ricette=Inserimento_Ricetta(alimenti,Lunghezza_vettore_alimenti,ricette,lunghezza_vettore_ricette,NuovoIndirizzoRicette);
+
+			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di una nuovo ricetta
+			ricette=(ricetta*)(*NuovoIndirizzoRicette);
 
 			break;
 		case 3:
 
-
 			//modifica ricetta
-
-				//modifica ricetta
-				Modifica_Ricetta(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti);
-
+			Modifica_Ricetta(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti);
 
 			break;
 		case 4:
 
-
 			//cancella ricetta
-
-				//cancella ricetta
-				Cancella_Ricetta(ricette,lunghezza_vettore_ricette);
-
+			Cancella_Ricetta(ricette,lunghezza_vettore_ricette);
 
 			break;
 
@@ -862,7 +960,6 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 
 			//Gestione dei preferiti
 			Scelta_Opzioni_Preferiti(ricette, lunghezza_vettore_ricette);
-
 
 			break;
 
@@ -875,6 +972,6 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 
 	} while (NumScelta != 0);
 
-	return 0;
+	return lunghezza_vettore_ricette;
 }
 

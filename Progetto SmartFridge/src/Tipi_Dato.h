@@ -23,6 +23,7 @@
 #define CARATTERE_GIORNOSETTIMANA 'W'
 #define NUMERO_MASSIMO_GIORNI 6
 #define NUMERO_GIORNI 7
+#define CEST (+2)
 
 
 

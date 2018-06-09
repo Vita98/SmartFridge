@@ -35,14 +35,16 @@ int main(void) {
 
 	//creazione e caricamento del vettore di ricette
 	int lunghezza_vettore_ricette=Get_Lunghezza_File_Ricette();
-	ricetta ricette[lunghezza_vettore_ricette];
+	ricetta *ricette=(ricetta*) calloc(lunghezza_vettore_ricette,sizeof(ricetta));
 	Carica_Ricette(ricette);
 
 
 	//Caricamento delle impostazioni dal file di configurazione
 	Carica_Configurazione();
 
+
 	int NuovoIndirizzoAlimenti;
+	int NuovoIndirizzoRicette;
 	printf("Benvenuto in SMARTFRIDGE\n");
 	do {
 
@@ -73,7 +75,10 @@ int main(void) {
 			break;
 		case 5:		//Opzioni Ricette
 
-			Scelta_Opzioni_Ricette(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti);
+			lunghezza_vettore_ricette=Scelta_Opzioni_Ricette(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti,&NuovoIndirizzoRicette);
+
+			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di una nuovo ricetta
+			ricette=(ricetta *)NuovoIndirizzoRicette;
 
 			break;
 		case 6:		//Opzioni Pasti

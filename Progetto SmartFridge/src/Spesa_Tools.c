@@ -125,6 +125,8 @@ int Inserimento_Alimenti_Spesa(alimento alimenti[],int Lunghezza_Vettore_Aliment
 
 			getDataInput(&data.Giorno,&data.Mese,&data.Anno,"\nInserisci la data di scadenza:");
 
+			if(alimenti[IndiceAlimento].Visibilita==false) alimenti[IndiceAlimento].Visibilita=true;
+
 
 			//se la scadenza è gia presente vuol dire che devo andare a sommare la quantita nella
 			//scadenza trovata
@@ -212,7 +214,7 @@ int Inserimento_Alimenti_Spesa(alimento alimenti[],int Lunghezza_Vettore_Aliment
 			//prova di allungamento del vettore
 			Lunghezza_Vettore_Alimenti++;
 
-			alimento *alimenti2= (alimento*) calloc(Lunghezza_Vettore_Alimenti,sizeof(alimento));;
+			alimento *alimenti2= (alimento*) calloc(Lunghezza_Vettore_Alimenti,sizeof(alimento));
 
 			for(j=0;j<Lunghezza_Vettore_Alimenti-1;j++) alimenti2[j]=alimenti[j];
 

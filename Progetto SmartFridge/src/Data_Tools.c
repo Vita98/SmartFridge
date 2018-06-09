@@ -132,7 +132,10 @@ int getData2(data_ora* data){
    (*data).Anno=1900 + (*info).tm_year;
    (*data).Giorno= (*info).tm_mday;
    (*data).Mese=(*info).tm_mon+1;
-   (*data).Ora=(*info).tm_hour+2;
+
+   if((*info).tm_hour==23) (*data).Ora=1;
+   else (*data).Ora=(*info).tm_hour+CEST;
+
    (*data).Minuti=(*info).tm_min;
    (*data).Secondi=(*info).tm_sec;
 

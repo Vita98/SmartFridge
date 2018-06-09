@@ -9,7 +9,7 @@
 #define RICETTE_TOOLS_H_
 
 
-int Scelta_Opzioni_Ricette(ricetta[],int,alimento[],int);
+int Scelta_Opzioni_Ricette(ricetta[],int,alimento[],int,int*);
 
 int Visualizza_Ricette_Ordinate(ricetta[], int);
 
@@ -63,5 +63,20 @@ int Modifica_Quantita_Alimento_Ricetta(ricetta[],int,alimento[],int);
 int get_Numero_Porzioni_Possibili_Ricetta(ricetta[],int,alimento[],int,int);
 
 int Consuma_Ricetta_Su_Alimenti(ricetta[],int,alimento[],int,int,int);
+
+
+
+
+int Inserimento_Ricetta(alimento[],int,ricetta[],int,int*);
+
+
+
+
+
+
+
+
+
+
 
 #endif /* RICETTE_TOOLS_H_ */

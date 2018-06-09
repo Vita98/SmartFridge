@@ -10,6 +10,7 @@
 #include "Ricette_Tools.h"
 #include "Data_Tools.h"
 #include "Gen_File.h"
+#include "Alimenti_Tools.h"
 
 
 
@@ -311,7 +312,10 @@ int Scelta_Opzioni_Visualizza_Menu_Settimanale(ricetta ricette[],int lunghezza_v
 
 
 
-int Cancella_Iesimo_Pasto_Da_File(int indice){
+
+
+
+int Cancella_Iesimo_Pasto_Da_File(int indicePasto,alimento alimenti[],ricetta ricette[]){
 	FILE *file_Storico_Pasti;
 	pasto pp;
 
@@ -319,14 +323,22 @@ int Cancella_Iesimo_Pasto_Da_File(int indice){
 		printf("Errore nell'apertura del file!\n");
 		return 0;
 	} else {
-		fseek(file_Storico_Pasti,indice*sizeof(pasto),SEEK_SET);
+		fseek(file_Storico_Pasti,indicePasto*sizeof(pasto),SEEK_SET);
 		fread(&pp,sizeof(pasto),1,file_Storico_Pasti);
 		pp.visibilita=false;
 
-		fseek(file_Storico_Pasti,indice*sizeof(pasto),SEEK_SET);
+		//bisogna aggiungere tutte le quantita cancellate
+		int i;
+		for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+			if(ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i] != -1) {
+				alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]].Scadenze[0].Quantita += ricette[pp.ID_Ricetta].Alimenti_Quantita[1][i]*pp.Porzioni;
+				if(alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]].Visibilita==false) alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[1][i]].Visibilita=true;
+				Modifica_Alimento_Su_File(alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]]);
+			}
+		}
+
+		fseek(file_Storico_Pasti,indicePasto*sizeof(pasto),SEEK_SET);
 		fwrite(&pp,sizeof(pasto),1,file_Storico_Pasti);
-
-
 
 		fclose(file_Storico_Pasti);
 	}
@@ -337,7 +349,7 @@ int Cancella_Iesimo_Pasto_Da_File(int indice){
 
 
 
-int Cancella_Pasto(ricetta ricette[],int lunghezza_vettore_ricette){
+int Cancella_Pasto(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[]){
 
 	data_ora dataPasto,dataOdierna;
 	FILE *file_Storico_Pasti;
@@ -345,7 +357,7 @@ int Cancella_Pasto(ricetta ricette[],int lunghezza_vettore_ricette){
 	int indice=0;
 	int lunghezza_vettore_indici=Get_Lunghezza_File_Storico_Pasti();
 	int IndiciSuFile[lunghezza_vettore_indici];
-	int IndiceVetIndici=-1;
+	int IndiceVetIndici=0;
 
 	printf("\n\nCancellazione Pasto\n\%s\n",STRINGASTERISCHI);
 
@@ -368,9 +380,10 @@ int Cancella_Pasto(ricetta ricette[],int lunghezza_vettore_ricette){
 				while(!feof(file_Storico_Pasti)){
 					if(fread(&past,sizeof(past),1,file_Storico_Pasti) > 0){
 						//se le date sono le stesse avranno una distanza in giorni pari a 0
-						if(getDistanzaInGiorni(past.Data_Ora,dataPasto,0) == 0){
-							printf("\n%5d | %20s | %5d",indice,ricette[past.ID_Ricetta].Nome,past.Porzioni);
-							IndiciSuFile[++IndiceVetIndici]=indice;
+						if(getDistanzaInGiorni(past.Data_Ora,dataPasto,0) == 0 && past.visibilita==true){
+							printf("\n%5d | %20s | %5d",IndiceVetIndici,ricette[past.ID_Ricetta].Nome,past.Porzioni);
+							IndiciSuFile[IndiceVetIndici]=indice;
+							IndiceVetIndici++;
 						}
 
 					}
@@ -385,7 +398,7 @@ int Cancella_Pasto(ricetta ricette[],int lunghezza_vettore_ricette){
 
 				}while(sceltaIndice>IndiceVetIndici);
 
-				if(Cancella_Iesimo_Pasto_Da_File(IndiciSuFile[sceltaIndice])) printf("\nCancellazione del pasto effettuata con successo!\n");
+				if(Cancella_Iesimo_Pasto_Da_File(IndiciSuFile[sceltaIndice],alimenti,ricette)) printf("\nCancellazione del pasto effettuata con successo!\n");
 				else printf("\nErrore nella cancellazione del pasto su file!\n");
 
 			}
@@ -429,7 +442,7 @@ int Scelta_Opzioni_Pasti(ricetta ricette[],int lunghezza_vettore_ricette,aliment
 		case 4:
 
 			//cancella pasto
-			Cancella_Pasto(ricette,lunghezza_vettore_ricette);
+			Cancella_Pasto(ricette,lunghezza_vettore_ricette,alimenti);
 
 			break;
 		case 0:
