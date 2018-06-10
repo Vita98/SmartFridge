@@ -16,6 +16,7 @@
 #include "Spesa_Tools.h"
 #include "Data_Tools.h"
 #include "Pasti_Tools.h"
+#include "Ricerca_Ricette_Tools.h"
 
 
 void pressToContinue();
@@ -65,6 +66,7 @@ int main(void) {
 
 		case 3:		//Ricerca Ricette per alimento
 
+			Ricerca_Ricette_Per_Alimenti(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti);
 
 
 			break;

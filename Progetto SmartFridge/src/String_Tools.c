@@ -144,7 +144,7 @@ int explodeString(char Stringa[],char Destination[MASSIME_STRINGHE_ESPLOSE][LUNG
 	  token = strtok(NULL, s);
    }
 
-   return 0;
+   return i;
 }
 
 
