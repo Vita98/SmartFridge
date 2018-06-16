@@ -8,12 +8,15 @@
 #include "Tipi_Dato.h"
 #include "Alimenti_Tools.h"
 #include <string.h>
+#include "Data_Tools.h"
+#include "Ricette_Tools.h"
+#include "Preferiti_Tools.h"
 
 
 
 
 
-boolean isParametroRicerca(int vettore[],int lunghezzaVettore,int valore){
+boolean is_parametro_ricerca(int vettore[],int lunghezzaVettore,int valore){
 
 	int i;
 	for(i=0;i<lunghezzaVettore-1;i++){
@@ -30,20 +33,20 @@ boolean isParametroRicerca(int vettore[],int lunghezzaVettore,int valore){
 
 
 
-int* getRicettePerAlimenti(alimento alimenti[],int lunghezza_vettore_alimenti,int VettoreIndiciAlimenti[],int lunghezza_vettore_indici,ricetta ricette[],int lunghezza_vettore_ricette,int *NumeroRicetteTrovate){
+int* get_ricette_per_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti,int vettoreIndiciAlimenti[],int lunghezzaVettoreIndici,ricetta ricette[],int lunghezzaVettoreRicette,int *numeroRicetteTrovate){
 
 	int i,j,k;
 	int contatore;
-	int IndiciRicetteOK[lunghezza_vettore_ricette];
+	int IndiciRicetteOK[lunghezzaVettoreRicette];
 	int IndiceVettoreRicetteOK=0;
 
 	//for che scorre il vettore di ricette
-	for(i=0;i<lunghezza_vettore_ricette;i++){
+	for(i=0;i<lunghezzaVettoreRicette;i++){
 		contatore=0;
 		//for che scorre gli alimenti della ricetta
 		for(j=0;j<NUMERO_MAX_ALIMENTI;j++){
 			//for che scorre gli alimenti da cercare nella ricetta
-			for(k=0;k<lunghezza_vettore_indici;k++){
+			for(k=0;k<lunghezzaVettoreIndici;k++){
 				//controllo se l'alimento da cercare e' presente nella ricetta
 
 				//creo i vettori che conterranno le sringhe derivanti l'esplosione dei nomi degli alimenti
@@ -51,8 +54,8 @@ int* getRicettePerAlimenti(alimento alimenti[],int lunghezza_vettore_alimenti,in
 				char StringheEsploseAlimento[LUNGHEZZA_STRINGA/2][LUNGHEZZA_STRINGA];
 
 				//esplodo i nomi delle ricette per avere un matching piu accurato
-				int quantitaStringaEsplosaAlimentoRicetta=explodeString(alimenti[ricette[i].Alimenti_Quantita[0][j]].Nome,StringheEsploseAlimentoRicetta);
-				int quantitaStringaEsplosaAlimento=explodeString(alimenti[VettoreIndiciAlimenti[k]].Nome,StringheEsploseAlimento);
+				int quantitaStringaEsplosaAlimentoRicetta=explode_string(alimenti[ricette[i].Alimenti_Quantita[0][j]].Nome,StringheEsploseAlimentoRicetta);
+				int quantitaStringaEsplosaAlimento=explode_string(alimenti[vettoreIndiciAlimenti[k]].Nome,StringheEsploseAlimento);
 
 
 				int f,g;
@@ -61,14 +64,14 @@ int* getRicettePerAlimenti(alimento alimenti[],int lunghezza_vettore_alimenti,in
 				//cicli for che confrontano tutte le stringhe derivanti l'esplosione dei due nomi di alimenti tra di loro
 				for(f=0;f<quantitaStringaEsplosaAlimento;f++){
 
-					removeFirstLastSpace(StringheEsploseAlimento[f],StringheEsploseAlimento[f],LUNGHEZZA_STRINGA);
-					toLowerString(StringheEsploseAlimento[f],StringheEsploseAlimento[f]);
+					remove_first_last_space(StringheEsploseAlimento[f],StringheEsploseAlimento[f],LUNGHEZZA_STRINGA);
+					to_lower_string(StringheEsploseAlimento[f],StringheEsploseAlimento[f]);
 
 					for(g=0;g<quantitaStringaEsplosaAlimentoRicetta;g++){
 
-						removeFirstLastSpace(StringheEsploseAlimentoRicetta[g],StringheEsploseAlimentoRicetta[g],LUNGHEZZA_STRINGA);
+						remove_first_last_space(StringheEsploseAlimentoRicetta[g],StringheEsploseAlimentoRicetta[g],LUNGHEZZA_STRINGA);
 
-						toLowerString(StringheEsploseAlimentoRicetta[g],StringheEsploseAlimentoRicetta[g]);
+						to_lower_string(StringheEsploseAlimentoRicetta[g],StringheEsploseAlimentoRicetta[g]);
 
 						if(strcmp(StringheEsploseAlimento[f],StringheEsploseAlimentoRicetta[g]) == 0){
 							flag=true;
@@ -83,7 +86,7 @@ int* getRicettePerAlimenti(alimento alimenti[],int lunghezza_vettore_alimenti,in
 
 			//se il numero di matching effettuati e' uguale al numero di alimenti inseriti dall'utente
 			//vuol dire che la ricetta puo essere preparata con quelli ingredienti
-			if(contatore==lunghezza_vettore_indici){
+			if(contatore==lunghezzaVettoreIndici){
 				//salvo l'indice della ricetta nel vettore IndiceRicetteOK
 				IndiciRicetteOK[IndiceVettoreRicetteOK]=i;
 				IndiceVettoreRicetteOK++;
@@ -99,7 +102,7 @@ int* getRicettePerAlimenti(alimento alimenti[],int lunghezza_vettore_alimenti,in
 	for(i=0;i<IndiceVettoreRicetteOK;i++){
 		c[i]=IndiciRicetteOK[i];
 	}
-	(*NumeroRicetteTrovate)=IndiceVettoreRicetteOK;
+	(*numeroRicetteTrovate)=IndiceVettoreRicetteOK;
 	return c;
 
 }
@@ -110,17 +113,16 @@ int* getRicettePerAlimenti(alimento alimenti[],int lunghezza_vettore_alimenti,in
 
 
 
-int Ricerca_Ricette_Per_Alimenti(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int lunghezza_vettore_alimenti){
+int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	boolean flag;
-	//alimento alimentiRicerca[];
 
 	//creo un vettore che conterra gli indici degli alimenti chiesti all'utente
-	int VettoreIndici[lunghezza_vettore_alimenti];
-	int IndiceVettoreIndici=0;
+	int vettoreIndici[lunghezzaVettoreAlimenti];
+	int indiceVettoreIndici=0;
 
 	int indice=0,i;
-	char AlimentoInput[LUNGHEZZA_STRINGA];
+	char alimentoInput[LUNGHEZZA_STRINGA];
 
 	printf("\n\nRicerca delle ricette in base agli alimenti\n%s\n",STRINGASTERISCHI);
 
@@ -128,46 +130,135 @@ int Ricerca_Ricette_Per_Alimenti(ricetta ricette[],int lunghezza_vettore_ricette
 		flag=false;
 
 		printf("Inserisci il nome dell'alimento numero %d:",(indice+1));
-		fgets(AlimentoInput,LUNGHEZZA_STRINGA,stdin);
+		fgets(alimentoInput,LUNGHEZZA_STRINGA,stdin);
 
 		//controllo se l'alimento inserito esiste nel vettore alimenti
-		if((VettoreIndici[IndiceVettoreIndici++]=getAlimento(alimenti,lunghezza_vettore_alimenti,AlimentoInput,true)) > -1){
+		if((vettoreIndici[indiceVettoreIndici++]=get_alimento(alimenti,lunghezzaVettoreAlimenti,alimentoInput,true)) > -1){
 
 			//se esiste nel vettore alimenti controllo se e' gia stato inserito come parametro di ricerca della ricetta
-			if(isParametroRicerca(VettoreIndici,IndiceVettoreIndici,VettoreIndici[IndiceVettoreIndici-1]) == true){
+			if(is_parametro_ricerca(vettoreIndici,indiceVettoreIndici,vettoreIndici[indiceVettoreIndici-1]) == true){
 				printf("\nL'alimento che stai tentando di inserire e' stato gia inserito!\n");
-				IndiceVettoreIndici--;
+				indiceVettoreIndici--;
 			}else indice++;
 
 
 		}else{
 			printf("\nL'alimento che stai tentando di inserire non esiste!\n");
-			IndiceVettoreIndici--;
+			indiceVettoreIndici--;
 		}
 
-		if(FaiSceltaBooleana("\nVuoi cercare le ricette con altri alimenti oltre a quelli gia inseriti? ") == true) flag=true;
-		else if(IndiceVettoreIndici==0) printf("\nDevi inserire almeno un alimento per cercare le ricette!\n");
+		if(fai_scelta_booleana("\nVuoi cercare le ricette con altri alimenti oltre a quelli gia inseriti? ") == true) flag=true;
+		else if(indiceVettoreIndici==0) printf("\nDevi inserire almeno un alimento per cercare le ricette!\n");
 
 
-	}while(flag==true || IndiceVettoreIndici==0);
+	}while(flag==true || indiceVettoreIndici==0);
 
 
 	//richiamo la funzione che ricerca tutte le ricette con quei alimenti
-	int NumeroRicetteTrovate=0;
-	int *IndiciRicette=getRicettePerAlimenti(alimenti,lunghezza_vettore_alimenti,VettoreIndici,IndiceVettoreIndici,ricette,lunghezza_vettore_ricette,&NumeroRicetteTrovate);
+	int numeroRicetteTrovate=0;
+	int *indiciRicette=get_ricette_per_alimenti(alimenti,lunghezzaVettoreAlimenti,vettoreIndici,indiceVettoreIndici,ricette,lunghezzaVettoreRicette,&numeroRicetteTrovate);
 
-	if(NumeroRicetteTrovate == 0) printf("\n\nNon e' possibile preparare nessuna ricetta con gli alimenti inseriti!\n\n");
+	if(numeroRicetteTrovate == 0) printf("\n\nNon e' possibile preparare nessuna ricetta con gli alimenti inseriti!\n\n");
 	else{
 		printf("\n\nRicette che e' possibile preparare con gli alimenti inseriti:\n");
 		printf("%20s | %20s\n","Nome","Kcal per porzione");
 		printf("-----------------------------------------------------\n");
 
-		for(i=0;i<NumeroRicetteTrovate;i++){
-			printf("%20s | %18.2f\n",ricette[IndiciRicette[i]].Nome,ricette[IndiciRicette[i]].Kcal_Porzione);
+		for(i=0;i<numeroRicetteTrovate;i++){
+			printf("%20s | %18.2f\n",ricette[indiciRicette[i]].Nome,ricette[indiciRicette[i]].Kcal_Porzione);
 		}
 	}
 
 
 	return 1;
 }
+
+
+
+
+
+
+
+int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int *numeroRicetteTrovate){
+
+	int *vettoreRicetteScadenza = (int*) calloc(lunghezzaVettoreRicette,sizeof(int));
+	int indiceVetRicetteScadenza=-1;
+
+	int i,j,k;
+	data_ora dataAttuale;
+	get_data_pointer(&dataAttuale);
+	boolean flag;
+
+	for(i=0;i<lunghezzaVettoreRicette;i++){
+		if(ricette[i].Visibilita == true)
+
+		//controllo se la iesima ricetta ha la possibilita di essere preparata
+		if(get_numero_porzioni_possibili_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,i) > 0){
+			flag=false;
+			//vettore che scorre gli alimenti della ricetta
+			//per ferificare se qualcuno e' in scadenza
+			for(j=0;j<NUMERO_MAX_ALIMENTI;j++){
+				if(ricette[i].Alimenti_Quantita[1][j] != 0)
+				for(k=0;k<LUNGHEZZA_VET_SCADENZE;k++){ //vettore che scorre le date di scadenza dell'alimento
+					if(alimenti[ricette[i].Alimenti_Quantita[0][j]].Scadenze[k].Quantita != 0){
+						int distanza=get_distanza_in_giorni(dataAttuale,alimenti[ricette[i].Alimenti_Quantita[0][j]].Scadenze[k].Data_Scadenza,0);
+						if(distanza >= 0 && distanza <= DISTANZAGIORNISCADENZA ){
+							indiceVetRicetteScadenza++;
+							vettoreRicetteScadenza[indiceVetRicetteScadenza]=i;
+							flag=true;
+							break;
+						}
+					}
+				}
+
+				if(flag==true) break;
+			}
+		}
+	}
+
+	//salvo le ricette trovate nel vettore e passo il suo indirizzo nel punatore
+	//passato come parametro che ha la funzionalita anche di valore di ritorno
+	int *c=(int*) calloc(indiceVetRicetteScadenza+1,sizeof(int));
+	for(i=0;i<indiceVetRicetteScadenza+1;i++){
+		c[i]=vettoreRicetteScadenza[i];
+	}
+	(*numeroRicetteTrovate)=indiceVetRicetteScadenza+1;
+	return c;
+
+}
+
+
+
+
+
+
+int suggerimento_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
+
+	printf("\n\nSuggerimento delle ricette in scadenza\n%s\nLe ricette saranno ordinate prima\nper i preferiti e poi per frequenza\n\n",STRINGASTERISCHI);
+
+	int numeroRicetteInScadenza=0;
+
+	int *vettoreRicetteScadenza=get_ricette_in_scadenza(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,&numeroRicetteInScadenza);
+	merge_sort_ricette(ricette,0,numeroRicetteInScadenza-1,vettoreRicetteScadenza,4);
+
+	int i;
+	boolean flag=false;
+
+	if(numeroRicetteInScadenza == 0) printf("\nNon ci sono ricette con alimenti in scadenza\n");
+	else{
+		printf("\nLe ricette che hanno degli alimenti in scadenza sono:\n");
+		for(i=0;i<numeroRicetteInScadenza;i++){
+			if(exist_preferito(ricette,&vettoreRicetteScadenza[i]) == false && flag==false){
+				merge_sort_ricette(ricette,i,numeroRicetteInScadenza-1,vettoreRicetteScadenza,3);
+				flag=true;
+			}
+			printf("%d - %25s \t| Kcal per porzione: %5.2f \t| %s\n", i,
+										ricette[vettoreRicetteScadenza[i]].Nome, ricette[vettoreRicetteScadenza[i]].Kcal_Porzione,(exist_preferito(ricette,&vettoreRicetteScadenza[i]) == true)? "PREF":"");
+		}
+	}
+
+	return 1;
+}
+
+
 

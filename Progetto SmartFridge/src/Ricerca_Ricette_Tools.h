@@ -8,10 +8,14 @@
 #ifndef RICERCA_RICETTE_TOOLS_H_
 #define RICERCA_RICETTE_TOOLS_H_
 
-int Ricerca_Ricette_Per_Alimenti(ricetta[],int,alimento[],int);
+int ricerca_ricette_per_alimenti(ricetta[],int,alimento[],int);
 
-boolean isParametroRicerca(int[],int,int);
+boolean is_parametro_ricerca(int[],int,int);
 
-int* getRicettePerAlimenti(alimento[],int,int[],int,ricetta[],int,int*);
+int* get_ricette_per_alimenti(alimento[],int,int[],int,ricetta[],int,int*);
+
+int suggerimento_ricette_in_scadenza(ricetta[],int,alimento[],int);
+
+int* get_ricette_in_scadenza(ricetta[],int,alimento[],int,int*);
 
 #endif /* RICERCA_RICETTE_TOOLS_H_ */

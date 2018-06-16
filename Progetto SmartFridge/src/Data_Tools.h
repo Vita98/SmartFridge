@@ -8,24 +8,24 @@
 #ifndef DATA_TOOLS_H_
 #define DATA_TOOLS_H_
 
-int ControlloData(char*,int*,int*,int*);
+int controllo_data(char*,int*,int*,int*);
 
-int getData(char);
+int get_data(char);
 
-int getDataInput(char*,char*,int*,char[]);
+int get_data_input(char*,char*,int*,char[]);
 
-int getData2(data_ora*);
+int get_data_pointer(data_ora*);
 
-char* getTipoPasto();
+char* get_tipo_pasto();
 
-int isBisestile(int);
+int is_bisestile(int);
 
-int getDistanzaInGiorni(data_ora,data_ora,int);
+int get_distanza_in_giorni(data_ora,data_ora,int);
 
-int getDataInGiorni(data_ora );
+int get_data_in_giorni(data_ora );
 
-char* indiceToGiorniSettimana(int);
+char* indice_to_giorni_settimana(int);
 
-int dataToGiorniSettimana(data_ora);
+int data_to_giorni_settimana(data_ora);
 
 #endif /* DATA_TOOLS_H_ */

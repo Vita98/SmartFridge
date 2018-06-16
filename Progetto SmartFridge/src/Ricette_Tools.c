@@ -16,8 +16,13 @@
  *  SINGOLI ELEMENTI PER POI SCRIVERE IL PROPRIO INDICE IN UN NUOVO VETTORE DI LUNGHEZZA PARI A QUELLO 	*
  *  ANALIZZATO OTTENENDO UN VETTORE DI INTERI FORMATO DA INDICI, IL CONETUNO DEGLI ELEMENTI E' 			*
  *  EQUIVALENTI ALL'ORDINAMENTO CRESCENTE DEGLI ELEMENTI DEL VETTORE RICETTE, LE SCELTE SONO DECISE 	*
- *  DALLA MODALITA IN CUI SI DECIDE ORDINARE LE RICETTE 												*/
-int Merging_Ricette(ricetta ricette[], int inizio, int medio, int fine, int index[], int modalita)
+ *  DALLA MODALITA IN CUI SI DECIDE ORDINARE LE RICETTE 												*
+ *  																									*
+ *  MODALITA 2 = ORDINAMENTO PER KCAL																	*
+ *  MODALITA 3 = ORDINAMENTO PER FREQUENZA																*
+ *  MODALITA 4 = ORDINAMENTO PER PREFERITI CIOE VENGONO PORTATI IN ALTO I PREFERITI E NELLO STESSO 		*
+ *  TEMPO I PREFERITI VENGONO ORDINATI PER FREQUENZA DI USO												*/
+int merging_ricette(ricetta ricette[], int inizio, int medio, int fine, int index[], int modalita)
 {
     int i, j, k;
     int n1 = medio - inizio + 1;
@@ -39,34 +44,54 @@ int Merging_Ricette(ricetta ricette[], int inizio, int medio, int fine, int inde
 
     if (modalita == 2){
     	while (i < n1 && j < n2)
-    	    {
-    	        if (ricette[L[i]].Kcal_Porzione < ricette[R[j]].Kcal_Porzione)
-    	        {
-    	            index[k] = L[i];
-    	            i++;
-    	        }
-    	        else
-    	        {
-    	            index[k] = R[j];
-    	            j++;
-    	        }
-    	        k++;
-    	    }
-    }else {
+		{
+			if (ricette[L[i]].Kcal_Porzione < ricette[R[j]].Kcal_Porzione)
+			{
+				index[k] = L[i];
+				i++;
+			}
+			else
+			{
+				index[k] = R[j];
+				j++;
+			}
+			k++;
+		}
+    }else if(modalita == 3){
     	while (i < n1 && j < n2)
-    	    {
-    	        if (ricette[L[i]].Frequenza < ricette[R[j]].Frequenza)
-    	        {
-    	            index[k] = L[i];
-    	            i++;
-    	        }
-    	        else
-    	        {
-    	            index[k] = R[j];
-    	            j++;
-    	        }
-    	        k++;
-    	    }
+		{
+			if (ricette[L[i]].Frequenza > ricette[R[j]].Frequenza)
+			{
+				index[k] = L[i];
+				i++;
+			}
+			else
+			{
+				index[k] = R[j];
+				j++;
+			}
+			k++;
+		}
+    }else if(modalita == 4){
+    	while (i < n1 && j < n2)
+		{
+			if ((exist_preferito(ricette,&L[i]) == true) && (exist_preferito(ricette,&R[j]) == false))
+			{
+				index[k] = L[i];
+				i++;
+			}
+			else if((exist_preferito(ricette,&L[i]) == true) && (exist_preferito(ricette,&R[j]) == true)){
+				if(ricette[L[i]].Frequenza > ricette[R[j]].Frequenza){
+					index[k] = L[i];
+					i++;
+				}
+			}else
+			{
+				index[k] = R[j];
+				j++;
+			}
+			k++;
+		}
     }
 
 
@@ -99,7 +124,7 @@ int Merging_Ricette(ricetta ricette[], int inizio, int medio, int fine, int inde
 
 /* FUNZIONE CHE DIVIDE IL VETTORE DI RICETTE IN PIU SOTTO VETTORI E NE APPLICA IL MERGE  */
 
-int Merge_Sort_Ricette(ricetta ricette[], int inizio, int fine,int index[], int modalita){
+int merge_sort_ricette(ricetta ricette[], int inizio, int fine,int index[], int modalita){
 
     if (inizio < fine)
     {
@@ -108,10 +133,10 @@ int Merge_Sort_Ricette(ricetta ricette[], int inizio, int fine,int index[], int 
         int m = inizio+(fine-inizio)/2;
 
         // Sort first and second halves
-        Merge_Sort_Ricette(ricette, inizio, m,index,modalita);
-        Merge_Sort_Ricette(ricette, m+1, fine,index,modalita);
+        merge_sort_ricette(ricette, inizio, m,index,modalita);
+        merge_sort_ricette(ricette, m+1, fine,index,modalita);
 
-        Merging_Ricette(ricette, inizio, m, fine,index,modalita);
+        merging_ricette(ricette, inizio, m, fine,index,modalita);
         return 0;
     }
     return 1;
@@ -122,14 +147,14 @@ int Merge_Sort_Ricette(ricetta ricette[], int inizio, int fine,int index[], int 
 
 /* FUNZIONE CHE RICHIAMA IL MERGE SORT APPLICATO PASSANDO I PARAMETRI NECESSARI   */
 
-int Sort_Ricette (ricetta ricette[],int index[], int Lunghezza_Vettore, int modalita){
+int sort_ricette (ricetta ricette[],int index[], int lunghezzaVettore, int modalita){
 
 	int i;
-	for (i=0;i<Lunghezza_Vettore;i++){
+	for (i=0;i<lunghezzaVettore;i++){
 		index[i] = ricette[i].ID_Ricetta;
 	}
 
-	Merge_Sort_Ricette(ricette,0,Lunghezza_Vettore-1,index,modalita);
+	merge_sort_ricette(ricette,0,lunghezzaVettore-1,index,modalita);
 	return 1;
 }
 
@@ -142,21 +167,21 @@ int Sort_Ricette (ricetta ricette[],int index[], int Lunghezza_Vettore, int moda
 
 
 
-int Visualizza_Ricette_Ordinate(ricetta ricette[], int Lunghezza_Vettore, int modalita) {
+int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, int modalita) {
 
 	int i;
-	int indici[Lunghezza_Vettore];
+	int indici[lunghezzaVettoreRicette];
 
 	printf("Ricette presenti ");
-	printf ("(%d) :\n",Lunghezza_Vettore);
+	printf ("(%d) :\n",lunghezzaVettoreRicette);
 
 
-	Sort_Ricette(ricette, indici, Lunghezza_Vettore, modalita);
+	sort_ricette(ricette, indici, lunghezzaVettoreRicette, modalita);
 
-	for (i = 0; i <Lunghezza_Vettore ; i++) {
+	for (i = 0; i <lunghezzaVettoreRicette ; i++) {
 
 		if (ricette[indici[i]].Visibilita==true){
-			printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
+			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
 							ricette[indici[i]].Nome, ricette[indici[i]].Kcal_Porzione, ricette[indici[i]].ID_Ricetta, ricette[indici[i]].Frequenza,(ricette[indici[i]].Visibilita)?"true":"false");
 		}
 
@@ -172,18 +197,18 @@ int Visualizza_Ricette_Ordinate(ricetta ricette[], int Lunghezza_Vettore, int mo
 
 
 
-int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
+int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	int i;
 
 	printf("Ricette presenti ");
-	printf ("(%d) :\n",Lunghezza_Vettore);
+	printf ("(%d) :\n",lunghezzaVettoreRicette);
 
 
-	for (i = 0; i <Lunghezza_Vettore ; i++) {
+	for (i = 0; i <lunghezzaVettoreRicette ; i++) {
 
 			if (ricette[i].Visibilita==true ){
-				printf("%d - %s \t| Kcal per porzione: %.2f \t| Id: %d  |  Freq: %d  |  Visib: %s\n", i,
+				printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
 								ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
 			}
 	}
@@ -201,29 +226,29 @@ int Visualizza_Ricette(ricetta ricette[], int Lunghezza_Vettore) {
 
 
 
-int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
+int scelta_visualizzazione(ricetta ricette[],int lunghezzaVettoreRicette){
 
 
-	int NumScelta;
+	int numScelta;
 
 		do {
-			NumScelta = FaiScelta(MenuOrdinamentoRicette);
+			numScelta = fai_scelta_booleana(MENU_ORDINAMENTO_RICETTE);
 
-			switch (NumScelta) {
+			switch (numScelta) {
 
 			case 1:
 				//ordinamento Normale
-				Visualizza_Ricette(ricette,lunghezza_vettore_ricette);
+				visualizza_ricette(ricette,lunghezzaVettoreRicette);
 				break;
 
 			case 2:
 				//ordina per kcal
-				Visualizza_Ricette_Ordinate(ricette,lunghezza_vettore_ricette,NumScelta);
+				visualizza_ricette_ordinate(ricette,lunghezzaVettoreRicette,numScelta);
 				break;
 
 			case 3:
 				//ordina per frequenza
-				Visualizza_Ricette_Ordinate(ricette,lunghezza_vettore_ricette,NumScelta);
+				visualizza_ricette_ordinate(ricette,lunghezzaVettoreRicette,numScelta);
 				break;
 
 			case 0:
@@ -234,7 +259,7 @@ int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
 				printf("Scelta errata! Riprova!\n");
 
 			}
-		}while(NumScelta != 0);
+		}while(numScelta != 0);
 
 		return 0;
 
@@ -254,7 +279,7 @@ int Scelta_Visualizzazione(ricetta ricette[],int lunghezza_vettore_ricette){
  * 													*
  * LA FUNZIONE RITORNA 1 SE LA PROCEDURA È ANDATA 	*
  * A BUON FINE ALTRIMENTI 0*/
-int Modifica_Ricetta_Su_File(ricetta rice){
+int modifica_ricetta_su_file(ricetta rice){
 	FILE *file;
 
 	if ((file = fopen("src/Ricette.sf", "rb+")) == NULL) return 0;
@@ -286,22 +311,22 @@ int Modifica_Ricetta_Su_File(ricetta rice){
  * LA FUNZIONE RITORNA -1 SE NON VIENE TROVATA NESSUNA 				*
  * CORRISPONDENZA, ALTRIMENTI RITORNA LA POSIZIONE DELLA PRIMA 		*
  * OCCORRENZA														*/
-int getRicetta(ricetta ricette[],int Lunghezza_vettore_ricette,char Parametri_Ricerca[],boolean visibilita){
+int get_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,char parametriRicerca[],boolean visibilita){
 
 	int i;
-	char StringTempParametri[LUNGHEZZA_STRINGA];
-	removeFirstLastSpace(Parametri_Ricerca, StringTempParametri,
+	char stringTempParametri[LUNGHEZZA_STRINGA];
+	remove_first_last_space(parametriRicerca, stringTempParametri,
 			LUNGHEZZA_STRINGA);
-	toLowerString(StringTempParametri, StringTempParametri);
+	to_lower_string(stringTempParametri, stringTempParametri);
 
-	for (i = 0; i < Lunghezza_vettore_ricette; i++) {
+	for (i = 0; i < lunghezzaVettoreRicette; i++) {
 		char StringTempVettore[LUNGHEZZA_STRINGA];
-		removeFirstLastSpace(ricette[i].Nome, StringTempVettore,
+		remove_first_last_space(ricette[i].Nome, StringTempVettore,
 				LUNGHEZZA_STRINGA);
-		toLowerString(StringTempVettore, StringTempVettore);
+		to_lower_string(StringTempVettore, StringTempVettore);
 
 		//se le due stringhe sono uguali
-		if (strcmp(StringTempParametri, StringTempVettore) == 0)
+		if (strcmp(stringTempParametri, StringTempVettore) == 0)
 		if(ricette[i].Visibilita || ricette[i].Visibilita==visibilita)	return i;
 	}
 
@@ -313,10 +338,10 @@ int getRicetta(ricetta ricette[],int Lunghezza_vettore_ricette,char Parametri_Ri
 
 
 
-int Cancella_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette){
+int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 
 	char scelta[LUNGHEZZA_STRINGA];
-	int IndiceRicetta;
+	int indiceRicetta;
 
 	printf("\n\n\n%s\n",STRINGASTERISCHI);
 	printf("         CANCELLAZIONE RICETTA\n");
@@ -325,7 +350,7 @@ int Cancella_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette){
 	printf("Inserisci il nome della ricetta che si vuole cancellare: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
 
-	if((IndiceRicetta=getRicetta(ricette,Lunghezza_vettore_ricette,scelta,true)) == -1) printf("\nLa ricetta \"%s\" non esistente!\n",scelta);
+	if((indiceRicetta=get_ricetta(ricette,lunghezzaVettoreRicette,scelta,true)) == -1) printf("\nLa ricetta \"%s\" non esistente!\n",scelta);
 	else{
 
 		char StringaElab[LUNGHEZZA_STRINGA];
@@ -335,14 +360,14 @@ int Cancella_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette){
 
 		boolean flag;
 
-		if((flag=FaiSceltaBooleana(StringaElab)) == false) printf("\nLa cancellazione della ricetta e' stata annullata!\n");
+		if((flag=fai_scelta_booleana(StringaElab)) == false) printf("\nLa cancellazione della ricetta e' stata annullata!\n");
 		else{
 
 			//effettuo la cancellazione quindi setto il flag visibilita a false all'interno del vettore
-			ricette[IndiceRicetta].Visibilita=false;
+			ricette[indiceRicetta].Visibilita=false;
 
 			//applico le modifiche della ricetta su file
-			Modifica_Ricetta_Su_File(ricette[IndiceRicetta]);
+			modifica_ricetta_su_file(ricette[indiceRicetta]);
 
 			printf("\nCancellazione della ricetta effettuata con successo!\n");
 		}
@@ -365,16 +390,16 @@ int Cancella_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette){
  * VETTORE DI RICETTE CHE SU FILE 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_kcalPorzione_Ricetta(ricetta ricette[],int indice){
-	double Kcal=0.0;
+int modifica_kcalporzione_ricetta(ricetta ricette[],int indiceRicetta){
+	double kcal=0.0;
 
-	Kcal=FaiSceltaDouble("\nInserisci le nuove kcal per porzione della Ricetta:\n");
+	kcal=fai_scelta_double("\nInserisci le nuove kcal per porzione della Ricetta:\n");
 
 	//effettuo la modifica nel vettore
-	ricette[indice].Kcal_Porzione=Kcal;
+	ricette[indiceRicetta].Kcal_Porzione=kcal;
 
 	//effettuo la modifica su file
-	if(Modifica_Ricetta_Su_File(ricette[indice]) == 1) printf("\nModifica delle Kcal per porzione della Ricetta avvenuta con successo!\n");
+	if(modifica_ricetta_su_file(ricette[indiceRicetta]) == 1) printf("\nModifica delle Kcal per porzione della Ricetta avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica delle Kcal per porzione della Ricetta su file!\n");
 	}
@@ -398,7 +423,7 @@ int Modifica_kcalPorzione_Ricetta(ricetta ricette[],int indice){
  * UTILIZZABILE O NO			 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_Nome_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,int indice){
+int modifica_nome_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,int indiceRicetta){
 
 	char scelta[LUNGHEZZA_STRINGA];
 	boolean flag;
@@ -409,18 +434,18 @@ int Modifica_Nome_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,int in
 		fgets(scelta, LUNGHEZZA_STRINGA, stdin);
 
 
-		if(getRicetta(ricette,Lunghezza_vettore_ricette,scelta,false) > -1){
+		if(get_ricetta(ricette,lunghezzaVettoreRicette,scelta,false) > -1){
 			 printf("\nQuesto nome gia esiste!\n");
 		}else flag=true;
 
 	}while(strlen(scelta) == 0 || flag==false);
 
 	//Effettuo la modifica sul vettore presente in memoria
-	strcpy(ricette[indice].Nome,scelta);
+	strcpy(ricette[indiceRicetta].Nome,scelta);
 
 
 	//Effettuo la modifica su file
-	if(Modifica_Ricetta_Su_File(ricette[indice]) == 1) printf("\nModifica del nome della Ricetta avvenuta con successo!\n");
+	if(modifica_ricetta_su_file(ricette[indiceRicetta]) == 1) printf("\nModifica del nome della Ricetta avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica del nome della Ricetta su file!\n");
 	}
@@ -435,15 +460,15 @@ int Modifica_Nome_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,int in
 
 
 
-int Visualizza_Alimenti_Ricetta(ricetta ricette[],int indice,alimento alimenti[],int Lunghezza_vettore_alimenti){
-	printf("\n\nAlimenti che formano \"%s\" \n\n",ricette[indice].Nome);
+int visualizza_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
+	printf("\n\nAlimenti che formano \"%s\" \n\n",ricette[indiceRicetta].Nome);
 	printf("%s",STRINGASTERISCHI);
 
 	printf("\n%15s   |%15s\n","Quantita","Alimento");
 	int quantita=-1;
 	int cont=0;
-	while((quantita=ricette[indice].Alimenti_Quantita[1][cont])!=0 && cont!=NUMERO_MAX_ALIMENTI){
-		printf("%15d   |%15s\n",quantita,alimenti[ricette[indice].Alimenti_Quantita[0][cont]].Nome);
+	while((quantita=ricette[indiceRicetta].Alimenti_Quantita[1][cont])!=0 && cont!=NUMERO_MAX_ALIMENTI){
+		printf("%15d   |%15s\n",quantita,alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][cont]].Nome);
 		cont++;
 	}
 	return 1;
@@ -455,12 +480,12 @@ int Visualizza_Alimenti_Ricetta(ricetta ricette[],int indice,alimento alimenti[]
 
 
 
-int getAlimentoRicetta(ricetta ricette[],int indice,int Id_Alimento){
+int get_alimento_ricetta(ricetta ricette[],int indiceRicetta,int idAlimento){
 
 	int i;
 
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
-		if(ricette[indice].Alimenti_Quantita[1][i]!=0 && ricette[indice].Alimenti_Quantita[0][i]==Id_Alimento){
+		if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0 && ricette[indiceRicetta].Alimenti_Quantita[0][i]==idAlimento){
 			return i;
 		}
 	}
@@ -474,13 +499,13 @@ int getAlimentoRicetta(ricetta ricette[],int indice,int Id_Alimento){
 
 
 
-int Salva_Alimento_In_Ricetta(ricetta *rice,int IndiceAlimento,int Quantita){
+int salva_alimento_in_ricetta(ricetta *rice,int indiceAlimento,int quantita){
 
 	int i;
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 		if((*rice).Alimenti_Quantita[1][i]==0){
-			(*rice).Alimenti_Quantita[1][i]=Quantita;
-			(*rice).Alimenti_Quantita[0][i]=IndiceAlimento;
+			(*rice).Alimenti_Quantita[1][i]=quantita;
+			(*rice).Alimenti_Quantita[0][i]=indiceAlimento;
 			return 1;
 		}
 	}
@@ -493,7 +518,7 @@ int Salva_Alimento_In_Ricetta(ricetta *rice,int IndiceAlimento,int Quantita){
 
 
 
-int Inserimento_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[],int Lunghezza_vettore_alimenti){
+int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
 
@@ -503,22 +528,22 @@ int Inserimento_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[
 	int IndiceAlimento;
 
 	//controllo se l'alimento inserito in input esiste nel vettore di alimenti
-	if((IndiceAlimento=getAlimento(alimenti,Lunghezza_vettore_alimenti,scelta,false)) > -1){
+	if((IndiceAlimento=get_alimento(alimenti,lunghezzaVettoreAlimenti,scelta,false)) > -1){
 
 		//se esiste devo controllare se è stato gia inserito come alimento della ricetta
-		if(getAlimentoRicetta(ricette,indice,IndiceAlimento) > -1) printf("\nL'alimento che stai cercando di inserire nella ricetta e' gia presente!\n");
+		if(get_alimento_ricetta(ricette,indiceRicetta,IndiceAlimento) > -1) printf("\nL'alimento che stai cercando di inserire nella ricetta e' gia presente!\n");
 		else{
 
 			//chiedo la quantita di alimento che necessita la ricetta
 			int quantita;
 			do{
-				quantita=FaiScelta("\nInserisci la quantita di alimento di cui necessita la ricetta: ");
+				quantita=fai_scelta("\nInserisci la quantita di alimento di cui necessita la ricetta: ");
 				if(quantita==0) printf("\nDevi inserire obbligatoriamente un valore maggiore di zero! Riprova!\n");
 			}while(quantita==0);
 
-			if(!Salva_Alimento_In_Ricetta(&ricette[indice],IndiceAlimento,quantita)) printf("\nNon puoi piu aggiungere alimenti alla ricetta perche hai raggiunto il numero massimo consentito!\n");
+			if(!salva_alimento_in_ricetta(&ricette[indiceRicetta],IndiceAlimento,quantita)) printf("\nNon puoi piu aggiungere alimenti alla ricetta perche hai raggiunto il numero massimo consentito!\n");
 			else{
-				if(Modifica_Ricetta_Su_File(ricette[indice])) printf("\nAggiunta dell'alimento alla ricetta \"%s\" avvenuta con successo!\n",ricette[indice].Nome);
+				if(modifica_ricetta_su_file(ricette[indiceRicetta])) printf("\nAggiunta dell'alimento alla ricetta \"%s\" avvenuta con successo!\n",ricette[indiceRicetta].Nome);
 				else{
 					printf("\nErrore nella scrittura della modifica dell'alimento della ricetta su file!\n");
 					return 0;
@@ -537,7 +562,7 @@ int Inserimento_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[
 
 
 
-int Cancellazione_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[],int Lunghezza_vettore_alimenti){
+int cancellazione_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
 
@@ -548,29 +573,29 @@ int Cancellazione_Alimento_Ricetta(ricetta ricette[],int indice,alimento aliment
 	int IndiceAlimentoInRIcetta;
 
 	//controllo se l'alimento inserito in input esiste nel vettore di alimenti
-	if((IndiceAlimento=getAlimento(alimenti,Lunghezza_vettore_alimenti,scelta,false)) > -1){
+	if((IndiceAlimento=get_alimento(alimenti,lunghezzaVettoreAlimenti,scelta,false)) > -1){
 
 		//controllo se l'alimento inserito fa parte della ricetta
-		if((IndiceAlimentoInRIcetta=getAlimentoRicetta(ricette,indice,IndiceAlimento)) == -1){
-			printf("\nL'alimento che stai cercando di cancellare non fa parte della ricetta \"%s\"\n",ricette[indice].Nome);
+		if((IndiceAlimentoInRIcetta=get_alimento_ricetta(ricette,indiceRicetta,IndiceAlimento)) == -1){
+			printf("\nL'alimento che stai cercando di cancellare non fa parte della ricetta \"%s\"\n",ricette[indiceRicetta].Nome);
 			return 0;
 		}
 		else{
-			int SceltaBool=FaiSceltaBooleana("\nSei sicuro di volere cancellare l'alimento dalla ricetta? ");
+			int SceltaBool=fai_scelta_booleana("\nSei sicuro di volere cancellare l'alimento dalla ricetta? ");
 			if(!SceltaBool){
 				printf("\nCancellazione dell'alimento dalla ricetta annullata!\n");
 				return 0;
 			}else{
 
 				//imposto i parametri prima presenti a zero
-				ricette[indice].Alimenti_Quantita[1][IndiceAlimentoInRIcetta]=0;
-				ricette[indice].Alimenti_Quantita[0][IndiceAlimentoInRIcetta]=-1;
+				ricette[indiceRicetta].Alimenti_Quantita[1][IndiceAlimentoInRIcetta]=0;
+				ricette[indiceRicetta].Alimenti_Quantita[0][IndiceAlimentoInRIcetta]=-1;
 
-				if(Modifica_Ricetta_Su_File(ricette[indice])){
-					printf("\nCancellazione dell'alimento \"%s\" dalla ricetta \"%s\" avvenuta con successo!\n",alimenti[IndiceAlimento].Nome,ricette[indice].Nome);
+				if(modifica_ricetta_su_file(ricette[indiceRicetta])){
+					printf("\nCancellazione dell'alimento \"%s\" dalla ricetta \"%s\" avvenuta con successo!\n",alimenti[IndiceAlimento].Nome,ricette[indiceRicetta].Nome);
 					return 1;
 				}else{
-					printf("\nErrore nella cancellazione dell'alimento \"%s\" dalla ricetta \"%s\" !\n",alimenti[IndiceAlimento].Nome,ricette[indice].Nome);
+					printf("\nErrore nella cancellazione dell'alimento \"%s\" dalla ricetta \"%s\" !\n",alimenti[IndiceAlimento].Nome,ricette[indiceRicetta].Nome);
 					return 0;
 				}
 			}
@@ -589,40 +614,40 @@ int Cancellazione_Alimento_Ricetta(ricetta ricette[],int indice,alimento aliment
 
 
 
-int Modifica_Quantita_Alimento_Ricetta(ricetta ricette[],int indice,alimento alimenti[],int Lunghezza_vettore_alimenti){
+int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
 
 	printf("\nInserisci il nome dell'alimento di cui modificare la quantita: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
 
-	int IndiceAlimento;
-	int IndiceAlimentoInRIcetta;
+	int indiceAlimento;
+	int indiceAlimentoInRicetta;
 
 	//controllo se l'alimento inserito in input esiste nel vettore di alimenti
-	if((IndiceAlimento=getAlimento(alimenti,Lunghezza_vettore_alimenti,scelta,false)) > -1){
+	if((indiceAlimento=get_alimento(alimenti,lunghezzaVettoreAlimenti,scelta,false)) > -1){
 
 		//controllo se l'alimento inserito fa parte della ricetta
-		if((IndiceAlimentoInRIcetta=getAlimentoRicetta(ricette,indice,IndiceAlimento)) == -1){
-			printf("\nL'alimento che stai cercando di cancellare non fa parte della ricetta \"%s\"\n",ricette[indice].Nome);
+		if((indiceAlimentoInRicetta=get_alimento_ricetta(ricette,indiceRicetta,indiceAlimento)) == -1){
+			printf("\nL'alimento che stai cercando di cancellare non fa parte della ricetta \"%s\"\n",ricette[indiceRicetta].Nome);
 			return 0;
 		}else{
 
 			int quantita;
 			do{
-				quantita=FaiScelta("\nInserisci la nuova quantita: ");
+				quantita=fai_scelta("\nInserisci la nuova quantita: ");
 				if(quantita==0) printf("\nQuantita non valida! Riprova!\n");
 			}while(quantita==0);
 
 			//applico le modifiche sul vettore di ricette
-			ricette[indice].Alimenti_Quantita[1][IndiceAlimentoInRIcetta]=quantita;
+			ricette[indiceRicetta].Alimenti_Quantita[1][indiceAlimentoInRicetta]=quantita;
 
 			//applico le modifiche anche sul file di ricette
-			if(Modifica_Ricetta_Su_File(ricette[indice])){
-				printf("\nModifica della quantita di \"%s\" nella ricetta \"%s\" avvenuta con successo!\n",alimenti[IndiceAlimento].Nome,ricette[indice].Nome);
+			if(modifica_ricetta_su_file(ricette[indiceRicetta])){
+				printf("\nModifica della quantita di \"%s\" nella ricetta \"%s\" avvenuta con successo!\n",alimenti[indiceAlimento].Nome,ricette[indiceRicetta].Nome);
 				return 1;
 			}else{
-				printf("\nErrore nella modifica della quantita di \"%s\" della ricetta \"%s\" su file!\n",alimenti[IndiceAlimento].Nome,ricette[indice].Nome);
+				printf("\nErrore nella modifica della quantita di \"%s\" della ricetta \"%s\" su file!\n",alimenti[indiceAlimento].Nome,ricette[indiceRicetta].Nome);
 				return 0;
 			}
 		}
@@ -639,28 +664,28 @@ int Modifica_Quantita_Alimento_Ricetta(ricetta ricette[],int indice,alimento ali
 
 
 
-int Modifica_Alimenti_Ricetta(ricetta ricette[],int indice,alimento alimenti[],int Lunghezza_vettore_alimenti){
+int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	Visualizza_Alimenti_Ricetta(ricette,indice,alimenti,Lunghezza_vettore_alimenti);
+	visualizza_alimenti_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 
-	int NumScelta;
+	int numScelta;
 
 	do{
-		NumScelta=FaiScelta(MenuModificaAlimentiRicetta);
-		switch(NumScelta){
+		numScelta=fai_scelta(MENU_MODIFICA_ALIMENTI_RICETTA);
+		switch(numScelta){
 			case 1:
 				//Inserimento alimento nella ricetta
-				Inserimento_Alimento_Ricetta(ricette,indice,alimenti,Lunghezza_vettore_alimenti);
+				inserimento_alimento_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 				break;
 
 			case 2:
 				//Calcellazione alimento nella ricetta
-				Cancellazione_Alimento_Ricetta(ricette,indice,alimenti,Lunghezza_vettore_alimenti);
+				cancellazione_alimento_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 				break;
 
 			case 3:
 				//Modifica quantita di un alimento della ricetta
-				Modifica_Quantita_Alimento_Ricetta(ricette,indice,alimenti,Lunghezza_vettore_alimenti);
+				modifica_quantita_alimento_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 				break;
 
 			case 0:
@@ -668,7 +693,7 @@ int Modifica_Alimenti_Ricetta(ricetta ricette[],int indice,alimento alimenti[],i
 
 			default:printf("Scelta errata! Riprova!\n");
 		}
-	}while(NumScelta!=0);
+	}while(numScelta!=0);
 
 
 
@@ -685,7 +710,7 @@ int Modifica_Alimenti_Ricetta(ricetta ricette[],int indice,alimento alimenti[],i
 
 /* FUNZIONE CHE EFFETTUA LA MODIFICA DI UNA DETERMINATA		*
  * RICETTA CHIESTA IN INPUT NELLA STESSA FUNZIONE			*/
-int Modifica_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,alimento alimenti[],int Lunghezza_vettore_alimenti){
+int modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	printf("\n\n             Modifica Ricetta\n");
 	printf("\n%s\n",STRINGASTERISCHI);
@@ -697,7 +722,7 @@ int Modifica_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,alimento al
 
 	int indice;
 
-	if ((indice=getRicetta(ricette, Lunghezza_vettore_ricette,scelta,true)) > -1) {
+	if ((indice=get_ricetta(ricette, lunghezzaVettoreRicette,scelta,true)) > -1) {
 		//se ritorna un valore >-1 vuol dire che ha trovato una corrispondenza
 		printf("\n\nRicetta Trovata\n\n");
 
@@ -706,25 +731,25 @@ int Modifica_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,alimento al
 		//devo fare la modifica effettiva
 		int NumScelta=1;
 		do{
-			NumScelta=FaiScelta(MenuModificaRicette);
+			NumScelta=fai_scelta(MENU_MODIFICA_RICETTE);
 
 			switch(NumScelta){
 				case 1:
 					//modifica nome
 
-					Modifica_Nome_Ricetta(ricette,Lunghezza_vettore_ricette,indice);
+					modifica_nome_ricetta(ricette,lunghezzaVettoreRicette,indice);
 
 					break;
 				case 2:
 					//modifica kcal_Porzione
 
-					Modifica_kcalPorzione_Ricetta(ricette,indice);
+					modifica_kcalporzione_ricetta(ricette,indice);
 
 					break;
 
 				case 3:
 					//Modifica la composizione di alimenti
-					Modifica_Alimenti_Ricetta(ricette,indice,alimenti,Lunghezza_vettore_alimenti);
+					modifica_alimenti_ricetta(ricette,indice,alimenti,lunghezzaVettoreAlimenti);
 
 					break;
 
@@ -757,20 +782,20 @@ int Modifica_Ricetta(ricetta ricette[],int Lunghezza_vettore_ricette,alimento al
  * 												*
  * LA FUNZIONE RITORNA IL NUMERO DI PORZIONI	*
  * POSSIBILI SE CI SONO,ALTRIMENTI -1			*/
-int get_Numero_Porzioni_Possibili_Ricetta(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int lunghezza_vettore_alimenti,int indiceRicetta){
+int get_numero_porzioni_possibili_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int indiceRicetta){
 
 	int i;
-	int Porz_Poss[NUMERO_MAX_ALIMENTI];
+	int porzPoss[NUMERO_MAX_ALIMENTI];
 	int min=-1;
 
 	//for che scorre il vettore di alimenti della ricetta
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 		alimento alim=alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]];
-		if(getQuantita(alim) >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
+		if(get_quantita(alim) >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
 			if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0){
-				Porz_Poss[i]= (int)(getQuantita(alim)/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
-				if(min==-1) min=Porz_Poss[i];
-				if(min>Porz_Poss[i]) min=Porz_Poss[i];
+				porzPoss[i]= (int)(get_quantita(alim)/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
+				if(min==-1) min=porzPoss[i];
+				if(min>porzPoss[i]) min=porzPoss[i];
 			}
 		}else return -1;
 	}
@@ -794,13 +819,13 @@ int get_Numero_Porzioni_Possibili_Ricetta(ricetta ricette[],int lunghezza_vettor
  * 														*
  * LA FUNZIONE ESEGUE LE MODIFICHE SIA SUL VETTORE DI 	*
  * ALIMENTI CHE SUL FILE								*/
-int Consuma_Ricetta_Su_Alimenti(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int lunghezza_vettore_alimenti,int indiceRicetta,int Porzioni){
+int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int indiceRicetta,int porzioni){
 	int i;
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 		if(ricette[indiceRicetta].Alimenti_Quantita[0][i] > -1){
 			int quantita=ricette[indiceRicetta].Alimenti_Quantita[1][i];
-			decrementa_Quantita_Alimento(&alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]],(quantita*Porzioni));
-			Modifica_Alimento_Su_File(alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]]);
+			decrementa_quantita_alimento(&alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]],(quantita*porzioni));
+			modifica_alimento_su_file(alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]]);
 		}
 
 	}
@@ -823,7 +848,7 @@ int Consuma_Ricetta_Su_Alimenti(ricetta ricette[],int lunghezza_vettore_ricette,
  * AD INTERO PER LA MEMORIZZAZIONE DELL'INDIRIZZO 		*
  * DOVE RISIEDE IL NUONO VETTORE DI RICETTE IN CASO DI	*
  * AGGIUNTA DI UNA RICETTA IN CODA AL VETTORE			*/
-int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricetta ricette[],int Lunghezza_Vettore_Ricette,int *NuovoIndirizzoRicette){
+int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta ricette[],int lunghezzaVettoreRicette,int *nuovoIndirizzoRicette){
 
 	printf("\n\n            Inserimento Ricette\n%s\n\n",STRINGASTERISCHI);
 	char scelta[LUNGHEZZA_STRINGA];
@@ -833,11 +858,11 @@ int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricet
 	printf("\nInserisci il nome della ricetta che vuoi aggiungere: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
 
-	if((indiceRicetta=getRicetta(ricette,Lunghezza_Vettore_Ricette,scelta,true)) == -1){
+	if((indiceRicetta=get_ricetta(ricette,lunghezzaVettoreRicette,scelta,true)) == -1){
 		//caso in cui la ricetta non è presente tra le ricette visibili
 
 		//cerco la ricetta tra le ricette cancellate con visibilita false
-		if((indiceRicetta=getRicetta(ricette,Lunghezza_Vettore_Ricette,scelta,false)) == -1){
+		if((indiceRicetta=get_ricetta(ricette,lunghezzaVettoreRicette,scelta,false)) == -1){
 			//caso in cui non esiste propio la ricetta,neanche tra le ricette gia cancellate
 
 
@@ -845,26 +870,26 @@ int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricet
 
 			//se la ricetta non è presente devo andare ad aggiungerlo al vettore
 			//prova di allungamento del vettore
-			Lunghezza_Vettore_Ricette++;
+			lunghezzaVettoreRicette++;
 			int j;
-			ricetta *ricette2= (ricetta*) calloc(Lunghezza_Vettore_Ricette,sizeof(ricetta));
-			for(j=0;j<Lunghezza_Vettore_Ricette-1;j++) ricette2[j]=ricette[j];
+			ricetta *ricette2= (ricetta*) calloc(lunghezzaVettoreRicette,sizeof(ricetta));
+			for(j=0;j<lunghezzaVettoreRicette-1;j++) ricette2[j]=ricette[j];
 			//Libero la memoria del vecchio vettore
 			free(ricette);
 			//ricette[Lunghezza_Vettore_Ricette-1]=alim;
-			(*NuovoIndirizzoRicette)=(int)ricette2;
+			(*nuovoIndirizzoRicette)=(int)ricette2;
 
 
 
 
 			//chiedo tutte le caratteristiche della ricetta in input
-			indiceRicetta=Lunghezza_Vettore_Ricette-1;
+			indiceRicetta=lunghezzaVettoreRicette-1;
 
 			strcpy(ricette2[indiceRicetta].Nome,scelta);
 			ricette2[indiceRicetta].Frequenza=0;
 			ricette2[indiceRicetta].Visibilita=true;
-			ricette2[indiceRicetta].ID_Ricetta=Lunghezza_Vettore_Ricette-1;
-			ricette2[indiceRicetta].Kcal_Porzione=FaiSceltaDouble("\nInserisci le Kcal per porzione della ricetta:");
+			ricette2[indiceRicetta].ID_Ricetta=lunghezzaVettoreRicette-1;
+			ricette2[indiceRicetta].Kcal_Porzione=fai_scelta_double("\nInserisci le Kcal per porzione della ricetta:");
 
 			//inizializzo il vettore di alimenti della ricetta
 			for(j=0;j<NUMERO_MAX_ALIMENTI;j++){
@@ -880,11 +905,11 @@ int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricet
 			do{
 				flag=false;
 
-				Inserimento_Alimento_Ricetta(ricette2,indiceRicetta,alimenti,Lunghezza_Vettore_Alimenti);
+				inserimento_alimento_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 
-				Visualizza_Alimenti_Ricetta(ricette2,indiceRicetta,alimenti,Lunghezza_Vettore_Alimenti);
+				visualizza_alimenti_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 
-				if(FaiSceltaBooleana("\n\nVuoi aggiungere un altro alimento alla ricetta? ") == true) flag=true;
+				if(fai_scelta_booleana("\n\nVuoi aggiungere un altro alimento alla ricetta? ") == true) flag=true;
 			}while(flag==true);
 
 
@@ -894,7 +919,7 @@ int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricet
 		}else{
 
 			ricette[indiceRicetta].Visibilita=true;
-			Modifica_Ricetta_Su_File(ricette[indiceRicetta]);
+			modifica_ricetta_su_file(ricette[indiceRicetta]);
 
 			//caso in cui la ricetta esiste gia nel tra le ricette eliminate
 			printf("\nLa ricetta che stai cercando di inserire era nel nostro sistema in precedenza\n");
@@ -907,7 +932,7 @@ int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricet
 		printf("\nLa ricetta che stai cercando di inserire esiste gia!\n");
 	}
 
-	return Lunghezza_Vettore_Ricette;
+	return lunghezzaVettoreRicette;
 }
 
 
@@ -918,48 +943,48 @@ int Inserimento_Ricetta(alimento alimenti[],int Lunghezza_Vettore_Alimenti,ricet
 
 
 
-int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alimento alimenti[],int Lunghezza_vettore_alimenti,int *NuovoIndirizzoRicette){
+int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoRicette){
 
 	int NumScelta;
 
-	(*NuovoIndirizzoRicette)=(int)ricette;
+	(*nuovoIndirizzoRicette)=(int)ricette;
 
 	do {
-		NumScelta = FaiScelta(MenuRicette);
+		NumScelta = fai_scelta(MENU_RICETTE);
 
 		switch (NumScelta) {
 		case 1:
 
 			//viualizza lista ricette
-			Scelta_Visualizzazione(ricette, lunghezza_vettore_ricette);
+			scelta_visualizzazione(ricette, lunghezzaVettoreRicette);
 			break;
 
 		case 2:
 
 			//aggiungi ricetta
-			lunghezza_vettore_ricette=Inserimento_Ricetta(alimenti,Lunghezza_vettore_alimenti,ricette,lunghezza_vettore_ricette,NuovoIndirizzoRicette);
+			lunghezzaVettoreRicette=inserimento_ricetta(alimenti,lunghezzaVettoreRicette,ricette,lunghezzaVettoreRicette,nuovoIndirizzoRicette);
 
 			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di una nuovo ricetta
-			ricette=(ricetta*)(*NuovoIndirizzoRicette);
+			ricette=(ricetta*)(*nuovoIndirizzoRicette);
 
 			break;
 		case 3:
 
 			//modifica ricetta
-			Modifica_Ricetta(ricette,lunghezza_vettore_ricette,alimenti,Lunghezza_vettore_alimenti);
+			modifica_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 		case 4:
 
 			//cancella ricetta
-			Cancella_Ricetta(ricette,lunghezza_vettore_ricette);
+			cancella_ricetta(ricette,lunghezzaVettoreRicette);
 
 			break;
 
 		case 5:
 
 			//Gestione dei preferiti
-			Scelta_Opzioni_Preferiti(ricette, lunghezza_vettore_ricette);
+			scelta_opzioni_preferiti(ricette, lunghezzaVettoreRicette);
 
 			break;
 
@@ -972,6 +997,6 @@ int Scelta_Opzioni_Ricette(ricetta ricette[],int lunghezza_vettore_ricette,alime
 
 	} while (NumScelta != 0);
 
-	return lunghezza_vettore_ricette;
+	return lunghezzaVettoreRicette;
 }
 

@@ -16,15 +16,15 @@
 /* FUNZIONE CHE RITORNA 1 SE LA STRINGA PASSATA     *
  * COME PARAMETRO E' UN NUMERO ALTRIMENTI RITORNA 0 *
  * */
-int isNumber(char Stringa[]){
+int is_number(char stringa[]){
 	int cont=0;
 	int i;
-	for(i=0;i<strlen(Stringa)-1;i++){
-		if(isdigit(Stringa[i])){
+	for(i=0;i<strlen(stringa)-1;i++){
+		if(isdigit(stringa[i])){
 			cont++;
 		}else break;
 	}
-	if(cont==strlen(Stringa)-1) return 1;
+	if(cont==strlen(stringa)-1) return 1;
 	else return 0;
 }
 
@@ -33,7 +33,7 @@ int isNumber(char Stringa[]){
 
 /* FUNZIONE CHE CONVERTE LA STRINGA PASSATA *
  * COME PARAMENTRO IN UN INTERO     		*/
-int toNumber(char number[]){
+int to_number(char number[]){
 	char *ptr;
 	return (int)strtol(number,&ptr,0);
 }
@@ -44,19 +44,19 @@ int toNumber(char number[]){
 /* FUNZIONE CHE RITORNA 1 SE LA STRINGA PASSATA     *
  * COME PARAMETRO E' UN NUMERO A VIRGOLA MOBILE		*
  * ALTRIMENTI RITORNA 0 							*/
-int isDouble(char Stringa[]){
+int is_double(char stringa[]){
 	int cont=0;
 	int i;
 	boolean flag=false;
-	for(i=0;i<strlen(Stringa)-1;i++){
-		if(i==0 && Stringa[i] == '.') return 0;
-		else if(i==strlen(Stringa)-2 && Stringa[i] == '.') return 0;
-		if(isdigit(Stringa[i]) || (Stringa[i]=='.' && flag==false)){
+	for(i=0;i<strlen(stringa)-1;i++){
+		if(i==0 && stringa[i] == '.') return 0;
+		else if(i==strlen(stringa)-2 && stringa[i] == '.') return 0;
+		if(isdigit(stringa[i]) || (stringa[i]=='.' && flag==false)){
 			cont++;
-			if(Stringa[i]=='.') flag=true;
+			if(stringa[i]=='.') flag=true;
 		}else break;
 	}
-	if(cont==strlen(Stringa)-1) return 1;
+	if(cont==strlen(stringa)-1) return 1;
 	else return 0;
 }
 
@@ -68,29 +68,29 @@ int isDouble(char Stringa[]){
  * E ALLA FINE DELLA STRINGA				   *
  *											   *
  * RITORNA LA NUOVA STRINGA SENZA GLI SPAZI    */
-int removeFirstLastSpace(char String[],char StringDest[],int LenghtString){
+int remove_first_last_space(char string[],char stringDest[],int lenghtString){
 	int i=0;
 	int countFirst=0;
 	int countLast=0;
 
 	//Elimino il carattere di newline se e' presente all'interno della stringa
-	for(i=0;i<LenghtString;i++) if(String[i] == '\n') String[i]= '\0';
+	for(i=0;i<lenghtString;i++) if(string[i] == '\n') string[i]= '\0';
 
-	while(String[i]==' ' && i < LenghtString){
+	while(string[i]==' ' && i < lenghtString){
 		countFirst++;
 		i++;
 	}
 
 	i=1;
-	while(String[LenghtString-i]==' ' && i <LenghtString){
+	while(string[lenghtString-i]==' ' && i <lenghtString){
 			countLast++;
 			i++;
 	}
 
 
-	for(i=0;i<(LenghtString-countFirst-countLast);i++){
-		if((i+countFirst)<(LenghtString-countLast))
-			StringDest[i]=String[i+countFirst];
+	for(i=0;i<(lenghtString-countFirst-countLast);i++){
+		if((i+countFirst)<(lenghtString-countLast))
+			stringDest[i]=string[i+countFirst];
 	}
 	return 1;
 
@@ -105,10 +105,10 @@ int removeFirstLastSpace(char String[],char StringDest[],int LenghtString){
  *
  * LA STRINGA RISULTANTE VIENE INSERITA NELLA STRINGA 		*
  * PASSATA COME PARAMETRO DestinationString					*/
-int toLowerString(char string[],char DestinationString[]){
+int to_lower_string(char string[],char destinationString[]){
 	int i;
 	for(i=0;i<strlen(string);i++){
-		DestinationString[i]=tolower(string[i]);
+		destinationString[i]=tolower(string[i]);
 	}
 	return 1;
 }
@@ -123,13 +123,13 @@ int toLowerString(char string[],char DestinationString[]){
  * UNA MATRICE PASSATA COME PARAMENTRO							*
  * 																*
  * IGNORA TUTTE LE PAROLE DI LUNGHEZZA MINORE DI 2				*/
-int explodeString(char Stringa[],char Destination[MASSIME_STRINGHE_ESPLOSE][LUNGHEZZA_STRINGA]){
+int explode_string(char stringa[],char destination[MASSIME_STRINGHE_ESPLOSE][LUNGHEZZA_STRINGA]){
 
    const char s[2] = " ";//MARCATORE
    char *token;
 
    /* get the first token */
-   token = strtok(Stringa, s);
+   token = strtok(stringa, s);
 
    /* walk through other tokens */
    int i=0;
@@ -137,7 +137,7 @@ int explodeString(char Stringa[],char Destination[MASSIME_STRINGHE_ESPLOSE][LUNG
 	  printf( "\n%s\n", token );
 
 	  if(strlen(token) > 2){
-		  strcpy(Destination[i],token);
+		  strcpy(destination[i],token);
 		  i++;
 	  }
 
@@ -161,7 +161,7 @@ int explodeString(char Stringa[],char Destination[MASSIME_STRINGHE_ESPLOSE][LUNG
  *														*
  *LA FUNZIONE RITORNA IL NUMERO INTERO CHIESTO			*
  *IN INPUT ALL'UTENTE									*/
-int FaiScelta(char text[]) {
+int fai_scelta(char text[]) {
 
 	char scelta[LUNGHEZZA_STRINGA];
 	boolean flag;
@@ -177,18 +177,18 @@ int FaiScelta(char text[]) {
 
 		//Se la stringa presa in input non e' un numero scrivo un messaggio di errore
 		//altrimenti la funzione ritorna il numero preso in input convertito in intero
-		if (!isNumber(scelta) || strlen(scelta)==1)
+		if (!is_number(scelta) || strlen(scelta)==1)
 			printf("Scelta errata!\n");
 		else{
-			if(toNumber(scelta)<0){
+			if(to_number(scelta)<0){
 				printf("Scelta errata!\n");
 				flag=true;
-			}else return toNumber(scelta);
+			}else return to_number(scelta);
 		}
 
 
 		//continuo a chiedere in input la scelta fino a che non e' valida
-	} while (!isNumber(scelta) || strlen(scelta)==1 || flag==true );
+	} while (!is_number(scelta) || strlen(scelta)==1 || flag==true );
 	return 0;
 }
 
@@ -205,17 +205,17 @@ int FaiScelta(char text[]) {
  *														*
  *LA FUNZIONE RITORNA IL NUMERO INTERO CHIESTO			*
  *IN INPUT ALL'UTENTE									*/
-double FaiSceltaDouble(char Messaggio[]){
+double fai_scelta_double(char messaggio[]){
 
 	char stringa[LUNGHEZZA_STRINGA];
 	double Kcal=0.0;
 
 	do{
-		printf(Messaggio);
+		printf(messaggio);
 
 		fgets(stringa,LUNGHEZZA_STRINGA,stdin);
 
-		if(isDouble(stringa)){
+		if(is_double(stringa)){
 			Kcal=atof(stringa);
 		}
 
@@ -238,14 +238,14 @@ double FaiSceltaDouble(char Messaggio[]){
  * 												*
  * LA FUNZIONE RESTITUISCE TRUE SE L'UTENTE		*
  * HA DETTO SI, ALTRIMENTI RESTITUISCE FALSE	*/
-boolean FaiSceltaBooleana(char Messaggio[]){
+boolean fai_scelta_booleana(char messaggio[]){
 
-	char Suggerimenti[]="(1 - SI /2 o Altro - NO) = ";
-	char StringaFinal[LUNGHEZZA_STRINGA+strlen(Suggerimenti)];
-	strcpy(StringaFinal,Messaggio);
-	strcat(StringaFinal,Suggerimenti);
+	char suggerimenti[]="(1 - SI /2 o Altro - NO) = ";
+	char stringaFinal[LUNGHEZZA_STRINGA+strlen(suggerimenti)];
+	strcpy(stringaFinal,messaggio);
+	strcat(stringaFinal,suggerimenti);
 
-	int scelta=FaiScelta(StringaFinal);
+	int scelta=fai_scelta(stringaFinal);
 
 	if(scelta==1) return true;
 	else return false;

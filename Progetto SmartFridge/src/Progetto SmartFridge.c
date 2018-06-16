@@ -25,18 +25,18 @@ int main(void) {
 
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-	int NumScelta;
+	int numScelta;
 
 
 	//creazione e caricamento del vettore di alimenti
-	int lunghezza_vettore_alimenti = Get_Lunghezza_File_Alimenti();
-	alimento *alimenti=(alimento*) calloc(lunghezza_vettore_alimenti,sizeof(alimento));
+	int lunghezzaVettoreAlimenti = Get_Lunghezza_File_Alimenti();
+	alimento *alimenti=(alimento*) calloc(lunghezzaVettoreAlimenti,sizeof(alimento));
 	Carica_Alimenti(alimenti);
 
 
 	//creazione e caricamento del vettore di ricette
-	int lunghezza_vettore_ricette=Get_Lunghezza_File_Ricette();
-	ricetta *ricette=(ricetta*) calloc(lunghezza_vettore_ricette,sizeof(ricetta));
+	int lunghezzaVettoreRicette=Get_Lunghezza_File_Ricette();
+	ricetta *ricette=(ricetta*) calloc(lunghezzaVettoreRicette,sizeof(ricetta));
 	Carica_Ricette(ricette);
 
 
@@ -44,58 +44,58 @@ int main(void) {
 	Carica_Configurazione();
 
 
-	int NuovoIndirizzoAlimenti;
-	int NuovoIndirizzoRicette;
+	int nuovoIndirizzoAlimenti;
+	int nuovoIndirizzoRicette;
 	printf("Benvenuto in SMARTFRIDGE\n");
 	do {
 
-		NumScelta = FaiScelta(MenuPrincipale);
+		numScelta = fai_scelta(MENU_PRINCIPALE);
 
-		switch (NumScelta) {
+		switch (numScelta) {
 		case 1:		//Suggerimento spesa
 
-			Scelte_Spesa(alimenti,lunghezza_vettore_alimenti);
+			scelte_spesa(alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 
 		case 2:		//Suggerimento Ricette
 
-
+			suggerimento_ricette_in_scadenza(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 
 		case 3:		//Ricerca Ricette per alimento
 
-			Ricerca_Ricette_Per_Alimenti(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti);
+			ricerca_ricette_per_alimenti(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
 
 
 			break;
 		case 4:		//Opzioni Alimenti
 
-			Scelta_Opzioni_Alimenti(alimenti,lunghezza_vettore_alimenti);
+			scelta_opzioni_alimenti(alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 		case 5:		//Opzioni Ricette
 
-			lunghezza_vettore_ricette=Scelta_Opzioni_Ricette(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti,&NuovoIndirizzoRicette);
+			lunghezzaVettoreRicette=scelta_opzioni_ricette(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,&nuovoIndirizzoRicette);
 
 			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di una nuovo ricetta
-			ricette=(ricetta *)NuovoIndirizzoRicette;
+			ricette=(ricetta *)nuovoIndirizzoRicette;
 
 			break;
 		case 6:		//Opzioni Pasti
 
-			Scelta_Opzioni_Pasti(ricette,lunghezza_vettore_ricette,alimenti,lunghezza_vettore_alimenti);
+			scelta_opzioni_pasti(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 
 		case 7: //Inserisci Spesa
 
 
-			lunghezza_vettore_alimenti=Scelta_Opzioni_Spesa(alimenti,lunghezza_vettore_alimenti,&NuovoIndirizzoAlimenti);
+			lunghezzaVettoreAlimenti=scelta_opzioni_spesa(alimenti,lunghezzaVettoreAlimenti,&nuovoIndirizzoAlimenti);
 
 			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di un nuovo alimento
-			alimenti=(alimento *)NuovoIndirizzoAlimenti;
+			alimenti=(alimento *)nuovoIndirizzoAlimenti;
 
 
 			break;
@@ -107,7 +107,7 @@ int main(void) {
 			printf("\nScelta non valida!\n");
 		}
 
-	} while (NumScelta != 8);
+	} while (numScelta != 8);
 
 	//system("pause");
 

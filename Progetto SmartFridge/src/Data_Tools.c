@@ -13,7 +13,7 @@
 #include "Tipi_Dato.h"
 
 
-int GiorniMesi[]={31,28,31,30,31,30,31,31,30,31,30,31};
+int giorniMesi[]={31,28,31,30,31,30,31,31,30,31,30,31};
 
 
 
@@ -23,7 +23,7 @@ int GiorniMesi[]={31,28,31,30,31,30,31,31,30,31,30,31};
  * COME PARAMETRO E' BISESTILE OPPURE NO		*
  * 												*
  * RITORNA 1 SE LO E' E 0 ALTRIMENTI			*/
-int isBisestile(int anno){
+int is_bisestile(int anno){
 	if((anno%4) == 0){
 		if((anno%100) != 0) return 1;
 		else{
@@ -40,27 +40,27 @@ int isBisestile(int anno){
 
 //funzione che esegue tutti i controlli sulla data e che da come valore di ritorno un valore intero che indica se la data Ã¨ corretta o no
 //Inoltre utilizzando i puntatori restituisce i valori convertiti in intero del giorno,mese,anno
-int ControlloData(char *dataN,char *giorno,char *mese,int *anno){
+int controllo_data(char *dataN,char *giorno,char *mese,int *anno){
     if(strchr(dataN,'/')!=0){     //controllo se all'interno del vettore c'e' uno /
         char *c;
         char Num[11];  //vettore che conterra'  il valore estrapolato per il giorno
         char Num1[11]; //vettore che conterra il valore estrapolato per il mese
         c=strchr(dataN,'/');      //assegno il puntatore di ritorno della funzione strchr alla variabile puntatore c
         strncpy(Num, dataN,strlen(dataN)-strlen(c));  //creo una copia di c fino all'occorrenza dello / in Num
-        if((*giorno=toNumber(Num))>0 && *giorno<31){        //richiamo la funzione ParsChatInt per convertire la stringa in intero e assegno il valore intero alla variabile punattore giorno
+        if((*giorno=to_number(Num))>0 && *giorno<31){        //richiamo la funzione ParsChatInt per convertire la stringa in intero e assegno il valore intero alla variabile punattore giorno
             if(strchr(c,'/')!=0){
                 char *c1=strchr(c,'/')+1;
                 if(strchr(c1,'/')!=0){         //controllo se c'e' un altro / all'interno del vettore di caratteri
                     char *c2=strchr(c1,'/');   //e assegno dal quella posizione in poi al puntatore c2
                     strncpy(Num1, c1,strlen(c1)-strlen(c2));  //mi creo una copia in maniera tale che Num1 contenga il valore del mese etrapolato dal vettore di caratteri
-                    if((*mese=toNumber(Num1))>0 && *mese<13){
+                    if((*mese=to_number(Num1))>0 && *mese<13){
                         *anno=atoi(strchr(c2,'/')+1);  //assegno al puntatore anno il valore intero dell'anno estrapolato dal vettore di caratteri
                         if(*anno!=0){
                         	//controllo se l'anno e' bisestile
-                        	if(isBisestile(*anno)) GiorniMesi[1]=29;
-                        	else GiorniMesi[1]=28;
+                        	if(is_bisestile(*anno)) giorniMesi[1]=29;
+                        	else giorniMesi[1]=28;
 
-                        	if(*giorno<=GiorniMesi[(*mese-1)]) return 1;
+                        	if(*giorno<=giorniMesi[(*mese-1)]) return 1;
                         }
                     }
                 }
@@ -85,7 +85,7 @@ int ControlloData(char *dataN,char *giorno,char *mese,int *anno){
  * 												*
  * SE IL CARATTERE È INVALIDO LA FUNZIONE 		*
  * RESTITUISCE -1								*/
-int getData(char TipoOutput){
+int get_data(char tipoOutput){
 
    time_t rawtime;
    struct tm *info;
@@ -94,7 +94,7 @@ int getData(char TipoOutput){
    /* Get GMT time */
    info = gmtime(&rawtime );
 
-   switch(TipoOutput){
+   switch(tipoOutput){
 	   case CARATTERE_ANNO:
 			return  1900+info->tm_year;
 	   case CARATTERE_GIORNO:
@@ -119,7 +119,7 @@ int getData(char TipoOutput){
 
 
 
-int getData2(data_ora* data){
+int get_data_pointer(data_ora* data){
 
    time_t rawtime;
    struct tm *info;
@@ -149,7 +149,7 @@ int getData2(data_ora* data){
 /* FUNZIONE CHE CONTROLLA L'ORARIO ATTUALE E,IN BASE	*
  * AD ESSO RESTITUISCE UNA STRINGA CON UN AUGURIO 		*
  * PER IL PASTO											*/
-char* getTipoPasto(){
+char* get_tipo_pasto(){
 time_t rawtime;
    struct tm *info;
 
@@ -175,7 +175,7 @@ time_t rawtime;
 /* FUNZIONE CHE DATO UN NUMERO TRA 0 E 6 	*
  * COME PARAMETRO, RESTITUISCE IL 			*
  * CORRISPONDENTE GIORNO DELLA SETTIMANA	*/
-char* indiceToGiorniSettimana(int giorno){
+char* indice_to_giorni_settimana(int giorno){
 	switch(giorno){
 		case 0: return "Lunedi";
 		case 1: return "Martedi";
@@ -195,13 +195,13 @@ char* indiceToGiorniSettimana(int giorno){
 
 /* FUNZIONE CHE CONVERTE UNA STRUTTURA DI TIPO DATA_ORA	*
  * NEL NUMERO DI GIORNI DALLLO 0 AC						*/
-int getDataInGiorni(data_ora data){
+int get_data_in_giorni(data_ora data){
 	long int giorni;
 	int anniBisest=data.Anno/4;
 	giorni=data.Anno*365 + anniBisest;
 	int i;
 	for(i=0;i<data.Mese-1;i++){
-		giorni+=GiorniMesi[i];
+		giorni+=giorniMesi[i];
 	}
 	giorni+=data.Giorno;
 	return giorni;
@@ -216,13 +216,13 @@ int getDataInGiorni(data_ora data){
  * IN GIORNI TRA 2 DATE						*
  *
  * LA DATA2 DEVE ESSERE QUELLA PIU RECENTE	*/
-int getDistanzaInGiorni(data_ora data1,data_ora data2,int delay){
+int get_distanza_in_giorni(data_ora data1,data_ora data2,int delay){
 
 	//converto la data1 in giorni dall'anno 0
-	int Giorni1=getDataInGiorni(data1);
-	int Giorni2=getDataInGiorni(data2);
+	int giorni1=get_data_in_giorni(data1);
+	int giorni2=get_data_in_giorni(data2);
 
-	return Giorni2-Giorni1+delay;
+	return giorni2-giorni1+delay;
 
 }
 
@@ -234,9 +234,9 @@ int getDistanzaInGiorni(data_ora data1,data_ora data2,int delay){
 /* FUNZIONE CHE DATA UNA DATA COME PARAMETRO	*
  * RITORNA IL NUMERO COMPRESO TRA 0 E 6			*
  * DEL GIORNO DELLA SETIMANA DELLA DATA			*/
-int dataToGiorniSettimana(data_ora data){
+int data_to_giorni_settimana(data_ora data){
 
-	int giorni=getDataInGiorni(data);
+	int giorni=get_data_in_giorni(data);
 	giorni=giorni % NUMERO_GIORNI + 4;
 	giorni=giorni % NUMERO_GIORNI;
 
@@ -271,7 +271,7 @@ int dataToGiorniSettimana(data_ora data){
  * INOLTRE RESTITUISCE NEI TRE PUNTATORI AD INTERI 		*
  * PASSATI COME PARAMETRO, I VALORI DELLA DATA INSERITA *
  * DALL'UTENTE											*/
-int getDataInput(char *giorno,char *mese,int *anno,char messaggio[]){
+int get_data_input(char *giorno,char *mese,int *anno,char messaggio[]){
 
 	char data[LUNGHEZZA_STRINGA];
 	boolean flag;
@@ -281,7 +281,7 @@ int getDataInput(char *giorno,char *mese,int *anno,char messaggio[]){
 		puts(messaggio);
 		fgets(data,LUNGHEZZA_STRINGA,stdin);
 
-		if(!ControlloData(data,giorno,mese,anno)){
+		if(!controllo_data(data,giorno,mese,anno)){
 			printf("\nData errata!Reinseriscila!\n");
 			flag=true;
 		}

@@ -9,25 +9,26 @@
 #define PASTI_TOOLS_H_
 
 
-int Scelta_Opzioni_Pasti(ricetta[],int,alimento[],int);
+int scelta_opzioni_pasti(ricetta[],int,alimento[],int);
 
-int Aggiungi_Pasto(ricetta[],int,alimento[],int);
+int aggiungi_pasto(ricetta[],int,alimento[],int);
 
-int Aggiungi_Pasto_Su_File(int,int);
+int aggiungi_pasto_su_file(int,int);
 
-int Scelta_Opzioni_Visualizza_Menu_Settimanale(ricetta [],int );
+int scelta_opzioni_visualizza_menu_settimanale(ricetta [],int );
 
-int Visualizza_Menu_Settimana_In_Corso(ricetta [],int );
+int visualizza_menu_settimana_in_corso(ricetta [],int );
 
-int Visualizza_Menu_Settimane_Passate(ricetta[],int);
+int visualizza_menu_settimane_passate(ricetta[],int);
 
-int Stampa_Iesimo_Menu_Settimanale(ricetta[],int,int,int);
+int stampa_iesimo_menu_settimanale(ricetta[],int,int,int);
 
-int Visualizza_File_Pasti(ricetta[]);
+int visualizza_file_pasti(ricetta[]);
 
-int Cancella_Pasto(ricetta[],int,alimento[]);
+int cancella_pasto(ricetta[],int,alimento[]);
 
-int Cancella_Iesimo_Pasto_Da_File(int indice,alimento[],ricetta[]);
+int cancella_iesimo_pasto_da_file(int,alimento[],ricetta[]);
 
+int get_numero_settimane(int);
 
 #endif /* PASTI_TOOLS_H_ */

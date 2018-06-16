@@ -16,7 +16,7 @@
 
 /* FUNZIONE CHE RECUPERA DAL VETTORE DELLE SCADENZE			*
  * LA QUANTITA' DELL'ALIMENTO PASSATO TRAMITE IL PARAMETRO	*/
-int getQuantita(alimento alim) {
+int get_quantita(alimento alim) {
 
 	int quantita = 0, j;
 	for (j = 0; j < LUNGHEZZA_VET_SCADENZE; j++) {
@@ -36,7 +36,7 @@ int getQuantita(alimento alim) {
  * LA FUNZIONE RITORNA -1 SE NON VIENE TROVATA NESSUNA 				*
  * CORRISPONDENZA, ALTRIMENTI RITORNA LA POSIZIONE DELLA PRIMA 		*
  * OCCORRENZA														*/
-int getDataScadenza(alimento alim,data_ora data){
+int get_data_scadenza(alimento alim,data_ora data){
 
 	int i;
 	for(i=0;i<LUNGHEZZA_VET_SCADENZE;i++){
@@ -68,23 +68,23 @@ int getDataScadenza(alimento alim,data_ora data){
  * LA FUNZIONE RITORNA -1 SE NON VIENE TROVATA NESSUNA 				*
  * CORRISPONDENZA, ALTRIMENTI RITORNA LA POSIZIONE DELLA PRIMA 		*
  * OCCORRENZA														*/
-int getAlimento(alimento alimenti[], int Lunghezza_Alimenti,
-		char Parametri_Ricerca[],boolean visibilita) {
+int get_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti,
+		char parametriRicerca[],boolean visibilita) {
 
 	int i;
-	char StringTempParametri[LUNGHEZZA_STRINGA];
-	removeFirstLastSpace(Parametri_Ricerca, StringTempParametri,
+	char stringTempParametri[LUNGHEZZA_STRINGA];
+	remove_first_last_space(parametriRicerca, stringTempParametri,
 			LUNGHEZZA_STRINGA);
-	toLowerString(StringTempParametri, StringTempParametri);
+	to_lower_string(stringTempParametri, stringTempParametri);
 
-	for (i = 0; i < Lunghezza_Alimenti; i++) {
+	for (i = 0; i < lunghezzaVettoreAlimenti; i++) {
 		char StringTempVettore[LUNGHEZZA_STRINGA];
-		removeFirstLastSpace(alimenti[i].Nome, StringTempVettore,
+		remove_first_last_space(alimenti[i].Nome, StringTempVettore,
 				LUNGHEZZA_STRINGA);
-		toLowerString(StringTempVettore, StringTempVettore);
+		to_lower_string(StringTempVettore, StringTempVettore);
 
 		//se le due stringhe sono uguali
-		if (strcmp(StringTempParametri, StringTempVettore) == 0)
+		if (strcmp(stringTempParametri, StringTempVettore) == 0)
 		if(alimenti[i].Visibilita || alimenti[i].Visibilita==visibilita)	return i;
 	}
 
@@ -102,16 +102,16 @@ int getAlimento(alimento alimenti[], int Lunghezza_Alimenti,
  * LE INFORMAZIONI DI GLI ALIMENTI PRESENTI NEL VETTORE		*
  * 															*
  * RITORNA 1 SE L'OPERAZIONE E' ANDATA A BUON FINE			*/
-int Visualizza_Alimenti(alimento alimenti[], int Lunghezza_Vettore) {
+int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 	int i;
 
 	printf("Alimenti presenti:\n");
-	for (i = 0; i < Lunghezza_Vettore ; i++) {
+	for (i = 0; i < lunghezzaVettoreAlimenti ; i++) {
 
-		printf("%d - %s \t| Peso: %d \t| Id: %d   |   Quantita: %d   | Kcal: %.3f  | V:%s\n", i,
+		printf("%d - %30s \t| Peso: %5d \t| Id: %3d   |   Quantita: %5d   | Kcal: %5.3f  | V:%s\n", i,
 		alimenti[i].Nome, alimenti[i].Peso, alimenti[i].ID_Alimento,
-		getQuantita(alimenti[i]),alimenti[i].Kcal_Pezzo,(alimenti[i].Visibilita)?"true":"false");
+		get_quantita(alimenti[i]),alimenti[i].Kcal_Pezzo,(alimenti[i].Visibilita)?"true":"false");
 	}
 	return 1;
 }
@@ -127,7 +127,7 @@ int Visualizza_Alimenti(alimento alimenti[], int Lunghezza_Vettore) {
  * 													*
  * LA FUNZIONE RITORNA 1 SE LA PROCEDURA È ANDATA 	*
  * A BUON FINE ALTRIMENTI 0*/
-int Modifica_Alimento_Su_File(alimento alim){
+int modifica_alimento_su_file(alimento alim){
 	FILE *file;
 
 	if ((file = fopen("src/Alimenti.sf", "rb+")) == NULL) return 0;
@@ -150,7 +150,7 @@ int Modifica_Alimento_Su_File(alimento alim){
  * 													*
  * SE L'AGGIUNTA È ANDATA A BUON FINE LA FUNZIONE	*
  * RESTITUISCE 1, ALTRIMENTI 0						*/
-int Aggiungi_Alimento_Su_File(alimento alim){
+int aggiungi_alimento_su_file(alimento alim){
 	FILE *file;
 
 	if ((file = fopen("src/Alimenti.sf", "ab+")) == NULL) {
@@ -178,7 +178,7 @@ int Aggiungi_Alimento_Su_File(alimento alim){
  * UTILIZZABILE O NO			 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_Nome_Alimento(alimento alimenti[],int Lunghezza_Vettore,int indice){
+int modifica_nome_alimento(alimento alimenti[],int lunghezzaVettoreAlimenti,int indiceAlimento){
 
 	char scelta[LUNGHEZZA_STRINGA];
 	boolean flag;
@@ -189,18 +189,18 @@ int Modifica_Nome_Alimento(alimento alimenti[],int Lunghezza_Vettore,int indice)
 		fgets(scelta, LUNGHEZZA_STRINGA, stdin);
 
 
-		if(getAlimento(alimenti,Lunghezza_Vettore,scelta,false) > -1){
+		if(get_alimento(alimenti,lunghezzaVettoreAlimenti,scelta,false) > -1){
 			 printf("\nQuesto nome gia esiste!\n");
 		}else flag=true;
 
 	}while(strlen(scelta) == 0 || flag==false);
 
 	//Effettuo la modifica sul vettore presente in memoria
-	strcpy(alimenti[indice].Nome,scelta);
+	strcpy(alimenti[indiceAlimento].Nome,scelta);
 
 
 	//Effettuo la modifica su file
-	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica del nome avvenuta con successo!\n");
+	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica del nome avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica del nome su file!\n");
 	}
@@ -220,16 +220,16 @@ int Modifica_Nome_Alimento(alimento alimenti[],int Lunghezza_Vettore,int indice)
  * VETTORE DI ALIMENTI CHE SU FILE 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_kcal_Alimento(alimento alimenti[],int indice){
+int modifica_kcal_alimento(alimento alimenti[],int indiceAlimento){
 	double Kcal=0.0;
 
-	Kcal=FaiSceltaDouble("\nInserisci le nuove kcal dell'Alimento:\n");
+	Kcal=fai_scelta_double("\nInserisci le nuove kcal dell'Alimento:\n");
 
 	//effettuo la modifica nel vettore
-	alimenti[indice].Kcal_Pezzo=Kcal;
+	alimenti[indiceAlimento].Kcal_Pezzo=Kcal;
 
 	//effettuo la modifica su file
-	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica delle Kcal avvenuta con successo!\n");
+	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica delle Kcal avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica delle Kcal su file!\n");
 	}
@@ -249,7 +249,7 @@ int Modifica_kcal_Alimento(alimento alimenti[],int indice){
  * VETTORE DI ALIMENTI CHE SU FILE 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_Peso_Alimento(alimento alimenti[],int indice){
+int modifica_peso_alimento(alimento alimenti[],int indiceAlimento){
 	int peso=0;
 	char stringa[LUNGHEZZA_STRINGA];
 
@@ -258,15 +258,15 @@ int Modifica_Peso_Alimento(alimento alimenti[],int indice){
 
 		fgets(stringa,LUNGHEZZA_STRINGA,stdin);
 
-		if(isNumber(stringa)) peso=toNumber(stringa);
+		if(is_number(stringa)) peso=to_number(stringa);
 
-	}while(!isNumber(stringa));
+	}while(!is_number(stringa));
 
 	//effettuo la modifica nel vettore
-	alimenti[indice].Peso=peso;
+	alimenti[indiceAlimento].Peso=peso;
 
 	//effettuo la modifica su file
-	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica del peso avvenuta con successo!\n");
+	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica del peso avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica del peso su file!\n");
 	}
@@ -285,13 +285,13 @@ int Modifica_Peso_Alimento(alimento alimenti[],int indice){
  * indice PASSATO COME PARAMETRO							*
  * 															*
  * RITORNA 1 SE TUTTO È ANDATO BENE							*/
-int Visualizza_Quantita_Scadenze(alimento alimenti[],int indice){
+int visualizza_quantita_scadenze(alimento alimenti[],int indiceAlimento){
 	printf("\n N | %s    |     %s\n","Quantita","Scadenza");
 	printf("------------------------------------\n");
 	int i;
 	for(i=0;i<LUNGHEZZA_VET_SCADENZE;i++){
-		if(alimenti[indice].Scadenze[i].Quantita != 0){
-			printf("%2d | %5d       |    %d/%d/%d\n",i,alimenti[indice].Scadenze[i].Quantita,alimenti[indice].Scadenze[i].Data_Scadenza.Giorno,alimenti[indice].Scadenze[i].Data_Scadenza.Mese,alimenti[indice].Scadenze[i].Data_Scadenza.Anno);
+		if(alimenti[indiceAlimento].Scadenze[i].Quantita != 0){
+			printf("%2d | %5d       |    %d/%d/%d\n",i,alimenti[indiceAlimento].Scadenze[i].Quantita,alimenti[indiceAlimento].Scadenze[i].Data_Scadenza.Giorno,alimenti[indiceAlimento].Scadenze[i].Data_Scadenza.Mese,alimenti[indiceAlimento].Scadenze[i].Data_Scadenza.Anno);
 		}
 	}
 	return 1;
@@ -308,36 +308,34 @@ int Visualizza_Quantita_Scadenze(alimento alimenti[],int indice){
  * VETTORE DI ALIMENTI CHE SU FILE 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_Quantita_Alimento(alimento alimenti[],int indice){
+int modifica_quantita_alimento(alimento alimenti[],int indiceAlimento){
 	printf("\n\nModifica Quantita alimento\n");
 
-	Visualizza_Quantita_Scadenze(alimenti,indice);
+	visualizza_quantita_scadenze(alimenti,indiceAlimento);
 
-	int NumeroScelta;
+	int numeroScelta;
 	boolean flag;
 
 	do{
 		flag=false;
-		NumeroScelta=FaiScelta("\nInserisci il numero N corrispondente alla quantita\nche si vuole modificare riportata nella tabella in alto:\n");
-		if(NumeroScelta>LUNGHEZZA_VET_SCADENZE) {
+		numeroScelta=fai_scelta("\nInserisci il numero N corrispondente alla quantita\nche si vuole modificare riportata nella tabella in alto:\n");
+		if(numeroScelta>LUNGHEZZA_VET_SCADENZE) {
 			printf("\nScelta non valida!\n");
 			flag=true;
-		}else if(alimenti[indice].Scadenze[NumeroScelta].Quantita==0){
+		}else if(alimenti[indiceAlimento].Scadenze[numeroScelta].Quantita==0){
 			printf("\nScelta non valida!\n");
 			flag=true;
 		}
 	}while(flag);
 
-	int Nuova_Quantita=FaiScelta("\nInserisci la nuova quantita:");
+	int nuovaQuantita=fai_scelta("\nInserisci la nuova quantita:");
 
 	//modifica del vettore
-	alimenti[indice].Scadenze[NumeroScelta].Quantita=Nuova_Quantita;
+	alimenti[indiceAlimento].Scadenze[numeroScelta].Quantita=nuovaQuantita;
 
 	//modifica del file
-	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica della quantita avvenuta con successo!\n");
-	else{
-		printf("\nErrore nella modifica della quantita su file!\n");
-	}
+	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica della quantita avvenuta con successo!\n");
+	else printf("\nErrore nella modifica della quantita su file!\n");
 
 	return 1;
 }
@@ -355,10 +353,10 @@ int Modifica_Quantita_Alimento(alimento alimenti[],int indice){
  * VETTORE DI ALIMENTI CHE SU FILE 								*
  * 																*
  * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
-int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
+int modifica_scadenze_alimento(alimento alimenti[],int indiceAlimento){
 	printf("\n\nModifica Scadenza alimento\n");
 
-	Visualizza_Quantita_Scadenze(alimenti,indice);
+	visualizza_quantita_scadenze(alimenti,indiceAlimento);
 
 
 	int NumeroScelta;
@@ -366,11 +364,11 @@ int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
 
 	do{
 		flag=false;
-		NumeroScelta=FaiScelta("\nInserisci il numero N corrispondente alla scadenza\nche si vuole modificare riportata nella tabella in alto:\n");
+		NumeroScelta=fai_scelta("\nInserisci il numero N corrispondente alla scadenza\nche si vuole modificare riportata nella tabella in alto:\n");
 		if(NumeroScelta>LUNGHEZZA_VET_SCADENZE) {
 			printf("\nScelta non valida!\n");
 			flag=true;
-		}else if(alimenti[indice].Scadenze[NumeroScelta].Quantita==0){
+		}else if(alimenti[indiceAlimento].Scadenze[NumeroScelta].Quantita==0){
 			printf("\nScelta non valida!\n");
 			flag=true;
 		}
@@ -378,15 +376,15 @@ int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
 
 	data_ora data;
 
-	getDataInput(&data.Giorno,&data.Mese,&data.Anno,"\nInserisci la nuovo data di scadenza: ");
+	get_data_input(&data.Giorno,&data.Mese,&data.Anno,"\nInserisci la nuovo data di scadenza: ");
 
 	//modifica nel vettore
-	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Anno=data.Anno;
-	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Mese=data.Mese;
-	alimenti[indice].Scadenze[NumeroScelta].Data_Scadenza.Giorno=data.Giorno;
+	alimenti[indiceAlimento].Scadenze[NumeroScelta].Data_Scadenza.Anno=data.Anno;
+	alimenti[indiceAlimento].Scadenze[NumeroScelta].Data_Scadenza.Mese=data.Mese;
+	alimenti[indiceAlimento].Scadenze[NumeroScelta].Data_Scadenza.Giorno=data.Giorno;
 
 	//modifica nel file
-	if(Modifica_Alimento_Su_File(alimenti[indice]) == 1) printf("\nModifica della data di scadenza avvenuta con successo!\n");
+	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica della data di scadenza avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica della quantita su file!\n");
 	}
@@ -407,7 +405,7 @@ int Modifica_Scadenze_Alimento(alimento alimenti[],int indice){
  * VIENE USATA QUANDO PER ESEMPIO VIENE CONSUMATO UN PASTO	*
  * E BISOGNA SOTTRARRE LE QUANTITA CONSUMATE A QUELLE 		*
  * DISPONIBILI												*/
-int decrementa_Quantita_Alimento(alimento* alim, int quantita){
+int decrementa_quantita_alimento(alimento* alim, int quantita){
 	int  j;
 	for (j = LUNGHEZZA_VET_SCADENZE-1; j >= 0; j--) {
 		if((*alim).Scadenze[j].Quantita>=quantita){
@@ -415,7 +413,7 @@ int decrementa_Quantita_Alimento(alimento* alim, int quantita){
 			 quantita=0;
 			 if(j==0){
 				 (*alim).Visibilita=false;
-				 Modifica_Alimento_Su_File((*alim));
+				 modifica_alimento_su_file((*alim));
 			 }
 			 break;
 		}
@@ -435,7 +433,7 @@ int decrementa_Quantita_Alimento(alimento* alim, int quantita){
 
 /* FUNZIONE CHE EFFETTUA LA MODIFICA DI UN DETERMINATO		*
  * ALIMENTO CHIESTO IN INPUT NELLA STESSA FUNZIONE			*/
-int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
+int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 	printf("\n\n             Modifica Alimento\n");
 	printf("\n%s\n",STRINGASTERISCHI);
@@ -447,7 +445,7 @@ int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
 
 	int indice;
 
-	if ((indice=getAlimento(alimenti, Lunghezza_Vettore, scelta,true)) > -1) {
+	if ((indice=get_alimento(alimenti, lunghezzaVettoreAlimenti, scelta,true)) > -1) {
 		//se ritorna un valore >-1 vuol dire che ha trovato una corrispondenza
 		printf("\n\nAlimento Trovato\n\n");
 
@@ -456,37 +454,37 @@ int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
 		//devo fare la modifica effettiva
 		int NumScelta=1;
 		do{
-			NumScelta=FaiScelta(MenuModificaAlimenti);
+			NumScelta=fai_scelta(MENU_MODIFICA_ALIMENTI);
 
 			switch(NumScelta){
 				case 1:
 					//modifica nome
 
-					Modifica_Nome_Alimento(alimenti,Lunghezza_Vettore,indice);
+					modifica_nome_alimento(alimenti,lunghezzaVettoreAlimenti,indice);
 
 					break;
 				case 2:
 					//modifica kcal
 
-					Modifica_kcal_Alimento(alimenti,indice);
+					modifica_kcal_alimento(alimenti,indice);
 
 					break;
 				case 3:
 					//modifica peso
 
-					Modifica_Peso_Alimento(alimenti,indice);
+					modifica_peso_alimento(alimenti,indice);
 
 					break;
 				case 4:
 					//modifica quantita
 
-					Modifica_Quantita_Alimento(alimenti,indice);
+					modifica_quantita_alimento(alimenti,indice);
 
 					break;
 				case 5:
 					//modifica scadenze
 
-					Modifica_Scadenze_Alimento(alimenti,indice);
+					modifica_scadenze_alimento(alimenti,indice);
 
 					break;
 				case 0:
@@ -499,8 +497,7 @@ int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
 		} while (NumScelta != 0);
 
 
-	} else
-		printf("\n\nNon esiste nessun alimento che si chiama in quel modo!\n\n");
+	} else printf("\n\nNon esiste nessun alimento che si chiama in quel modo!\n\n");
 
 	return 1;
 }
@@ -515,23 +512,23 @@ int Modifica_Alimento(alimento alimenti[], int Lunghezza_Vettore) {
  * LA SCELTA SIA VALIDA; 									*
  * SE LO E' RICHIAMA LE OPPORTUNE FUNZIONI CHE ESEGUONO		*
  * IL PARTOCOLARE COMPITO									*/
-int Scelta_Opzioni_Alimenti(alimento alimenti[], int Lunghezza_Alimenti) {
+int scelta_opzioni_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 	int NumScelta=1;
 
 	do {
-		NumScelta = FaiScelta(MenuAlimenti);
+		NumScelta = fai_scelta(MENU_ALIMENTI);
 
 		switch (NumScelta) {
 		case 1:
 
 			//visualizza alimenti
-			Visualizza_Alimenti(alimenti, Lunghezza_Alimenti);
+			visualizza_alimenti(alimenti, lunghezzaVettoreAlimenti);
 
 			break;
 		case 2:
 
 			//modifica dell'alimento
-			Modifica_Alimento(alimenti, Lunghezza_Alimenti);
+			modifica_alimento(alimenti, lunghezzaVettoreAlimenti);
 
 			break;
 		case 0:

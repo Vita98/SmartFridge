@@ -8,15 +8,17 @@
 #ifndef PREFERITI_TOOLS_H_
 #define PREFERITI_TOOLS_H_
 
-boolean Controllo_Preferiti(ricetta[], int, char[], int*);
+boolean controllo_preferiti(ricetta[], int, char[], int*);
 
-int Aggiungi_Preferito(ricetta[],int);
+int aggiungi_preferito(ricetta[],int);
 
-int Visualizza_Preferiti(ricetta[]);
+int visualizza_preferiti(ricetta[]);
 
-int Cancella_Preferito(ricetta[],int);
+int cancella_preferito(ricetta[],int);
 
-int Scelta_Opzioni_Preferiti(ricetta[],int);
+int scelta_opzioni_preferiti(ricetta[],int);
+
+boolean exist_preferito(ricetta[], int*);
 
 
 #endif /* PREFERITI_TOOLS_H_ */

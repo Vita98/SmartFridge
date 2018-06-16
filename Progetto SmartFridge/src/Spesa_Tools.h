@@ -8,13 +8,13 @@
 #ifndef SPESA_TOOLS_H_
 #define SPESA_TOOLS_H_
 
-int Scelta_Opzioni_Spesa(alimento[],int,int*);
+int scelta_opzioni_spesa(alimento[],int,int*);
 
-int Inserimento_Alimenti_Spesa(alimento[],int,int*);
+int inserimento_alimenti_spesa(alimento[],int,int*);
 
-int Memorizza_In_Storico_Spesa(int IndiceElemento,int quantita);
+int memorizza_in_storico_spesa(int,int);
 
-void Visualizza_Storico_Spesa(alimento[],int);
+void visualizza_storico_spesa(alimento[],int);
 
 
 #endif /* SPESA_TOOLS_H_ */

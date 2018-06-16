@@ -10,6 +10,40 @@
 
 
 
+
+
+
+
+boolean exist_preferito(ricetta ricette[], int* indiceRicetta){
+	//controllo se la ricetta inserita in input esiste nel vettore di ricette
+	FILE *filePreferiti;
+
+	if ((filePreferiti = fopen("src/Preferiti.sf", "rb")) == NULL) {
+		return false;
+
+	} else {
+
+		ricetta ric;
+		while (!feof(filePreferiti)) {
+
+			if(fread(&ric, sizeof(ricetta), 1, filePreferiti) > 0){
+				if (strcmp(ric.Nome, ricette[*indiceRicetta].Nome) == 0) {
+					return true;
+					break;
+				}
+			}
+		}
+
+		fclose(filePreferiti);
+
+	}
+	return false;
+}
+
+
+
+
+
 /*	FUNZIONE CHE PERMETTE DI CONTROLLARE SE UNA DATA RICETTA PASSATA TRAMITE STRINGA 	*
  * 	SIA PRESENTE ALL'INTERNO DEL FILE DEI PREFERITI										*
  *																						*
@@ -19,35 +53,15 @@
  *																						*
  * 	LA FUNZIONE RESTITUISCE UN VALORE DI TIPO BOOLEANO, RESTITUIRA' VERO SE LA RICETTA 	*
  * 	CERCATA ESISTE, RESTITUIRA FALSO ALTRIMENTI											*/
-boolean Controllo_Preferiti(ricetta ricette[], int Lunghezza_vettore_ricette,
-		char scelta[], int* IndiceRicetta) {
+boolean controllo_preferiti(ricetta ricette[], int lunghezzaVettoreRicette,
+		char scelta[], int* indiceRicetta) {
 
 	//controllo se la ricetta inserita in input esiste nel vettore di ricette
-	if ((*IndiceRicetta = getRicetta(ricette, Lunghezza_vettore_ricette, scelta,
+	if ((*indiceRicetta = get_ricetta(ricette, lunghezzaVettoreRicette, scelta,
 			false)) > -1) {
 
-		FILE *file_preferiti;
-
-		if ((file_preferiti = fopen("src/Preferiti.sf", "rb")) == NULL) {
-			return false;
-
-		} else {
-
-			ricetta ric;
-			while (!feof(file_preferiti)) {
-
-				fread(&ric, sizeof(ricetta), 1, file_preferiti);
-
-				if (strcmp(ric.Nome, ricette[*IndiceRicetta].Nome) == 0) {
-					return true;
-					break;
-				}
-
-			}
-
-			fclose(file_preferiti);
-
-		}
+		if(exist_preferito(ricette,indiceRicetta) == true) return true;
+		else return false;
 
 	} else {
 		printf("\nLa Ricetta \"%s\" non esiste!\n", scelta);
@@ -64,41 +78,46 @@ boolean Controllo_Preferiti(ricetta ricette[], int Lunghezza_vettore_ricette,
 
 
 
+
+
+
+
+
 /*	FUNZIONE CHE ACQUISISCE UNA STRINGA (UNA RICETTA), VERIFICA SE LA RICETTA INSERITA	*
  * 	ESISTA ALL'INTERNO DEL FILE DEI PREFERITI E SE NON E' PRESENTE VIENE SCRITTA 		*
  * 	IN CODA ALLA FINE DEL FILE															*/
-int Aggiungi_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
+int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	char scelta[LUNGHEZZA_STRINGA];
 
 	printf("\nInserisci il nome della ricetta da aggiungere: ");
 	fgets(scelta, LUNGHEZZA_STRINGA, stdin);
 
-	int IndiceRicetta;
+	int indiceRicetta;
 	boolean controllo = false;
 
-	FILE *file_preferiti;
-	controllo = Controllo_Preferiti(ricette, Lunghezza_vettore_ricette, scelta,
-			&IndiceRicetta);
+	FILE *filePreferiti;
+	controllo = controllo_preferiti(ricette, lunghezzaVettoreRicette, scelta,
+			&indiceRicetta);
 
 	if (controllo == true) {
 		printf("\nLa Ricetta è già presente nei Preferiti.\n");
 		return 0;
 
 	} else {
-		if (((file_preferiti = fopen("src/Preferiti.sf", "ab")) == NULL)
-				|| (IndiceRicetta < 0)) {
+		if (((filePreferiti = fopen("src/Preferiti.sf", "ab")) == NULL)
+				|| (indiceRicetta < 0)) {
 			return 0;
 
 		} else {
 
-			fwrite(&ricette[IndiceRicetta], sizeof(ricetta), 1, file_preferiti);
+			fwrite(&ricette[indiceRicetta], sizeof(ricetta), 1, filePreferiti);
 			printf("\nLa Ricetta '%s' è stata aggiunta ai Preferiti.\n",
-					ricette[IndiceRicetta].Nome);
+					ricette[indiceRicetta].Nome);
 
 		}
 
-		fclose(file_preferiti);
+		fclose(filePreferiti);
 
 		return 1;
 	}
@@ -120,18 +139,18 @@ int Aggiungi_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
  *
  * 	INFINE, IL FILE DEI PREFERITI SARA' RIEMPITO DAGLI ELEMENTI DEL VETTORE APPENA 	*
  * 	RISULTANDO UGUALE ALLA VERSIONE PRECEDENTE, SOLO PRIVA DELLA RICETTA CANCELLATA	*/
-int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
+int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	char scelta[LUNGHEZZA_STRINGA];
 
 	printf("\nInserisci il nome della ricetta da Cancellare: ");
 	fgets(scelta, LUNGHEZZA_STRINGA, stdin);
 
-	int IndiceRicetta;
+	int indiceRicetta;
 	boolean controllo = false;
 
-	FILE *file_preferiti;
-	controllo = Controllo_Preferiti(ricette, Lunghezza_vettore_ricette, scelta,&IndiceRicetta);
+	FILE *filePreferiti;
+	controllo = controllo_preferiti(ricette, lunghezzaVettoreRicette, scelta,&indiceRicetta);
 
 	//Controllo se la ricetta è preente nel file dei preferiti
 	if (controllo == false) {
@@ -140,7 +159,7 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 
 	} else {
 
-		if ((file_preferiti = fopen("src/Preferiti.sf", "rb")) == NULL)
+		if ((filePreferiti = fopen("src/Preferiti.sf", "rb")) == NULL)
 			return 0;
 		else {
 
@@ -148,10 +167,10 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 			int j, i = 0;
 
 			//Calcolo il numero di ricette presenti sul file
-			while (!feof(file_preferiti)) {
+			while (!feof(filePreferiti)) {
 
-				fread(&ric, sizeof(ricetta), 1, file_preferiti);
-				if (!feof(file_preferiti)) {
+				fread(&ric, sizeof(ricetta), 1, filePreferiti);
+				if (!feof(filePreferiti)) {
 					i++;
 				}
 
@@ -160,15 +179,15 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 			ricetta preferiti[i - 1];
 			i = 0;
 
-			fseek(file_preferiti, 0 * sizeof(ricetta), SEEK_SET);
+			fseek(filePreferiti, 0 * sizeof(ricetta), SEEK_SET);
 
 			//Assegnazione dei preferiti nel vettore contenente tutti i preferiti, escluso quello da cancellare
-			while (!feof(file_preferiti)) {
+			while (!feof(filePreferiti)) {
 
-				fread(&ric, sizeof(ricetta), 1, file_preferiti);
+				fread(&ric, sizeof(ricetta), 1, filePreferiti);
 
-				if (!feof(file_preferiti)) {
-					if (ric.ID_Ricetta != ricette[IndiceRicetta].ID_Ricetta) {
+				if (!feof(filePreferiti)) {
+					if (ric.ID_Ricetta != ricette[indiceRicetta].ID_Ricetta) {
 						preferiti[i] = ric;
 						i++;
 					}
@@ -176,9 +195,9 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 
 			}
 
-			fclose(file_preferiti);
+			fclose(filePreferiti);
 
-			if ((file_preferiti = fopen("src/Preferiti.sf", "wb")) == NULL) {
+			if ((filePreferiti = fopen("src/Preferiti.sf", "wb")) == NULL) {
 				return 0;
 
 			} else {
@@ -186,11 +205,11 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 				//Scrittura del nuovo file con i preferiti aggiornati
 				for (j = 0; j < i; j++) {
 
-					fwrite(&preferiti[j], sizeof(ricetta), 1, file_preferiti);
+					fwrite(&preferiti[j], sizeof(ricetta), 1, filePreferiti);
 
 				}
 
-				fclose(file_preferiti);
+				fclose(filePreferiti);
 
 				printf("\nLa Ricetta è stata cancellata.\n");
 				return 1;
@@ -213,11 +232,11 @@ int Cancella_Preferito(ricetta ricette[], int Lunghezza_vettore_ricette) {
 
 
 /*	FUNZIONE CHE LEGGENDO IL FILE DEI PREFERITI, RIPRODUCE IN OUTPUT LE RICETTE SALVATE	*/
-int Visualizza_Preferiti(ricetta ricette[]) {
+int visualizza_preferiti(ricetta ricette[]) {
 
-	FILE *file_preferiti;
+	FILE *filePreferiti;
 
-	if ((file_preferiti = fopen("src/Preferiti.sf", "rb")) == NULL)
+	if ((filePreferiti = fopen("src/Preferiti.sf", "rb")) == NULL)
 		return 0;
 	else {
 
@@ -226,19 +245,17 @@ int Visualizza_Preferiti(ricetta ricette[]) {
 
 		printf("\nLe Ricette poste nella lista dei preferiti sono:\n");
 
-		while (!feof(file_preferiti)) {	//stampa l'ultimo 2 volte_ ORA NON PIU con l'IF(!feof)
+		while (!feof(filePreferiti)) {
 
-			fread(&ric, sizeof(ricetta), 1, file_preferiti);
-
-			if (!feof(file_preferiti)) {
-				printf("%d - %s \t| frequenza: %d \t| Id: %d\n", i, ric.Nome,
-						ric.Frequenza, ric.ID_Ricetta);
+			if (fread(&ric, sizeof(ricetta), 1, filePreferiti) > 0) {
+				printf("%d - %s \t| frequenza: %d \t| Id: %d\n", i, ricette[ric.ID_Ricetta].Nome,
+						ricette[ric.ID_Ricetta].Frequenza, ric.ID_Ricetta);
 				i++;
 			}
 
 		}
 
-		fclose(file_preferiti);
+		fclose(filePreferiti);
 		return 1;
 	}
 
@@ -254,28 +271,28 @@ int Visualizza_Preferiti(ricetta ricette[]) {
 
 
 
-int Scelta_Opzioni_Preferiti(ricetta ricette[], int Lunghezza_vettore_ricette) {
+int scelta_opzioni_preferiti(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	int NumScelta;
 
 	do {
-		NumScelta = FaiScelta(MENU_GESTISCI_PREFERTI);
+		NumScelta = fai_scelta(MENU_GESTISCI_PREFERTI);
 
 		switch (NumScelta) {
 
 		case 1:
 			//Visualizza PREFERITI
-			Visualizza_Preferiti(ricette);
+			visualizza_preferiti(ricette);
 			break;
 
 		case 2:
 			//Aggiungi preferito
-			Aggiungi_Preferito(ricette, Lunghezza_vettore_ricette);
+			aggiungi_preferito(ricette, lunghezzaVettoreRicette);
 			break;
 
 		case 3:
 			//Cancella Preferito
-			Cancella_Preferito(ricette, Lunghezza_vettore_ricette);
+			cancella_preferito(ricette, lunghezzaVettoreRicette);
 			break;
 
 		case 0:

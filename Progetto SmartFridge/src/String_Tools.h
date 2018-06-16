@@ -7,23 +7,23 @@
 #ifndef STRING_TOOLS_H_
 #define STRING_TOOLS_H_
 
-int isNumber(char[]);
+int is_number(char[]);
 
-int toNumber(char[]);
+int to_number(char[]);
 
-int FaiScelta(char[]);
+int fai_scelta(char[]);
 
-int explodeString(char [],char[MASSIME_STRINGHE_ESPLOSE][LUNGHEZZA_STRINGA]);
+int explode_string(char [],char[MASSIME_STRINGHE_ESPLOSE][LUNGHEZZA_STRINGA]);
 
-int removeFirstLastSpace(char[],char[],int);
+int remove_first_last_space(char[],char[],int);
 
-int toLowerString(char[],char[]);
+int to_lower_string(char[],char[]);
 
-int isDouble(char[]);
+int is_double(char[]);
 
-double FaiSceltaDouble(char[]);
+double fai_scelta_double(char[]);
 
-boolean FaiSceltaBooleana(char[]);
+boolean fai_scelta_booleana(char[]);
 
 #endif /* STRING_TOOLS_H_ */
 

@@ -9,74 +9,55 @@
 #define RICETTE_TOOLS_H_
 
 
-int Scelta_Opzioni_Ricette(ricetta[],int,alimento[],int,int*);
+int scelta_opzioni_ricette(ricetta[],int,alimento[],int,int*);
 
-int Visualizza_Ricette_Ordinate(ricetta[], int);
+int visualizza_ricette_ordinate(ricetta[], int);
 
-int Visualizza_Ricette(ricetta[], int);
+int visualizza_ricette(ricetta[], int);
 
+int scelta_visualizzazione(ricetta[], int);
 
-int Modifica_Ricette(ricetta[],int);
+int cancella_ricetta(ricetta[],int);
 
-int Scelta_Visualizzazione(ricetta[], int);
+int get_ricetta(ricetta[],int,char[],boolean);
 
+int modifica_ricetta_su_file(ricetta);
 
-int Ordina_Ricette(ricetta[],char[],int[],int);
+int modifica_ricetta(ricetta[],int,alimento[],int);
 
-int Cancella_Ricetta(ricetta[],int);
+int modifica_nome_ricetta(ricetta[],int,int);
 
-int getRicetta(ricetta[],int,char[],boolean);
-
-int Modifica_Ricetta_Su_File(ricetta);
-
-int Modifica_Ricetta(ricetta[],int,alimento[],int);
-
-int Modifica_Nome_Ricetta(ricetta[],int,int);
-
-int Modifica_kcalPorzione_Ricetta(ricetta[],int);
+int modifica_kcalporzione_ricetta(ricetta[],int);
 
 
 
-int Sort_Ricette (ricetta[], int[], int, int);
+int sort_ricette (ricetta[], int[], int, int);
 
-int Merge_Sort_Ricette(ricetta[], int, int, int, int);
+int merge_sort_ricette(ricetta[], int, int, int[], int);
 
-int Merging_Ricette(ricetta[], int, int, int, int, int);
-
-
-
-int Modifica_Alimenti_Ricetta(ricetta[],int,alimento[],int);
-
-int Visualizza_Alimenti_Ricetta(ricetta[],int,alimento[],int);
-
-int Inserimento_Alimento_Ricetta(ricetta[],int,alimento[],int);
-
-int Salva_Alimento_In_Ricetta(ricetta * ,int ,int );
-
-int getAlimentoRicetta(ricetta[],int,int);
-
-int Cancellazione_Alimento_Ricetta(ricetta[],int,alimento[],int);
-
-int Modifica_Quantita_Alimento_Ricetta(ricetta[],int,alimento[],int);
-
-
-int get_Numero_Porzioni_Possibili_Ricetta(ricetta[],int,alimento[],int,int);
-
-int Consuma_Ricetta_Su_Alimenti(ricetta[],int,alimento[],int,int,int);
+int merging_ricette(ricetta[], int, int, int, int[], int);
 
 
 
+int modifica_alimenti_ricetta(ricetta[],int,alimento[],int);
 
-int Inserimento_Ricetta(alimento[],int,ricetta[],int,int*);
+int visualizza_alimenti_ricetta(ricetta[],int,alimento[],int);
 
+int inserimento_alimento_ricetta(ricetta[],int,alimento[],int);
 
+int salva_alimento_in_ricetta(ricetta * ,int ,int );
 
+int get_alimento_ricetta(ricetta[],int,int);
 
+int cancellazione_alimento_ricetta(ricetta[],int,alimento[],int);
 
+int modifica_quantita_alimento_ricetta(ricetta[],int,alimento[],int);
 
+int get_numero_porzioni_possibili_ricetta(ricetta[],int,alimento[],int,int);
 
+int consuma_ricetta_su_alimenti(ricetta[],int,alimento[],int,int,int);
 
-
+int inserimento_ricetta(alimento[],int,ricetta[],int,int*);
 
 
 #endif /* RICETTE_TOOLS_H_ */

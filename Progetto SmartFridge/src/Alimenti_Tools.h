@@ -8,35 +8,35 @@
 #ifndef ALIMENTI_TOOLS_H_
 #define ALIMENTI_TOOLS_H_
 
-int getAlimento(alimento[],int,char[],boolean);
+int get_alimento(alimento[],int,char[],boolean);
 
-int Scelta_Opzioni_Alimenti(alimento[],int);
+int scelta_opzioni_alimenti(alimento[],int);
 
-int Visualizza_Alimenti(alimento[],int);
+int visualizza_alimenti(alimento[],int);
 
-int Modifica_Alimento(alimento[],int);
+int modifica_alimento(alimento[],int);
 
-int getQuantita (alimento);
+int get_quantita (alimento);
 
-int Modifica_Nome_Alimento(alimento[],int,int[]);
+int modifica_nome_alimento(alimento[],int,int[]);
 
-int Modifica_Alimento_Su_File(alimento );
+int modifica_alimento_su_file(alimento );
 
-int Modifica_kcal_Alimento(alimento[],int);
+int modifica_kcal_alimento(alimento[],int);
 
-int Modifica_Peso_Alimento(alimento[],int );
+int modifica_peso_alimento(alimento[],int );
 
-int Modifica_Quantita_Alimento(alimento[],int);
+int modifica_quantita_alimento(alimento[],int);
 
-int Modifica_Scadenze_Alimento(alimento[],int );
+int modifica_scadenze_alimento(alimento[],int );
 
-int Visualizza_Quantita_Scadenze(alimento[],int);
+int visualizza_quantita_scadenze(alimento[],int);
 
-int getDataScadenza(alimento,data_ora);
+int get_data_scadenza(alimento,data_ora);
 
-int Aggiungi_Alimento_Su_File(alimento);
+int aggiungi_alimento_su_file(alimento);
 
-int decrementa_Quantita_Alimento(alimento*, int);
+int decrementa_quantita_alimento(alimento*, int);
 
 
 #endif /* ALIMENTI_TOOLS_H_ */

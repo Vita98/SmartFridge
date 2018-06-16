@@ -25,40 +25,40 @@
 
 
 
-int Genera_Lista_Spesa(alimento alimenti[],int n) {
+int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 
 
-	FILE *file_spesa;
+	FILE *fileSpesa;
 	int i, quantita = 0;
 
-	if ((file_spesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
+	if ((fileSpesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
 	else {
 
 		elemento_spesa elemento;
 
 		printf("\nGli Alimenti che si trovano sotto la soglia prevista, sono:\n");
 
-		for(i=0;i<n;i++) {
+		for(i=0;i<lunghezzaVettoreAlimenti;i++) {
 
-			quantita=getQuantita(alimenti[i]);
+			quantita=get_quantita(alimenti[i]);
 
 
 			if (quantita < limite_spesa) {
 				elemento.Quantita = quantita;
 				elemento.ID_Alimento = alimenti[i].ID_Alimento;
 
-				elemento.Data_Ora.Giorno=getData('D');
-				elemento.Data_Ora.Mese=getData('M');
-				elemento.Data_Ora.Anno=getData('Y');
+				elemento.Data_Ora.Giorno=get_data('D');
+				elemento.Data_Ora.Mese=get_data('M');
+				elemento.Data_Ora.Anno=get_data('Y');
 
-				fwrite(&elemento, sizeof(elemento_spesa), 1, file_spesa);
+				fwrite(&elemento, sizeof(elemento_spesa), 1, fileSpesa);
 				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[i].Nome,
 						elemento.Quantita, elemento.ID_Alimento);
 			}
 		}
 
 
-		fclose(file_spesa);
+		fclose(fileSpesa);
 		return 1;
 	}
 
@@ -70,31 +70,30 @@ int Genera_Lista_Spesa(alimento alimenti[],int n) {
 
 
 
-//Sono commentate le righe antecedenti l'introduzione di "Nome" nella Struct "elemeto_spesa", in caso di cambio
-int Visualizza_Lista_Spesa(alimento alimenti[]) {
+int visualizza_lista_spesa(alimento alimenti[]) {
 
-	FILE *file_spesa;
+	FILE *fileSpesa;
 
 
-	if ((file_spesa = fopen("src/Lista_Spesa.sf", "rb")) == NULL) return 0;
+	if ((fileSpesa = fopen("src/Lista_Spesa.sf", "rb")) == NULL) return 0;
 	else {
 
 		elemento_spesa elemento;
 		int i = 0;
 
-		printf("\nGli alimenti sotto la soglia prevista nella scorsa lista generata erano:\n");		//Qui l'ultimo viene visualizzato 2 volte!?
+		printf("\nGli alimenti sotto la soglia prevista nella scorsa lista generata erano:\n");
 
-		while (!feof(file_spesa)) {
+		while (!feof(fileSpesa)) {
 
 			//bisogna visualizzare anche la data e l'ora della generazione
-			fread(&elemento, sizeof(elemento_spesa), 1, file_spesa);
-			printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[elemento.ID_Alimento].Nome,
-					elemento.Quantita, elemento.ID_Alimento);
-			i++;
-
+			if(fread(&elemento, sizeof(elemento_spesa), 1, fileSpesa) > 0){
+				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[elemento.ID_Alimento].Nome,
+						elemento.Quantita, elemento.ID_Alimento);
+				i++;
+			}
 		}
 
-		fclose(file_spesa);
+		fclose(fileSpesa);
 		return 1;
 	}
 
@@ -108,7 +107,7 @@ int Visualizza_Lista_Spesa(alimento alimenti[]) {
 
 
 //E impostato al momento solo sulla prima riga dato che l'unico parametro sino ad ora visto è la soglia degli alimenti
-int Modifica_Soglia_Spesa() {
+int modifica_soglia_spesa() {
 
 	FILE *file;
 	char scelta[LUNGHEZZA_STRINGA];		//penso che questa lunghezza sia un po eccessiva e si può introdurre una lunghezza minore per questi controlli
@@ -126,13 +125,13 @@ int Modifica_Soglia_Spesa() {
 
 		//Se la stringa presa in input non e' un numero scrivo un messaggio di errore
 		//altrimenti la funzione ritorna il numero preso in input convertito in intero
-		if (!isNumber(scelta))
+		if (!is_number(scelta))
 			printf("\nSoglia errata, riprova: ");
 		else
-			limite_spesa = toNumber(scelta);
+			limite_spesa = to_number(scelta);
 
 		//continuo a chiedere in input la scelta fino a che non e' valida
-	} while (!isNumber(scelta));
+	} while (!is_number(scelta));
 
 
 	if ((file = fopen("src/Config.txt", "w")) == NULL) return 0;
@@ -148,22 +147,22 @@ int Modifica_Soglia_Spesa() {
 
 
 
-int Scelte_Spesa(alimento alimenti[],int n){
+int scelte_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	int NumScelta;
 
 	do{
-		NumScelta=FaiScelta(MenuSuggerimentoSpesa);
+		NumScelta=fai_scelta(MENU_SUGGERIMENTO_SPESA);
 
 		switch(NumScelta){
 			case 1:
-				if(!Genera_Lista_Spesa(alimenti, n)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
+				if(!genera_lista_spesa(alimenti, lunghezzaVettoreAlimenti)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
 				break;
 			case 2:
-				if(!Visualizza_Lista_Spesa(alimenti)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
+				if(!visualizza_lista_spesa(alimenti)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
 				break;
 			case 3:
-				if(!Modifica_Soglia_Spesa()) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");\
+				if(!modifica_soglia_spesa()) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");\
 				break;
 			case 0:
 				//case di uscita dal sottomenu

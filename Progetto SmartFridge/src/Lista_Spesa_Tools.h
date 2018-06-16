@@ -8,13 +8,13 @@
 #ifndef LISTA_SPESA_TOOLS_H_
 #define LISTA_SPESA_TOOLS_H_
 
-int Genera_Lista_Spesa(alimento[],int);
+int genera_lista_spesa(alimento[],int);
 
-int Visualizza_Lista_Spesa(alimento[]);
+int visualizza_lista_spesa(alimento[]);
 
-int Modifica_Soglia_Spesa();
+int modifica_soglia_spesa();
 
-int Scelte_Spesa(alimento[],int);
+int scelte_spesa(alimento[],int);
 
 
 
