@@ -1,8 +1,16 @@
-/*
- * String_Tools.c
- *
- *      Author: Vitandrea Sorino
+/**
+ *  @file String_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in String_Tools.h.
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
+
+
+
+
 #include "Tipi_Dato.h"
 #include <string.h>
 #include <ctype.h>
@@ -13,9 +21,10 @@
 
 
 
-/* FUNZIONE CHE RITORNA 1 SE LA STRINGA PASSATA     *
- * COME PARAMETRO E' UN NUMERO ALTRIMENTI RITORNA 0 *
- * */
+/**
+ * Funzione che controlla se il vettore di caratteri passato come parametro
+ * contiene solo cifre numeriche.
+ */
 int is_number(char stringa[]){
 	int cont=0;
 	int i;
@@ -31,8 +40,13 @@ int is_number(char stringa[]){
 
 
 
-/* FUNZIONE CHE CONVERTE LA STRINGA PASSATA *
- * COME PARAMENTRO IN UN INTERO     		*/
+
+
+/**
+ * Funzione che converte il vettore di caratteri passato come parametro
+ * in un numero intero.
+ * @pre La stringa passata come parametro deve avere almeno un carattere numerico.
+ */
 int to_number(char number[]){
 	char *ptr;
 	return (int)strtol(number,&ptr,0);
@@ -41,9 +55,11 @@ int to_number(char number[]){
 
 
 
-/* FUNZIONE CHE RITORNA 1 SE LA STRINGA PASSATA     *
- * COME PARAMETRO E' UN NUMERO A VIRGOLA MOBILE		*
- * ALTRIMENTI RITORNA 0 							*/
+
+
+/**
+ * Viene controllato se la stringa stringa[],passata come parametro, contiene all'interno un numero double.
+ */
 int is_double(char stringa[]){
 	int cont=0;
 	int i;
@@ -64,10 +80,15 @@ int is_double(char stringa[]){
 
 
 
-/* FUNZIONE CHE RIMUOVE GLI SPAZI ALL'INIZIO   *
- * E ALLA FINE DELLA STRINGA				   *
- *											   *
- * RITORNA LA NUOVA STRINGA SENZA GLI SPAZI    */
+
+
+/**
+ * Rimuove tutti gli spazi all'inizio e alla fine della stringa passata come parametro,
+ * rimuove anche il carattere di newLine e il carattere di endLine.
+ *
+ * @pre La lunghezza della stringa deve essere la lunghezza effettiva della stringa
+ * passata come parametro altrimenti la funzione potrebbe restituire valori inattesi.
+ */
 int remove_first_last_space(char string[],char stringDest[],int lenghtString){
 	int i=0;
 	int countFirst=0;
@@ -100,11 +121,13 @@ int remove_first_last_space(char string[],char stringDest[],int lenghtString){
 
 
 
-/* FUNZIONE CHE CONVERTE TUTTI I CARATTERI DELLA STRINGA   	*
- * PASSATA COME PARAMENTRO IN MINUSCOLO						*
+
+
+
+/**
  *
- * LA STRINGA RISULTANTE VIENE INSERITA NELLA STRINGA 		*
- * PASSATA COME PARAMETRO DestinationString					*/
+ * La stringa string[] passata come parametro viene portata tutta a caratteri minuscoli.
+ */
 int to_lower_string(char string[],char destinationString[]){
 	int i;
 	for(i=0;i<strlen(string);i++){
@@ -116,13 +139,16 @@ int to_lower_string(char string[],char destinationString[]){
 
 
 
-/* FUNZIONE CHE ESPLODE LA STRINGA UTILIZZANDO 					*
- * LO SPAZIO COME MARCATORE 									*
- * 																*
- * LE STRINGHE DERIVATE VENGONO INSERITE ALL'INTERNO DI			*
- * UNA MATRICE PASSATA COME PARAMENTRO							*
- * 																*
- * IGNORA TUTTE LE PAROLE DI LUNGHEZZA MINORE DI 2				*/
+
+
+
+/**
+ * La stringa passata come parametro viene suddivisa in tante stringhe utilizzanddo
+ * lo spazio come marcatore.
+ *
+ * @pre stringa[] non deve essere vuota
+ * @post vengono tralasciate tutte le stringhe di lunghezza minore o uguale di 2
+ */
 int explode_string(char stringa[],char destination[MASSIME_STRINGHE_ESPLOSE][LUNGHEZZA_STRINGA]){
 
    const char s[2] = " ";//MARCATORE
@@ -134,7 +160,6 @@ int explode_string(char stringa[],char destination[MASSIME_STRINGHE_ESPLOSE][LUN
    /* walk through other tokens */
    int i=0;
    while( token != NULL ) {
-	  printf( "\n%s\n", token );
 
 	  if(strlen(token) > 2){
 		  strcpy(destination[i],token);
@@ -152,15 +177,14 @@ int explode_string(char stringa[],char destination[MASSIME_STRINGHE_ESPLOSE][LUN
 
 
 
-/*FUNZIONE UTILIZZATA PER PRENDERE IN INPUT				*
- *UN VALORE INTERO										*
- *														*
- *LA FUNZIONE VISUALIZZA IL MESSAGGIO PASSATO COME 		*
- *PARAMETRO E CHIEDE IN INPUT UN NUMERO DI CUI VENGONO	*
- *FATTI TUTTI I CONTROLLI								*
- *														*
- *LA FUNZIONE RITORNA IL NUMERO INTERO CHIESTO			*
- *IN INPUT ALL'UTENTE									*/
+
+
+
+/**
+ * Funzione che ha lo scopo di chiedere in input all'utente un valore intero maggiore o uguale a 0.
+ *
+ * @pre La stringa passata come parametro non deve essere vuota.
+ */
 int fai_scelta(char text[]) {
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -196,15 +220,14 @@ int fai_scelta(char text[]) {
 
 
 
-/*FUNZIONE UTILIZZATA PER PRENDERE IN INPUT				*
- *UN VALORE DOUBLE										*
- *														*
- *LA FUNZIONE VISUALIZZA IL MESSAGGIO PASSATO COME 		*
- *PARAMETRO E CHIEDE IN INPUT UN NUMERO DI CUI VENGONO	*
- *FATTI TUTTI I CONTROLLI								*
- *														*
- *LA FUNZIONE RITORNA IL NUMERO INTERO CHIESTO			*
- *IN INPUT ALL'UTENTE									*/
+
+
+
+/**
+ * Funzione utilizzabile per chiedere in console all'utente un numero double.
+ *
+ * @post La scelta fatta dall'utente viene gia controllata all'interno della funzione.
+ */
 double fai_scelta_double(char messaggio[]){
 
 	char stringa[LUNGHEZZA_STRINGA];
@@ -230,14 +253,13 @@ double fai_scelta_double(char messaggio[]){
 
 
 
-/* FUNZIONE CHE CHIEDE ALL'UTENTE DI FARE UNA 	*
- * SCELTA DI TIPO BOOLEANA CIOÈ SI O NO			*
- * 												*
- * COME PARAMETRO HA IL MESSAGGIO CHE DEVE 		*
- * ESSERE STAMPATO ALL'UTENTE					*
- * 												*
- * LA FUNZIONE RESTITUISCE TRUE SE L'UTENTE		*
- * HA DETTO SI, ALTRIMENTI RESTITUISCE FALSE	*/
+
+
+/**
+ * Funzione utilizzabile per chiedere in console all'utente di fare una scelta di tipo SI o NO.
+ *
+ * @post La scelta fatta dall'utente viene gia controllata all'interno della funzione.
+ */
 boolean fai_scelta_booleana(char messaggio[]){
 
 	char suggerimenti[]="(1 - SI /2 o Altro - NO) = ";
@@ -251,4 +273,3 @@ boolean fai_scelta_booleana(char messaggio[]){
 	else return false;
 
 }
-

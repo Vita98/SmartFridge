@@ -17,7 +17,7 @@
 
 /* FUNZIONE PER LA VISUALIZZAZIONE DI TUTTO LO STORICO SPESA	*
  * E QUINDI DI TUTTE LE SPESE EFFETTUATE						*/
-void visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
+int visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 	FILE *fileStoricoSpesa;
 
 	elemento_spesa elemento;
@@ -39,11 +39,11 @@ void visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 			}
 		}while(!feof(fileStoricoSpesa));
 
-		if(!flag) printf("\n\nNon e' mai stata effettuata la spesa! Registro Vuoto!\n\n");
-		else printf("\n\n");
+		if(!flag) return 0;
+		else return 1;
 
 		fclose(fileStoricoSpesa);
-	}
+	}else return 0;
 }
 
 
@@ -64,12 +64,10 @@ int memorizza_in_storico_spesa(int indiceAlimento,int quantita){
 
 	elemento.ID_Alimento=indiceAlimento;
 
-	elemento.Data_Ora.Anno=get_data('Y');
-	elemento.Data_Ora.Mese=get_data('M');
-	elemento.Data_Ora.Giorno=get_data('D');
-	elemento.Data_Ora.Ora=get_data('H');
-	elemento.Data_Ora.Minuti=get_data('m');
-	elemento.Data_Ora.Secondi=get_data('S');
+	get_data_pointer(&elemento.Data_Ora);
+
+	//CANCELLARE DOPO AVER AGGIUNTO TUTTE LE SPESE
+	//get_data_input(&elemento.Data_Ora.Giorno,&elemento.Data_Ora.Mese,&elemento.Data_Ora.Anno,"\n\nInserisci la data in cui inserisci la spesa");
 
 	elemento.Quantita=quantita;
 
@@ -107,7 +105,7 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
 	int quantita;
 	boolean flagRipetizione;
 
-	printf("\n\n            Inserimento Spesa\n**********************************\n\n");
+	printf("\n\n            Inserimento Spesa\n%s\n\n",STRINGASTERISCHI);
 
 	do{
 
@@ -190,7 +188,11 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
 
 				if(j<NumeroScadenze){
 					printf("\nScadenza %d\n",(j+1));
-					alim.Scadenze[j].Quantita=fai_scelta("\nInserisci la quantita acquistata dell'alimento:");
+
+					do{
+						alim.Scadenze[j].Quantita=fai_scelta("\nInserisci la quantita acquistata dell'alimento:");
+					}while(alim.Scadenze[j].Quantita < 1);
+
 					quantita+=alim.Scadenze[j].Quantita;
 					get_data_input(&alim.Scadenze[j].Data_Scadenza.Giorno,&alim.Scadenze[j].Data_Scadenza.Mese,&alim.Scadenze[j].Data_Scadenza.Anno,"\nInserisci la data di scadenza dell'alimento:");
 				}else{
@@ -198,6 +200,9 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
 					alim.Scadenze[j].Data_Scadenza.Giorno=0;
 					alim.Scadenze[j].Data_Scadenza.Mese=0;
 					alim.Scadenze[j].Data_Scadenza.Anno=0;
+					alim.Scadenze[j].Data_Scadenza.Minuti=0;
+					alim.Scadenze[j].Data_Scadenza.Ora=0;
+					alim.Scadenze[j].Data_Scadenza.Secondi=0;
 				}
 
 
@@ -291,7 +296,9 @@ int scelta_opzioni_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *n
 
 			case 2:
 				//visualizzazione dello storico spese
-				visualizza_storico_spesa(alimenti,lunghezzaVettoreAlimenti);
+				if(visualizza_storico_spesa(alimenti,lunghezzaVettoreAlimenti) == 0){
+					printf("\n\nNon sono mai state fatte spese!\n\n");
+				}else printf("\n\n");
 				break;
 
 			case 0:

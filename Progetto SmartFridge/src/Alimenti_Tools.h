@@ -38,5 +38,9 @@ int aggiungi_alimento_su_file(alimento);
 
 int decrementa_quantita_alimento(alimento*, int);
 
+int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti);
+
+int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAlimenti, int modalitaOrdinamento);
+
 
 #endif /* ALIMENTI_TOOLS_H_ */

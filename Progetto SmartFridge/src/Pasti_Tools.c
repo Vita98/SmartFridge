@@ -1,20 +1,32 @@
-/*
- * Pasti_Tools.c
- *
- *  Created on: 06 giu 2018
- *      Author: My-PC
+/**
+ *  @file Pasti_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Pasti_Tools.h.
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
 
 #include "Tipi_Dato.h"
 #include "Messaggi_Menu.h"
 #include "Ricette_Tools.h"
 #include "Data_Tools.h"
-#include "Gen_File.h"
 #include "Alimenti_Tools.h"
+#include "Caricamento_Vettori_Tools.h"
 
 
 
-
+/**
+ * Funzione che aggiunge un pasto, con gli attributi passati come
+ * parametro, in coda sul file dei pasti.
+ * Se il file Storico_Pasti.sf non esiste la funzione lo crea.
+ *
+ * @pre idRicetta deve essere un indice di ricetta esistente
+ * in quanto nella lettura dello storico dei pasti si potrebbe
+ * verificare un errore nella visualizzazione della ricetta inesistente.
+ *
+ */
 int aggiungi_pasto_su_file(int numPorzioni,int idRicetta){
 
 	FILE *file;
@@ -25,7 +37,6 @@ int aggiungi_pasto_su_file(int numPorzioni,int idRicetta){
 	pp.visibilita=true;
 
 	get_data_pointer(&pp.Data_Ora);
-
 
 	if ((file = fopen("src/Storico_Pasti.sf", "ab+")) == NULL) {
 			printf("Errore nell'apertura del file!\n");
@@ -73,6 +84,18 @@ int visualizza_file_pasti(ricetta ricette[]){
 
 
 
+
+/**
+ * Funzione che gestisce tutte le operazioni per la consumazione di un pasto.
+ *
+ * @pre lunghezzaVettoreRicette deve essere la lunghezza effettiva del vettore
+ * di ricette in quanto ,se non lo fosse, potrebbe causare una lettura di porzioni
+ * di memoria non allocate al vettore oppure una lettura parziale del vettore di ricette.
+ *
+ * @pre lunghezzaVettoreAlimenti deve essere la lunghezza effettiva del vettore
+ * di ricette in quanto ,se non lo fosse, potrebbe causare una lettura di porzioni
+ * di memoria non allocate al vettore oppure una lettura parziale del vettore di alimenti.
+ */
 int aggiungi_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 
@@ -121,16 +144,14 @@ int aggiungi_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 
 
 
-/* FUNZIONE CHE STAMPA ALL'UTENTE TUTTI I PASTI CONSUMATI DURANTE UNA SETTIMANA *
- * PASSATA COME	PARAMETRO														*
- * 																				*
- * IL PARAMETRO NumeroSettimana REPPRESENTA QUANTE SETTIMANE A RITROSO BISOGNA	*
- * ANDARE PER STAMPARE LA SETTIMANA RICHIESTA 									*
- * 																				*
- * IL PARAMETRO giornoSettimana INDICA QUANTI GIORNI DELLA SETTIMANA LA 		*
- * FUNZIONE DEVE STAMPARE IN QUANTO SE LA SETTIMANA ATTUALE NON E' ANCORA 		*
- * FINITA LA FUNZIONE SI DEVE FERMARE AL GIORNO ATTUALE INVECE DI CONTINUARE 	*
- * PER I GIORNI FUTURI															*/
+
+
+/**
+ * Funzione che stampa all'utente tutti i pasti consumati durante una settimana
+ * passata come parametro.
+ *
+ * @pre giornoSettimana deve essere un numero compreso tra 0 e 6.
+ */
 int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette,int NumeroSettimana,int giornoSettimana){
 
 	int i;
@@ -151,16 +172,14 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 		delay=NUMERO_MASSIMO_GIORNI-delay;
 	}
 
-	if ((file = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
-				printf("Errore nell'apertura del file!\n");
+	if ((file = fopen("src/Storico_Pasti.sf", "rb")) == NULL || NumeroSettimana < 0) {
 				return 0;
 	} else {
-		printf("\n\n%15s | %20s | %15s\n","Giorno","Pasto","Porzioni");
-		printf("---------------------------------------------------------");
+		printf("\n\n%15s   %10s | %20s | %15s\n","Giorno","Data","Pasto","Porzioni");
+		printf("-----------------------------------------------------------------------------");
 		//scorro i giorni da lunedi fino al giorno della settimana corrente
 		for(i=giornoSettimana;i>=0;i--){
 			flag=false;
-			//if(i!=giornoSettimana) printf("\n------------------------------------------------------");
 			//leggo tutto il file
 			while(!feof(file)){
 				int a=fread(&pp,sizeof(pasto),1,file);
@@ -172,13 +191,13 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 
 					//controllo se e' il primo ad essere trovato o no
 					if(flag==false){
-						printf("\n%15s | %20s | %15d",indice_to_giorni_settimana(giornoSettimana-i),ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
-						//printf("\n%20s | %15s\n","Ricetta","Porzioni");
+						printf("\n%15s - %2d/%2d/%4d | %20s | %15d",indice_to_giorni_settimana(giornoSettimana-i),pp.Data_Ora.Giorno,pp.Data_Ora.Mese,pp.Data_Ora.Anno,ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
+
 						flag=true;
-					}else printf("\n%15s | %20s | %15d","-" ,ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
+					}else printf("\n%15s   %10s | %20s | %15d","-","-",ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
 				}
 			}
-			if(flag==false) printf("\n%15s | %20s | %15s",indice_to_giorni_settimana(giornoSettimana-i),"-","-");
+			if(flag==false) printf("\n%15s   %10s | %20s | %15s",indice_to_giorni_settimana(giornoSettimana-i)," ","-","-");
 			rewind(file);
 		}
 
@@ -195,14 +214,17 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 
 
 
-/* FUNZIONE CHE GESTISCE LA CHIAMATA DELLA FUNZIONE		*
- * PER LA VISUALIZZAZIONE DEL MENU SETTIMANALE DELLA 	*
- * SETTIMANA CORRENTE									*/
+/**
+ * Funzione che gestisce la chiamata della funzione per la visualizzazione
+ * del menu setimanale della settimana corrente.
+ */
 int visualizza_menu_settimana_in_corso(ricetta ricette[],int lunghezzaVettoreRicette){
 
 	//Richiamo la funzione di stampa del menu della iesima settimana
 	//in maniera che stampi la settimana corrente
-	stampa_iesimo_menu_settimanale(ricette,lunghezzaVettoreRicette,0,get_data('W'));
+	if(stampa_iesimo_menu_settimanale(ricette,lunghezzaVettoreRicette,0,get_data('W')) == 0){
+		printf("\n\nNon e' mai stato consumato niente!\n\n");
+	}
 
 	return 1;
 
@@ -213,14 +235,19 @@ int visualizza_menu_settimana_in_corso(ricetta ricette[],int lunghezzaVettoreRic
 
 
 
-/* FUNZIONE CHE CALCOLA IL NUMERO DI SETTIMANE 	*
- * DI DISTANZA IN BASE AI GIORNI DI DISTANZA	*
- * PASSATI COME PARAMETRO						*/
-int get_numero_settimane(int distanza){
-	int i,NumeroSettimane=0;
-	for(i=0;distanza>=1;i++){
+/**
+ * In base al numero di giorni passato come parametro
+ * viene calcolato il numero di settimane a cui
+ * corrispondono i giorni passati come parametro.
+ *
+ * @pre giorni deve essere positivo, se non lo e'
+ * la funzione ristituira 0.
+ */
+int get_numero_settimane(int giorni){
+	int NumeroSettimane=0;
+	while(giorni >= 1){
 		NumeroSettimane++;
-		distanza-=7;
+		giorni-=7;
 	}
 	return NumeroSettimane;
 }
@@ -230,9 +257,10 @@ int get_numero_settimane(int distanza){
 
 
 
-/* FUNZIONE CHE GESTISCE LA CHIAMATA DELLA FUNZIONE PER *
- * LA VISUALIZZAZIONE DEL MENU SETTIMANALE DI SETTIMANE *
- * PASSATE A QUELLA CORRENTE*/
+/**
+ * Funzione che gestisce la chiamata della funzione per la visualizzazione
+ * del menu setimanale di settimane passate relativamente a quella corrente.
+ */
 int visualizza_menu_settimane_passate(ricetta ricette[],int lunghezzaVettoreRicette){
 
 	data_ora dataInput;
@@ -258,11 +286,15 @@ int visualizza_menu_settimane_passate(ricetta ricette[],int lunghezzaVettoreRice
 			flag=true;
 
 			//se il numero settimane e' diverso da 0 vuol dire che devo andare
-			//a ritrono di NumeroSettimane SETTIMANE
+			//a ritroso di NumeroSettimane SETTIMANE
 			if(numeroSettimane!=0){
-				stampa_iesimo_menu_settimanale(ricette,lunghezzaVettoreRicette,numeroSettimane,6);
+				if(stampa_iesimo_menu_settimanale(ricette,lunghezzaVettoreRicette,numeroSettimane,6) == 0){
+					printf("\n\nNon e' mai stato consumato niente!\n\n");
+				}
 
-			}else 	stampa_iesimo_menu_settimanale(ricette,lunghezzaVettoreRicette,0,get_data('W'));
+			}else if(stampa_iesimo_menu_settimanale(ricette,lunghezzaVettoreRicette,0,get_data('W')) == 0){
+				printf("\n\nNon e' mai stato consumato niente!\n\n");
+			}
 		}else{
 			//caso in cui la data inserita in input sia sucessiva alla data corrente
 			printf("\nLa data non puo essere superiore alla data corrente! Reinseriscila!\n");
@@ -278,7 +310,11 @@ int visualizza_menu_settimane_passate(ricetta ricette[],int lunghezzaVettoreRice
 
 
 
-
+/**
+ * Funzione che visualizza all'utente un menu per fargli
+ * scegliere il tipo di settimana di cui vedere
+ * il menu settimanale.
+ */
 int scelta_opzioni_visualizza_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette){
 
 	printf("\n\nVisualizzazione Menu Settimanale\n%s\n",STRINGASTERISCHI);
@@ -307,14 +343,25 @@ int scelta_opzioni_visualizza_menu_settimanale(ricetta ricette[],int lunghezzaVe
 	}while(numScelta!=0);
 
 
-	return 0;
+	return 1;
 }
 
 
 
 
 
-
+/**
+ * Funzione che effettua la cancellazione di un pasto dal file.
+ * Inoltre la funzione si occupa di gestire le modifiche della
+ * frequenza delle ricette e della quantita e dell'utilizzo
+ * degli alimenti.
+ *
+ * @pre indicePasto deve essere un indice valido
+ *
+ * @warning se indicePasto non e' valido, non e'garantito
+ * il corretto funzionamento della funzione in quanto
+ * andrebbe a modificare un pasto inesistente.
+ */
 int cancella_iesimo_pasto_da_file(int indicePasto,alimento alimenti[],ricetta ricette[]){
 	FILE *fileStoricoPasti;
 	pasto pp;
@@ -331,12 +378,22 @@ int cancella_iesimo_pasto_da_file(int indicePasto,alimento alimenti[],ricetta ri
 		int i;
 		for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 			if(ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i] != -1) {
+
+				//decremento l'utilizzo dell'alimento
+				alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]].Utilizzo-=ricette[pp.ID_Ricetta].Alimenti_Quantita[1][i]*pp.Porzioni;
+
+				//incremento la quantita dell'alimentoc
 				alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]].Scadenze[0].Quantita += ricette[pp.ID_Ricetta].Alimenti_Quantita[1][i]*pp.Porzioni;
 				if(alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]].Visibilita==false) alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[1][i]].Visibilita=true;
 				modifica_alimento_su_file(alimenti[ricette[pp.ID_Ricetta].Alimenti_Quantita[0][i]]);
 			}
 		}
 
+		//devo aggiornare la frequenza della ricetta
+		ricette[pp.ID_Ricetta].Frequenza-=pp.Porzioni;
+		modifica_ricetta_su_file(ricette[pp.ID_Ricetta]);
+
+		//aggiorno il file di storico pasti
 		fseek(fileStoricoPasti,indicePasto*sizeof(pasto),SEEK_SET);
 		fwrite(&pp,sizeof(pasto),1,fileStoricoPasti);
 
@@ -349,6 +406,15 @@ int cancella_iesimo_pasto_da_file(int indicePasto,alimento alimenti[],ricetta ri
 
 
 
+
+
+
+/**
+ * Funzione che gestisce tutte le operazioni per la cencellazione di un pasto.
+ *
+ * @pre il file Storico_Pasti.sf deve esistere gia in quanto
+ * viene aperto in lettura.
+ */
 int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[]){
 
 	data_ora dataPasto,dataOdierna;
@@ -389,18 +455,20 @@ int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 					}
 					indice++;
 				}
-				printf("\n\n");
-				int sceltaIndice;
-				do{
-					sceltaIndice=fai_scelta("\nInserisci il numero corrispondente al pasto che si vuole cancellare:");
 
-					if(sceltaIndice>indiceVetIndici) printf("\nIndice non valido! Reinseriscilo!\n");
+				if(indiceVetIndici != 0){
+					printf("\n\n");
+					int sceltaIndice;
+					do{
+						sceltaIndice=fai_scelta("\nInserisci il numero corrispondente al pasto che si vuole cancellare:");
 
-				}while(sceltaIndice>indiceVetIndici);
+						if(sceltaIndice>indiceVetIndici) printf("\nIndice non valido! Reinseriscilo!\n");
 
-				if(cancella_iesimo_pasto_da_file(indiciSuFile[sceltaIndice],alimenti,ricette)) printf("\nCancellazione del pasto effettuata con successo!\n");
-				else printf("\nErrore nella cancellazione del pasto su file!\n");
+					}while(sceltaIndice>indiceVetIndici);
 
+					if(cancella_iesimo_pasto_da_file(indiciSuFile[sceltaIndice],alimenti,ricette)) printf("\nCancellazione del pasto effettuata con successo!\n");
+					else printf("\nErrore nella cancellazione del pasto su file!\n");
+				}else printf("\n\nNella data inserita non sono stati consumati pasti!\n");
 			}
 		}
 	}while(get_distanza_in_giorni(dataPasto,dataOdierna,0) < 0 );
@@ -414,6 +482,437 @@ int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 
 
 
+/**
+ * Passato il pasto come parametro e l'indice su file,
+ * la funzione salva il pasto sul file Storico_Pasti.sf
+ * nella posizione indicePasto partendo dall ínizio del file.
+ *
+ * @pre il file Storico_Pasti.sf deve gia esistere.
+ * @pre indicePasto deve essere un indice valido per la
+ * grandezza del file.
+ *
+ */
+int modifica_iesimo_pasto_su_file(pasto iesimoPasto,int indicePasto){
+
+	FILE *fileStoricoPasti;
+
+	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb+")) == NULL) {
+		return 0;
+	} else {
+		fseek(fileStoricoPasti,indicePasto*sizeof(pasto),SEEK_SET);
+		fwrite(&iesimoPasto,sizeof(pasto),1,fileStoricoPasti);
+		fclose(fileStoricoPasti);
+		return 1;
+	}
+
+}
+
+
+
+
+
+
+/**
+ * Data la posizione del pasto su file come parametro,
+ * la funzione restituisce il pasto letto in quella posizione.
+ *
+ * @pre il file Storico_Pasti.sf deve esistere gia.
+ * @pre indicePasto deve essere una posizione valida e piena del file.
+ */
+pasto leggi_iesimo_pasto(int indicePasto){
+	FILE *fileStoricoPasti;
+	pasto pp;
+
+	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+		return pp;
+	} else {
+		fseek(fileStoricoPasti,indicePasto*sizeof(pasto),SEEK_SET);
+		fread(&pp,sizeof(pasto),1,fileStoricoPasti);
+		fclose(fileStoricoPasti);
+		return pp;
+	}
+}
+
+
+
+
+
+
+
+
+/**
+ * In base alla ricetta e al numero di porzioni aggiuntive passate come parametro,
+ * la funzione verifica se è possibile aggiungere porzioni ad un pasto
+ * consumato nel passato.
+ * Principalemente verifica se gli alimenti della ricetta non sono mai stati
+ * indisponibili in quanto l'aggiunta del pasto genererebbe una quantita
+ * negativa di alimenti.
+ *
+ * @pre indiceRicetta deve essere un indice di ricetta valido.
+ *
+ */
+boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,ricetta ricette[],alimento alimenti[]){
+
+	int i;
+	int numeroPorzioniPossibili=0;
+	boolean flag;
+
+
+	//a questo punto tutti gli alimenti della ricetta di cui si vuole aggiungere la quantita sono disponibili nel presente;
+	//bisogna controllare se erano disponibili in quel momento del passato o se
+	//la modifica che si vuole fare e cronologicamente antecedente alla prima spesa
+	//degli alimenti della ricetta.
+	FILE *fileStoricoPasti,*fileStoricoSpesa;
+	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+		return false;
+	} else if ((fileStoricoSpesa = fopen("src/Storico_Spesa.sf", "rb")) == NULL) {
+		return false;
+	} else {
+		//tutti e 2 i file sono stati aperti con successo
+		elemento_spesa elSpesa;
+		pasto past;
+		int quantitaAlimentiDisponibili[2][NUMERO_MAX_ALIMENTI]; //riga 1 : id alimento   riga 2: quantita disponibile alla data dataRiferimento
+		int vettoreQuantitaMinime[NUMERO_MAX_ALIMENTI];
+
+		//carico gli indici degli alimenti della ricetta all'interno del vettore di sopra
+		for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+			quantitaAlimentiDisponibili[0][i] = ricette[indiceRicetta].Alimenti_Quantita[0][i];
+			quantitaAlimentiDisponibili[1][i] = 0;
+			vettoreQuantitaMinime[i]=-1;
+		}
+		flag=false;
+
+		if(fread(&past,sizeof(pasto),1,fileStoricoPasti) > 0){
+
+			if(fread(&elSpesa,sizeof(elemento_spesa),1,fileStoricoSpesa) > 0){
+
+				//ripeto il while solo fino alla fine dello storico pasti perche mi interessa sapere le quantita minime fino
+				//all'ultimo pasto prima dell'ultima spesa in quanto l'ultima spesa puo essere trascurata dato
+				//che andrebbe solo ad aumentare le quantita o al massimo lasciarle invariate
+				while(!feof(fileStoricoPasti)){
+
+					//confronto le due date
+					if(data_compare(past.Data_Ora,elSpesa.Data_Ora)  <= 0){
+						if(!feof(fileStoricoSpesa)){
+							//controllo che l'alimento della spesa si presente nella ricetta
+							int indiceAlim;
+							if((indiceAlim = get_alimento_ricetta(ricette,indiceRicetta,elSpesa.ID_Alimento)) > -1){
+								quantitaAlimentiDisponibili[1][indiceAlim] += elSpesa.Quantita;
+							}
+							if(fread(&elSpesa,sizeof(elemento_spesa),1,fileStoricoSpesa) <= 0) break;
+						}
+
+					}else{
+						if(past.ID_Ricetta == indiceRicetta){
+							flag=true;
+							for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+								if(quantitaAlimentiDisponibili[0][i] != -1){
+									quantitaAlimentiDisponibili[1][i] -= (ricette[indiceRicetta].Alimenti_Quantita[1][i]*past.Porzioni);
+									//mi memorizzo la quantita minima di tutta la cronologia di un pasto
+									if(vettoreQuantitaMinime[i] == -1 || quantitaAlimentiDisponibili[1][i] < vettoreQuantitaMinime[i]) vettoreQuantitaMinime[i] = quantitaAlimentiDisponibili[1][i];
+								}
+							}
+						}
+						if(fread(&past,sizeof(pasto),1,fileStoricoPasti) <= 0) break;
+					}
+				}
+			}
+		}
+
+		//caso in cui la ricetta non e' mai stata consumata e quindi non si trova mai un minimo
+		if(flag==false){
+			for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+				vettoreQuantitaMinime[i]=quantitaAlimentiDisponibili[1][i];
+			}
+		}
+
+		//vedo quante porzioni posso preparare con le quantita minime calcolate
+		int porzPoss[NUMERO_MAX_ALIMENTI];
+
+		//for che scorre il vettore di alimenti della ricetta
+		for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+			if(vettoreQuantitaMinime[i] != -1){
+				if(vettoreQuantitaMinime[i] >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
+					if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0){
+						porzPoss[i]= (int)(vettoreQuantitaMinime[i]/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
+						if(numeroPorzioniPossibili==0) numeroPorzioniPossibili=porzPoss[i];
+						else if(numeroPorzioniPossibili>porzPoss[i]) numeroPorzioniPossibili=porzPoss[i];
+					}
+				}else numeroPorzioniPossibili = 0;
+			}
+
+		}
+		if(porzioniAggiuntive <= numeroPorzioniPossibili) return true;
+		else return false;
+	}
+}
+
+
+
+
+
+
+
+/**
+ * Funzione che effettua tutti i controlli e modifica un pasto
+ * consumato nel passato nel caso in cui la modifica riguarda
+ * solo le porzioni del pasto.
+ *
+ * @pre indicePasto deve essere un indice di pasto valido.
+ * @pre nuovePorzioni deve essere un numero positivo.
+ */
+int modifica_porzioni_pasto(int indicePasto,alimento alimenti[],ricetta ricette[],int nuovePorzioni){
+
+	pasto iesimoPasto;
+	int vecchiePorzioni=0;
+
+	//se le nuove porzioni sono meno di quelle di prima posso effettuare la modifica tranquillamente
+	if(nuovePorzioni < (iesimoPasto = leggi_iesimo_pasto(indicePasto)).Porzioni  && nuovePorzioni > 0){
+		vecchiePorzioni=iesimoPasto.Porzioni;
+		iesimoPasto.Porzioni=nuovePorzioni;
+		if(modifica_iesimo_pasto_su_file(iesimoPasto,indicePasto) == 1){
+
+			//devo aggiungere alla frequanza della ricetta la differenza tra le vecchie porzioni e le nuove
+			ricette[iesimoPasto.ID_Ricetta].Frequenza -= (vecchiePorzioni-nuovePorzioni);
+			modifica_ricetta_su_file(ricette[iesimoPasto.ID_Ricetta]);
+
+			//devo modificare l'utilizzo degli alimenti
+			//bisogna aggiungere tutte le quantita cancellate
+			int i;
+			for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+				if(ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i] != -1) {
+
+					//decremento l'utilizzo dell'alimento
+					alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i]].Utilizzo-=ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[1][i]*(vecchiePorzioni-nuovePorzioni);
+
+					//incremento la quantita dell'alimento
+					alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i]].Scadenze[0].Quantita += ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[1][i]*(vecchiePorzioni-nuovePorzioni);
+					if(alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i]].Visibilita==false) alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[1][i]].Visibilita=true;
+					modifica_alimento_su_file(alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i]]);
+				}
+			}
+			return 1;
+		}else return 0;
+	}else if(nuovePorzioni > iesimoPasto.Porzioni){
+		vecchiePorzioni = iesimoPasto.Porzioni;
+
+		//richiamo la funzione che verifica se in quella data avevo disponibile la quantita
+		//di alimenti per consumare quelle porzioni in piu
+		if(is_possible_add_porzioni_pasto(iesimoPasto.ID_Ricetta,nuovePorzioni-iesimoPasto.Porzioni,ricette,alimenti) == true){
+			iesimoPasto.Porzioni=nuovePorzioni;
+
+			if(modifica_iesimo_pasto_su_file(iesimoPasto,indicePasto) == 1){
+
+				//devo aggiungere alla frequanza della ricetta la differenza tra le vecchie porzioni e le nuove
+				ricette[iesimoPasto.ID_Ricetta].Frequenza += (nuovePorzioni-vecchiePorzioni);
+				modifica_ricetta_su_file(ricette[iesimoPasto.ID_Ricetta]);
+
+				//devo modificare l'utilizzo degli alimenti
+				//bisogna aggiungere tutte le quantita cancellate
+				int i;
+				for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+					if(ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i] != -1) {
+
+						//incremento l'utilizzo dell'alimento
+						alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i]].Utilizzo+=ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[1][i]*(nuovePorzioni-vecchiePorzioni);
+
+						//decremento la quantita dell'alimento, la funzione lo fa anche su file
+						decrementa_quantita_alimento(&alimenti[ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[0][i]],ricette[iesimoPasto.ID_Ricetta].Alimenti_Quantita[1][i]*(nuovePorzioni-vecchiePorzioni));
+
+					}
+				}
+				return 1;
+			}
+		}else return 2;
+		return 0;
+	}else if(nuovePorzioni > 0){
+		//le nuove porzioni sono le stesse di prima quindi non devo fare niente
+		return 1;
+	}else {
+		//le porzioni inserite sono negative
+		return 0;
+	}
+}
+
+
+
+
+
+
+
+/**
+ * Funzione che effettua tutti i controlli e modifica un pasto
+ * consumato nel passato nel caso in cui la modifica riguarda
+ * il cambio totale del pasto.
+ *
+ * @pre indicePasto deve essere un indice di pasto valido.
+ */
+int cambio_pasto(int indicePasto,alimento alimenti[],ricetta ricette[],int lunghezzaVettoreRicette){
+
+	pasto pastoDaModificare = leggi_iesimo_pasto(indicePasto);
+	char scelta[LUNGHEZZA_STRINGA];
+	int indiceNuovaRicetta=-1;
+
+	printf("\nInserisci il nome della ricetta che si e' consumati al posto di \"%s\": ",ricette[pastoDaModificare.ID_Ricetta].Nome);
+	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
+
+	if((indiceNuovaRicetta = get_ricetta(ricette,lunghezzaVettoreRicette,scelta,true)) == -1){
+		printf("\nLa ricetta non esiste!\n");
+		return 0;
+	}else{
+		int porzioniNuovaRicetta = fai_scelta("\nInserisci il numero di porzioni che hai consumato per quella ricetta:");
+
+		//devo azzerare il pasto di prima sia nel file di pasti che nei vettori di alimenti
+		//una volta reinserite le quantita del pasto negli alimenti devo azzerare il pasto su file
+		//modifica_porzioni_pasto andra a buon fine perhche le nuove porzioni sono 0 cioe minori
+		//delle vecchie porzioni che sono almeno 1.
+		if(modifica_porzioni_pasto(indicePasto,alimenti,ricette,0) == 1){
+
+			if(is_possible_add_porzioni_pasto(indiceNuovaRicetta,porzioniNuovaRicetta,ricette, alimenti) == true){
+				//consumo il pasto al posto di quello di prima e con quella data
+				pastoDaModificare.ID_Ricetta = indiceNuovaRicetta;
+				pastoDaModificare.Porzioni = porzioniNuovaRicetta;
+
+				//ho modificato il pasto sul file
+				if(modifica_iesimo_pasto_su_file(pastoDaModificare,indicePasto) == 1){
+
+					//ora devo modificare le quantita degli alimenti
+					if(modifica_porzioni_pasto(indicePasto,alimenti,ricette,porzioniNuovaRicetta*2) == 1){
+						if(modifica_iesimo_pasto_su_file(pastoDaModificare,indicePasto) == 1){
+							return 1;
+						}
+					}
+				}
+			}else{
+				//se non e' possibile mettere quel pasto al posto di quello vecchio devo ripristinare le vecchie quantita
+				//sia su file dello storico pasti che su quello degli alimenti e delle ricette
+				if(modifica_porzioni_pasto(indicePasto,alimenti,ricette,pastoDaModificare.Porzioni) == 1){
+					return 0;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+
+
+
+
+
+
+
+int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[]){
+
+	data_ora dataPasto,dataOdierna;
+	FILE *file_Storico_Pasti;
+	pasto past;
+	int indice=0;
+	int lunghezzaVettoreIndici=Get_Lunghezza_File_Storico_Pasti();
+	int indiciSuFile[lunghezzaVettoreIndici];
+	int indiceVetIndici=0;
+
+	printf("\nModifica Pasto\n\%s\n",STRINGASTERISCHI);
+
+	do{
+		indice=0;
+		get_data_pointer(&dataOdierna);
+		get_data_input(&dataPasto.Giorno,&dataPasto.Mese,&dataPasto.Anno,"\nInserisci la data in cui e' stato consumato il pasto da modificare:");
+
+		//se la distanza tra le 2 date e' maggiore uguale a 0 vuol dire che la
+		//data inserita e' uguale o meno recente del giorno odierno
+		if(get_distanza_in_giorni(dataPasto,dataOdierna,0) < 0 ) printf("\nData non valida! Reinseriscila!\n");
+		else{
+			if ((file_Storico_Pasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+				printf("Errore nell'apertura del file!\n");
+				return 0;
+			} else {
+
+				printf("\n%5s | %20s | %5s\n","N","Ricetta","Porzioni");
+				printf("-----------------------------------------------------");
+				while(!feof(file_Storico_Pasti)){
+					if(fread(&past,sizeof(past),1,file_Storico_Pasti) > 0){
+						//se le date sono le stesse avranno una distanza in giorni pari a 0
+						if(get_distanza_in_giorni(past.Data_Ora,dataPasto,0) == 0 && past.visibilita==true){
+							printf("\n%5d | %20s | %5d",indiceVetIndici,ricette[past.ID_Ricetta].Nome,past.Porzioni);
+							indiciSuFile[indiceVetIndici]=indice;
+							indiceVetIndici++;
+						}
+
+					}
+					indice++;
+				}
+
+				if(indiceVetIndici != 0){
+					printf("\n\n");
+					int sceltaIndice;
+					do{
+						sceltaIndice=fai_scelta("\nInserisci il numero corrispondente al pasto che si vuole modificare:");
+
+						if(sceltaIndice>indiceVetIndici) printf("\nIndice non valido! Reinseriscilo!\n");
+
+					}while(sceltaIndice>indiceVetIndici);
+
+
+					//chiedo che tipo di modifica al pasto vuole effettuare
+					printf("\n%s\n",STRINGASTERISCHI);
+					int numScelta;
+					int returnValore;
+					int nuovePorzioni;
+
+					do{
+						numScelta= fai_scelta(MENU_MODIFICA_PASTO);
+
+						switch(numScelta){
+							case 1:
+								//modifica numero porzioni
+
+								nuovePorzioni = fai_scelta("\nInserisci le nuove porzioni consumate per quel pasto: ");
+
+								if((returnValore=modifica_porzioni_pasto(indiciSuFile[sceltaIndice],alimenti,ricette,nuovePorzioni)) == 1){
+									printf("\nModifica delle porzioni avvenuta con successo\n");
+								}else printf("\n%s\n",(returnValore == 0) ? "Impossibile completare l'operazione! Errore sui file!" : "La modifica che stai tentando di"
+										" effettuare non e' consentita in quanto gli alimenti che stai tentando di consumare sono gia stati consumati o\nnella data inserita"
+										" non c'era la disponibilita di alimenti per consumare la ricetta.");
+								numScelta = 0;
+
+								break;
+							case 2:
+								//cambio del pasto
+								if(cambio_pasto(indiciSuFile[sceltaIndice], alimenti, ricette,lunghezzaVettoreRicette) == 1){
+									printf("\nCambio del pasto avvenuto con successo!\n");
+								}else printf("\nSi e' verificato un errore nel cambio del pasto!\n");
+								numScelta = 0;
+								break;
+							case 0:
+								//annullamento
+								break;
+							default:
+								printf("\nScelta errata!\n");
+						}
+
+					}while(numScelta != 0);
+
+					/*if(cancella_iesimo_pasto_da_file(indiciSuFile[sceltaIndice],alimenti,ricette)) printf("\nCancellazione del pasto effettuata con successo!\n");
+					else printf("\nErrore nella cancellazione del pasto su file!\n");*/
+				}else printf("\n\nNella data inserita non sono stati consumati pasti!\n");
+			}
+		}
+	}while(get_distanza_in_giorni(dataPasto,dataOdierna,0) < 0 );
+
+	return 1;
+}
+
+
+
+
+
+
+/**
+ * Funzione che visualizza all'utente un menu per fargli
+ * scegliere il tipo di operazione vuole effettuare
+ * per quanto riguarda i pasti.
+ */
 int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	int NumScelta;
@@ -437,6 +936,7 @@ int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento 
 		case 3:
 
 			//modifica pasto
+			modifica_pasto(ricette,lunghezzaVettoreRicette,alimenti);
 
 			break;
 		case 4:
@@ -454,5 +954,5 @@ int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento 
 
 	} while (NumScelta != 0);
 
-	return 0;
+	return 1;
 }

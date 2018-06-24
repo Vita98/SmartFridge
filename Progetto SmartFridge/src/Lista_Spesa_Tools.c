@@ -30,6 +30,7 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 
 	FILE *fileSpesa;
 	int i, quantita = 0;
+	int flag=false;
 
 	if ((fileSpesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
 	else {
@@ -43,7 +44,8 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 			quantita=get_quantita(alimenti[i]);
 
 
-			if (quantita < limite_spesa) {
+			if (quantita < limite_spesa && alimenti[i].Visibilita == true) {
+				flag=true;
 				elemento.Quantita = quantita;
 				elemento.ID_Alimento = alimenti[i].ID_Alimento;
 
@@ -52,15 +54,18 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 				elemento.Data_Ora.Anno=get_data('Y');
 
 				fwrite(&elemento, sizeof(elemento_spesa), 1, fileSpesa);
-				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[i].Nome,
+				printf("%3d - %25s \t| quantità: %3d \t| Id: %3d\n", i, alimenti[i].Nome,
 						elemento.Quantita, elemento.ID_Alimento);
 			}
 		}
 
-
 		fclose(fileSpesa);
-		return 1;
 	}
+
+	if(flag==false){
+		printf("\n\nNon ci sono elementi sotto la soglia!\n\n");
+	}
+	return 1;
 
 }
 
@@ -73,6 +78,7 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 int visualizza_lista_spesa(alimento alimenti[]) {
 
 	FILE *fileSpesa;
+	boolean flag=false;
 
 
 	if ((fileSpesa = fopen("src/Lista_Spesa.sf", "rb")) == NULL) return 0;
@@ -87,6 +93,7 @@ int visualizza_lista_spesa(alimento alimenti[]) {
 
 			//bisogna visualizzare anche la data e l'ora della generazione
 			if(fread(&elemento, sizeof(elemento_spesa), 1, fileSpesa) > 0){
+				flag=true;
 				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[elemento.ID_Alimento].Nome,
 						elemento.Quantita, elemento.ID_Alimento);
 				i++;
@@ -94,8 +101,12 @@ int visualizza_lista_spesa(alimento alimenti[]) {
 		}
 
 		fclose(fileSpesa);
-		return 1;
 	}
+
+	if(flag==false)
+		printf("\n\nNon e' presente nessuna lista della spesa precedente!\n\n");
+
+	return 1;
 
 }
 

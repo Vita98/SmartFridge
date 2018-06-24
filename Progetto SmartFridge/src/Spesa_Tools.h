@@ -14,7 +14,7 @@ int inserimento_alimenti_spesa(alimento[],int,int*);
 
 int memorizza_in_storico_spesa(int,int);
 
-void visualizza_storico_spesa(alimento[],int);
+int visualizza_storico_spesa(alimento[],int);
 
 
 #endif /* SPESA_TOOLS_H_ */

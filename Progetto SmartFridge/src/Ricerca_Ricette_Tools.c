@@ -11,6 +11,7 @@
 #include "Data_Tools.h"
 #include "Ricette_Tools.h"
 #include "Preferiti_Tools.h"
+#include "Ordinamenti_Tools.h"
 
 
 
@@ -202,7 +203,7 @@ int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alime
 				for(k=0;k<LUNGHEZZA_VET_SCADENZE;k++){ //vettore che scorre le date di scadenza dell'alimento
 					if(alimenti[ricette[i].Alimenti_Quantita[0][j]].Scadenze[k].Quantita != 0){
 						int distanza=get_distanza_in_giorni(dataAttuale,alimenti[ricette[i].Alimenti_Quantita[0][j]].Scadenze[k].Data_Scadenza,0);
-						if(distanza >= 0 && distanza <= DISTANZAGIORNISCADENZA ){
+						if(distanza >= 0 && distanza <= DISTANZA_GIORNI_SCADENZA ){
 							indiceVetRicetteScadenza++;
 							vettoreRicetteScadenza[indiceVetRicetteScadenza]=i;
 							flag=true;

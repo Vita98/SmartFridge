@@ -1,20 +1,14 @@
 /*
- * Gen_File.h
+ * Caricamento_Vettori_Tools.h
  *
- *  Created on: 17 mag 2018
+ *  Created on: 22 giu 2018
  *      Author: My-PC
  */
 
-#ifndef GEN_FILE_H_
-#define GEN_FILE_H_
+#ifndef CARICAMENTO_VETTORI_TOOLS_H_
+#define CARICAMENTO_VETTORI_TOOLS_H_
 
-void Generazione_Alimenti();
 
-void Read_Alimenti();
-
-void Genera_Ricette();
-
-void Visualizza_RicetteF();
 
 void Carica_Configurazione();
 
@@ -28,5 +22,6 @@ int Get_Lunghezza_File_Ricette();
 
 int Get_Lunghezza_File_Storico_Pasti();
 
-#endif /* GEN_FILE_H_ */
 
+
+#endif /* CARICAMENTO_VETTORI_TOOLS_H_ */

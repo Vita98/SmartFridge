@@ -9,154 +9,7 @@
 #include <String.h>
 #include "Alimenti_Tools.h"
 #include "Preferiti_Tools.h"
-
-
-
-/*	FUNZIONE CHE PERMETTE DI DIVIDERE IL VETTORE RICETTE OTTENUTO IN SOTTOVETTORI E CONFRONTARE I 		*
- *  SINGOLI ELEMENTI PER POI SCRIVERE IL PROPRIO INDICE IN UN NUOVO VETTORE DI LUNGHEZZA PARI A QUELLO 	*
- *  ANALIZZATO OTTENENDO UN VETTORE DI INTERI FORMATO DA INDICI, IL CONETUNO DEGLI ELEMENTI E' 			*
- *  EQUIVALENTI ALL'ORDINAMENTO CRESCENTE DEGLI ELEMENTI DEL VETTORE RICETTE, LE SCELTE SONO DECISE 	*
- *  DALLA MODALITA IN CUI SI DECIDE ORDINARE LE RICETTE 												*
- *  																									*
- *  MODALITA 2 = ORDINAMENTO PER KCAL																	*
- *  MODALITA 3 = ORDINAMENTO PER FREQUENZA																*
- *  MODALITA 4 = ORDINAMENTO PER PREFERITI CIOE VENGONO PORTATI IN ALTO I PREFERITI E NELLO STESSO 		*
- *  TEMPO I PREFERITI VENGONO ORDINATI PER FREQUENZA DI USO												*/
-int merging_ricette(ricetta ricette[], int inizio, int medio, int fine, int index[], int modalita)
-{
-    int i, j, k;
-    int n1 = medio - inizio + 1;
-    int n2 =  fine - medio;
-
-    // create temp arrays
-    int L[n1], R[n2];
-
-    // Copy data to temp arrays L[] and R[]
-    for (i = 0; i < n1; i++)
-        L[i] = index[inizio + i];
-    for (j = 0; j < n2; j++)
-        R[j] = index[medio + 1+ j];
-
-    // Merge the temp arrays back into arr[inizio..r]
-    i = 0; // Initial index of first subarray
-    j = 0; // Initial index of second subarray
-    k = inizio; // Initial index of merged subarray
-
-    if (modalita == 2){
-    	while (i < n1 && j < n2)
-		{
-			if (ricette[L[i]].Kcal_Porzione < ricette[R[j]].Kcal_Porzione)
-			{
-				index[k] = L[i];
-				i++;
-			}
-			else
-			{
-				index[k] = R[j];
-				j++;
-			}
-			k++;
-		}
-    }else if(modalita == 3){
-    	while (i < n1 && j < n2)
-		{
-			if (ricette[L[i]].Frequenza > ricette[R[j]].Frequenza)
-			{
-				index[k] = L[i];
-				i++;
-			}
-			else
-			{
-				index[k] = R[j];
-				j++;
-			}
-			k++;
-		}
-    }else if(modalita == 4){
-    	while (i < n1 && j < n2)
-		{
-			if ((exist_preferito(ricette,&L[i]) == true) && (exist_preferito(ricette,&R[j]) == false))
-			{
-				index[k] = L[i];
-				i++;
-			}
-			else if((exist_preferito(ricette,&L[i]) == true) && (exist_preferito(ricette,&R[j]) == true)){
-				if(ricette[L[i]].Frequenza > ricette[R[j]].Frequenza){
-					index[k] = L[i];
-					i++;
-				}
-			}else
-			{
-				index[k] = R[j];
-				j++;
-			}
-			k++;
-		}
-    }
-
-
-    // Copy the remaining elements of L[], if there  are any
-    while (i < n1)
-    {
-        index[k] = L[i];
-        i++;
-        k++;
-    }
-
-    /* Copy the remaining elements of R[], if there
-       are any*/
-    while (j < n2)
-    {
-        index[k] = R[j];
-        j++;
-        k++;
-    }
-
-    return 1;
-}
-
-
-
-
-
-
-
-
-/* FUNZIONE CHE DIVIDE IL VETTORE DI RICETTE IN PIU SOTTO VETTORI E NE APPLICA IL MERGE  */
-
-int merge_sort_ricette(ricetta ricette[], int inizio, int fine,int index[], int modalita){
-
-    if (inizio < fine)
-    {
-        // Same as (inizio+fine)/2, but avoids overflow for
-        // large inizio and h
-        int m = inizio+(fine-inizio)/2;
-
-        // Sort first and second halves
-        merge_sort_ricette(ricette, inizio, m,index,modalita);
-        merge_sort_ricette(ricette, m+1, fine,index,modalita);
-
-        merging_ricette(ricette, inizio, m, fine,index,modalita);
-        return 0;
-    }
-    return 1;
-}
-
-
-
-
-/* FUNZIONE CHE RICHIAMA IL MERGE SORT APPLICATO PASSANDO I PARAMETRI NECESSARI   */
-
-int sort_ricette (ricetta ricette[],int index[], int lunghezzaVettore, int modalita){
-
-	int i;
-	for (i=0;i<lunghezzaVettore;i++){
-		index[i] = ricette[i].ID_Ricetta;
-	}
-
-	merge_sort_ricette(ricette,0,lunghezzaVettore-1,index,modalita);
-	return 1;
-}
+#include "Ordinamenti_Tools.h"
 
 
 
@@ -167,7 +20,11 @@ int sort_ricette (ricetta ricette[],int index[], int lunghezzaVettore, int modal
 
 
 
-int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, int modalita) {
+
+
+
+
+int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, int modalitaOrdinamento) {
 
 	int i;
 	int indici[lunghezzaVettoreRicette];
@@ -176,7 +33,7 @@ int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, 
 	printf ("(%d) :\n",lunghezzaVettoreRicette);
 
 
-	sort_ricette(ricette, indici, lunghezzaVettoreRicette, modalita);
+	sort_ricette(ricette, indici, lunghezzaVettoreRicette, modalitaOrdinamento);
 
 	for (i = 0; i <lunghezzaVettoreRicette ; i++) {
 
@@ -226,13 +83,11 @@ int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 
 
-int scelta_visualizzazione(ricetta ricette[],int lunghezzaVettoreRicette){
-
-
-	int numScelta;
+int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette){
+	int numScelta=0;
 
 		do {
-			numScelta = fai_scelta_booleana(MENU_ORDINAMENTO_RICETTE);
+			numScelta = fai_scelta(MENU_ORDINAMENTO_RICETTE);
 
 			switch (numScelta) {
 
@@ -241,12 +96,12 @@ int scelta_visualizzazione(ricetta ricette[],int lunghezzaVettoreRicette){
 				visualizza_ricette(ricette,lunghezzaVettoreRicette);
 				break;
 
-			case 2:
+			case MODALITA_ORDINAMENTO_KCAL_PORZIONE:
 				//ordina per kcal
 				visualizza_ricette_ordinate(ricette,lunghezzaVettoreRicette,numScelta);
 				break;
 
-			case 3:
+			case MODALITA_ORDINAMENTO_FREQUENZA:
 				//ordina per frequenza
 				visualizza_ricette_ordinate(ricette,lunghezzaVettoreRicette,numScelta);
 				break;
@@ -262,8 +117,6 @@ int scelta_visualizzazione(ricetta ricette[],int lunghezzaVettoreRicette){
 		}while(numScelta != 0);
 
 		return 0;
-
-
 }
 
 
@@ -467,9 +320,12 @@ int visualizza_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento ali
 	printf("\n%15s   |%15s\n","Quantita","Alimento");
 	int quantita=-1;
 	int cont=0;
-	while((quantita=ricette[indiceRicetta].Alimenti_Quantita[1][cont])!=0 && cont!=NUMERO_MAX_ALIMENTI){
-		printf("%15d   |%15s\n",quantita,alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][cont]].Nome);
-		cont++;
+	int i;
+	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
+		if((quantita=ricette[indiceRicetta].Alimenti_Quantita[1][i])!=0){
+			cont++;
+			printf("%15d   |%15s\n",quantita,alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]].Nome);
+		}
 	}
 	return 1;
 }
@@ -550,7 +406,10 @@ int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento al
 				}
 			}
 		}
-	}else printf("\nL'alimento \"%s\" non esiste! Prima di utilizzarlo inserirlo tra gli alimenti!\n",scelta);
+	}else{
+		printf("\nL'alimento \"%s\" non esiste! Prima di utilizzarlo inserirlo tra gli alimenti!\n",scelta);
+		return 0;
+	}
 
 	return 1;
 
@@ -824,8 +683,13 @@ int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,al
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 		if(ricette[indiceRicetta].Alimenti_Quantita[0][i] > -1){
 			int quantita=ricette[indiceRicetta].Alimenti_Quantita[1][i];
+			//incremento l'utilizzo dell'alimento
+			alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]].Utilizzo+=(quantita*porzioni);
+
 			decrementa_quantita_alimento(&alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]],(quantita*porzioni));
-			modifica_alimento_su_file(alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]]);
+
+
+			//modifica_alimento_su_file(alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]]);
 		}
 
 	}
@@ -900,17 +764,20 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 
 
 			//aggiunta degli alimenti alla ricetta
-			printf("\nInserimento alimenti della ricetta\n");
+			printf("\nInserimento alimenti della ricetta\n%s\n",STRINGASTERISCHI);
 			boolean flag;
+			int flag1=0;
 			do{
 				flag=false;
 
-				inserimento_alimento_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
+				if(flag1==0){
+					flag1 = inserimento_alimento_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
+				}else inserimento_alimento_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 
 				visualizza_alimenti_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 
 				if(fai_scelta_booleana("\n\nVuoi aggiungere un altro alimento alla ricetta? ") == true) flag=true;
-			}while(flag==true);
+			}while(flag==true || flag1 == 0);
 
 
 			printf("\nRicetta inserita con successo!\n");
@@ -956,13 +823,13 @@ int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,aliment
 		case 1:
 
 			//viualizza lista ricette
-			scelta_visualizzazione(ricette, lunghezzaVettoreRicette);
+			scelta_visualizzazione_ricette(ricette, lunghezzaVettoreRicette);
 			break;
 
 		case 2:
 
 			//aggiungi ricetta
-			lunghezzaVettoreRicette=inserimento_ricetta(alimenti,lunghezzaVettoreRicette,ricette,lunghezzaVettoreRicette,nuovoIndirizzoRicette);
+			lunghezzaVettoreRicette=inserimento_ricetta(alimenti,lunghezzaVettoreAlimenti,ricette,lunghezzaVettoreRicette,nuovoIndirizzoRicette);
 
 			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di una nuovo ricetta
 			ricette=(ricetta*)(*nuovoIndirizzoRicette);

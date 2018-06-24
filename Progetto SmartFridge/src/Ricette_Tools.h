@@ -15,7 +15,7 @@ int visualizza_ricette_ordinate(ricetta[], int);
 
 int visualizza_ricette(ricetta[], int);
 
-int scelta_visualizzazione(ricetta[], int);
+int scelta_visualizzazione_ricette(ricetta[], int);
 
 int cancella_ricetta(ricetta[],int);
 
@@ -29,13 +29,6 @@ int modifica_nome_ricetta(ricetta[],int,int);
 
 int modifica_kcalporzione_ricetta(ricetta[],int);
 
-
-
-int sort_ricette (ricetta[], int[], int, int);
-
-int merge_sort_ricette(ricetta[], int, int, int[], int);
-
-int merging_ricette(ricetta[], int, int, int, int[], int);
 
 
 

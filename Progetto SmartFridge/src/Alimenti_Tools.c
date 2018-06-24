@@ -7,6 +7,7 @@
 #include "Tipi_Dato.h"
 #include <String.h>
 #include "Data_Tools.h"
+#include "Ordinamenti_Tools.h"
 
 
 
@@ -105,12 +106,14 @@ int get_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti,
 int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 	int i;
+	int cont=0;
 
 	printf("Alimenti presenti:\n");
 	for (i = 0; i < lunghezzaVettoreAlimenti ; i++) {
 
-		printf("%d - %30s \t| Peso: %5d \t| Id: %3d   |   Quantita: %5d   | Kcal: %5.3f  | V:%s\n", i,
-		alimenti[i].Nome, alimenti[i].Peso, alimenti[i].ID_Alimento,
+		if(alimenti[i].Visibilita == true || alimenti[i].Visibilita == false )
+		printf("%d - %30s \t| Utilizzo: %5d \t| Id: %3d   |   Quantita: %5d   | Kcal: %5.3f  | V:%s\n", ++cont,
+		alimenti[i].Nome, alimenti[i].Utilizzo, alimenti[i].ID_Alimento,
 		get_quantita(alimenti[i]),alimenti[i].Kcal_Pezzo,(alimenti[i].Visibilita)?"true":"false");
 	}
 	return 1;
@@ -411,9 +414,8 @@ int decrementa_quantita_alimento(alimento* alim, int quantita){
 		if((*alim).Scadenze[j].Quantita>=quantita){
 			(*alim).Scadenze[j].Quantita-=quantita;
 			 quantita=0;
-			 if(j==0){
+			 if(j==0 && (*alim).Scadenze[j].Quantita == 0){
 				 (*alim).Visibilita=false;
-				 modifica_alimento_su_file((*alim));
 			 }
 			 break;
 		}
@@ -422,6 +424,7 @@ int decrementa_quantita_alimento(alimento* alim, int quantita){
 			(*alim).Scadenze[j].Quantita=0;
 		}
 	}
+	modifica_alimento_su_file((*alim));
 	return 1;
 }
 
@@ -505,6 +508,71 @@ int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 
 
+int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAlimenti, int modalitaOrdinamento) {
+
+	int i;
+	int indici[lunghezzaVettoreAlimenti];
+
+	printf("Ricette presenti \n");
+
+
+	sort_alimenti(alimenti, indici, lunghezzaVettoreAlimenti, modalitaOrdinamento);
+	int cont=0;
+
+	for (i = 0; i <lunghezzaVettoreAlimenti ; i++) {
+
+		if (alimenti[indici[i]].Visibilita==true){
+			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", ++cont,
+							alimenti[indici[i]].Nome, alimenti[indici[i]].Kcal_Pezzo, alimenti[indici[i]].ID_Alimento, alimenti[indici[i]].Utilizzo,(alimenti[indici[i]].Visibilita)?"true":"false");
+		}
+
+
+	}
+
+
+	return 1;
+}
+
+
+
+int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti){
+	int numScelta=0;
+
+		do {
+			numScelta = fai_scelta(MENU_ORDINAMENTO_RICETTE);
+
+			switch (numScelta) {
+
+			case 1:
+				//ordinamento Normale
+				visualizza_alimenti(alimenti,lunghezzaVettoreAlimenti);
+				break;
+
+			case MODALITA_ORDINAMENTO_KCAL_PORZIONE:
+				//ordina per kcal
+				visualizza_alimenti_ordinati(alimenti,lunghezzaVettoreAlimenti,numScelta);
+				break;
+
+			case MODALITA_ORDINAMENTO_FREQUENZA:
+				//ordina per frequenza
+				visualizza_alimenti_ordinati(alimenti,lunghezzaVettoreAlimenti,numScelta);
+				break;
+
+			case 0:
+				//case di uscita dal sottomenu
+				break;
+
+			default:
+				printf("Scelta errata! Riprova!\n");
+
+			}
+		}while(numScelta != 0);
+
+		return 0;
+}
+
+
+
 
 
 /* FUNZIONE CHE GESTISCE IL MENU RELATIVO AGLI ALIMENTI		*
@@ -522,7 +590,7 @@ int scelta_opzioni_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 		case 1:
 
 			//visualizza alimenti
-			visualizza_alimenti(alimenti, lunghezzaVettoreAlimenti);
+			scelta_visualizzazione_alimenti(alimenti, lunghezzaVettoreAlimenti);
 
 			break;
 		case 2:
