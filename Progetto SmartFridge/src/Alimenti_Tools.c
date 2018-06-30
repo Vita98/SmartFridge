@@ -1,9 +1,16 @@
-/*
- * Alimenti_Tools.c
- *
- *  Created on: 22 mag 2018
- *      Author: My-PC
+/**
+ *  @file 	   Alimenti_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Alimenti_Tools.c
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
+
+
+
+
 #include "Tipi_Dato.h"
 #include <String.h>
 #include "Data_Tools.h"
@@ -15,8 +22,14 @@
 
 
 
-/* FUNZIONE CHE RECUPERA DAL VETTORE DELLE SCADENZE			*
- * LA QUANTITA' DELL'ALIMENTO PASSATO TRAMITE IL PARAMETRO	*/
+/**
+ * Dato l'alimento come parametro, la funzione calcola la quantita
+ * di alimento presente all'interno dello smart fridge.
+ *
+ * @pre il vettore di scadenze dell'alimento deve essere gia
+ * inizializzato altrimenti la funzione potrebbe restituire risulatati
+ * inattesi.
+ */
 int get_quantita(alimento alim) {
 
 	int quantita = 0, j;
@@ -30,13 +43,18 @@ int get_quantita(alimento alim) {
 
 
 
-/* FUNZIONE CHE SERVE PER VERIFICARE SE ESISTE GIA LA DATA DI		*
- * SCADENZA PASSATA COME PARAMETRO ALL'INTERNO DEL VETTORE DI 	 	*
- * SCADENZE DELL'ALIMENTO alim ANCHESSO PASSATO COME PARAMETRO		*
- * 																	*
- * LA FUNZIONE RITORNA -1 SE NON VIENE TROVATA NESSUNA 				*
- * CORRISPONDENZA, ALTRIMENTI RITORNA LA POSIZIONE DELLA PRIMA 		*
- * OCCORRENZA														*/
+/**
+ * Dato l'alimento e la data , passati come parametro, la funzione verifica
+ * se la data e' una data di scadenza dell'alimento presente nello
+ * smart fridge.
+ *
+ * @pre il vettore di scadenze dell'alimento deve essere gia
+ * inizializzato altrimenti la funzione potrebbe restituire risulatati
+ * inattesi.
+ *
+ * @pre la funzione controlla se la data e' uguale confrontando
+ * solamente il giorno, mese e anno.
+ */
 int get_data_scadenza(alimento alim,data_ora data){
 
 	int i;
@@ -47,28 +65,27 @@ int get_data_scadenza(alimento alim,data_ora data){
 			return i;
 		}
 	}
-
 	return -1;
-
 }
 
 
 
 
 
-/* FUNZIONE CHE SERVE PER VERIFICARE SE ESISTE L'ALIMENTO PASSATO	*
- * COME PARAMETRO Parametri_Ricerca NEL VETTORE DI ALIMENTI			*
- * 																	*
- * SE IL PARAMETRO Visibilita E' true CONTROLLA TRA TUTTI GLI		*
- * ALIMENTI CON VISIBILITA true 									*
- * ALTRIMENTI CONTROLLA ANCHE TRA QUALLI 'CANCELLATI'				*
- * 																	*
- * LA FUNZIONE ELIMINA TUTTI GLI SPAZI FINALI E INIZIALI DELLE DUE	*
- * STRINGHE E INOLTRE NE CREA UNA COPIA IN MINUSCOLO				*
- * 																	*
- * LA FUNZIONE RITORNA -1 SE NON VIENE TROVATA NESSUNA 				*
- * CORRISPONDENZA, ALTRIMENTI RITORNA LA POSIZIONE DELLA PRIMA 		*
- * OCCORRENZA														*/
+/**
+ * Data il nome della ricetta come parametro, la funzione verifice
+ * se esiste una ricetta con quel nome nel vettore di alimenti anche esso
+ * passato come parametri.
+ * Se il parametro visibilita e' true la funzione ricerchera la ricetta
+ * tra tutti gli alimenti disponibili altrimenti se e' false, la ricerca
+ * verra effettuata anche tra gli alimenti cancellati o non disponibili.
+ *
+ * @pre la stringa dei parametri di ricerca non deve essere elaborata
+ * in nessun modo in quanto all'interno della funzione essa viene
+ * elaborata in maniera tale da assicurare una corrispondenza,
+ * nell'eventualita di matching con stringhe maiusole e minuscole
+ * o di presenza di spazi all'inizio o alla fine.
+ */
 int get_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti,
 		char parametriRicerca[],boolean visibilita) {
 
@@ -99,10 +116,16 @@ int get_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti,
 
 
 
-/* FUNZIONE CHE HA IL COMPITO DI VISUALIZZARE IN CONSOLE 	*
- * LE INFORMAZIONI DI GLI ALIMENTI PRESENTI NEL VETTORE		*
- * 															*
- * RITORNA 1 SE L'OPERAZIONE E' ANDATA A BUON FINE			*/
+/**
+ * Funzione che ha il compito di visualizzare in console, in una determinata formattazione,
+ * le informazioni riguardanti gli alimenti presenti nello smart fridge.
+ *
+ * @pre il vettore di alimenti deve essere pieno o inizializzato.
+ *
+ * @warning la lunghezza del vettore deve essere la lunghezza effettiva
+ * in quanto una discordanza potrebbe causare una lettura di porzioni
+ * di memoria non allocate.
+ */
 int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 	int i;
@@ -116,6 +139,9 @@ int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 		alimenti[i].Nome, alimenti[i].Utilizzo, alimenti[i].ID_Alimento,
 		get_quantita(alimenti[i]),alimenti[i].Kcal_Pezzo,(alimenti[i].Visibilita)?"true":"false");
 	}
+
+	//controllo se ha visualizzato almento un elemento
+	if (cont == 0) printf("\nNon ci sono alimenti disponibili!\n");
 	return 1;
 }
 
@@ -124,12 +150,17 @@ int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 
 
-/* FUNZIONE CHE APPLICA LE MODIFICHE EFFETTUATE		*
- * PRECEDENTEMENTE NELL'ALIMENTO ALL'INTERNO DEL 	*
- * FILE NELLA CORRETTA POSIZIONE					*
- * 													*
- * LA FUNZIONE RITORNA 1 SE LA PROCEDURA È ANDATA 	*
- * A BUON FINE ALTRIMENTI 0*/
+/**
+ * Dato l'alimento passato come parametro, la funzione lo sovrascrive
+ * alla sua vecchia versione all'interno del file.
+ * Viene utilizzato per far riflettere le modifiche dal vettore
+ * al file.
+ *
+ * @pre il file Alimenti.sf deve gia esistere.
+ * @pre non deve essere stato modificato l'ID dell'alimento
+ * in quanto potrebbe andare a effettuare delle modifiche
+ * inopportune all'interno del file.
+ */
 int modifica_alimento_su_file(alimento alim){
 	FILE *file;
 
@@ -148,11 +179,13 @@ int modifica_alimento_su_file(alimento alim){
 
 
 
-/* FUNZIONE CHE AGGIUNGE L'ALIMENTO PASSATO COME	*
- * PARAMETRO IN CODA AL FILE DI ALIMENTI			*
- * 													*
- * SE L'AGGIUNTA È ANDATA A BUON FINE LA FUNZIONE	*
- * RESTITUISCE 1, ALTRIMENTI 0						*/
+/**
+ * Dato l'alimento passato come parametro, la funzione lo aggiunge in coda
+ * al file di alimenti.
+ *
+ * @pre l'ID dell'alimento deve essere il numero sequenziale
+ * dell'alimento su file.
+ */
 int aggiungi_alimento_su_file(alimento alim){
 	FILE *file;
 
@@ -172,16 +205,19 @@ int aggiungi_alimento_su_file(alimento alim){
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE IL NOME		*
- * DELL'ALIMENTO CON INDICE indice PASSATO COME PARAMETRO		*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
- * VETTORE DI ALIMENTI CHE SU FILE E INOLTRE VIENE CONTROLLATO	*
- * SE IL NOME INSERITO DALL'UTENTE È GIA ESISTENTE E QUINDI		*
- * UTILIZZABILE O NO			 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione specifica che si occupa di tutto quello che riguarda
+ * la modifica del nome di un alimento di cui viene passato l'indice
+ * all'interno del vettore di alimenti.
+ * Si accupa della richiesta delle nuove informazioni all'utente
+ * e degli opportuni controlli.
+ *
+ * @pre l'indice passato come parametro deve essere un indice valido
+ * per il vettore di alimenti.
+ */
 int modifica_nome_alimento(alimento alimenti[],int lunghezzaVettoreAlimenti,int indiceAlimento){
+
+	if(indiceAlimento >= lunghezzaVettoreAlimenti || indiceAlimento < 0) return 0;
 
 	char scelta[LUNGHEZZA_STRINGA];
 	boolean flag;
@@ -206,6 +242,7 @@ int modifica_nome_alimento(alimento alimenti[],int lunghezzaVettoreAlimenti,int 
 	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica del nome avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica del nome su file!\n");
+		return 0;
 	}
 
 	return 1;
@@ -216,13 +253,14 @@ int modifica_nome_alimento(alimento alimenti[],int lunghezzaVettoreAlimenti,int 
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE LE KCAL		*
- * DELL'ALIMENTO CON INDICE indice PASSATO COME PARAMETRO		*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
- * VETTORE DI ALIMENTI CHE SU FILE 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione specifica che si occupa di tutto quello che riguarda
+ * la modifica delle kcal di un alimento di cui viene passato l'indice
+ * all'interno del vettore di alimenti.
+ * Si accupa della richiesta delle nuove informazioni all'utente
+ * e degli opportuni controlli.
+ *
+ */
 int modifica_kcal_alimento(alimento alimenti[],int indiceAlimento){
 	double Kcal=0.0;
 
@@ -235,6 +273,7 @@ int modifica_kcal_alimento(alimento alimenti[],int indiceAlimento){
 	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica delle Kcal avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica delle Kcal su file!\n");
+		return 0;
 	}
 
 	return 1;
@@ -245,13 +284,14 @@ int modifica_kcal_alimento(alimento alimenti[],int indiceAlimento){
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE IL PESO		*
- * DELL'ALIMENTO CON INDICE indice PASSATO COME PARAMETRO		*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
- * VETTORE DI ALIMENTI CHE SU FILE 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione specifica che si occupa di tutto quello che riguarda
+ * la modifica del peso di un alimento di cui viene passato l'indice
+ * all'interno del vettore di alimenti.
+ * Si accupa della richiesta delle nuove informazioni all'utente
+ * e degli opportuni controlli.
+ *
+ */
 int modifica_peso_alimento(alimento alimenti[],int indiceAlimento){
 	int peso=0;
 	char stringa[LUNGHEZZA_STRINGA];
@@ -272,6 +312,7 @@ int modifica_peso_alimento(alimento alimenti[],int indiceAlimento){
 	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica del peso avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica del peso su file!\n");
+		return 0;
 	}
 
 	return 1;
@@ -282,12 +323,11 @@ int modifica_peso_alimento(alimento alimenti[],int indiceAlimento){
 
 
 
-/* FUNZIONE CHE HA IL COMPITO DI VISUALIZZARE IN CONSOLE	*
- * ALL'UTENTE TUTTE LE QUANTITA E LE DATE DI SCADENZA 		*
- * PRESENTI NEL VETTORE SCADENZE DELL'ALIMENTO CON INDICE	*
- * indice PASSATO COME PARAMETRO							*
- * 															*
- * RITORNA 1 SE TUTTO È ANDATO BENE							*/
+/**
+ * Dato l'indice di un alimento come parametro, la funzione visualizza in console
+ * tutto il vettore di scadenze, con le relative quantita e date di scadenza.
+ *
+ */
 int visualizza_quantita_scadenze(alimento alimenti[],int indiceAlimento){
 	printf("\n N | %s    |     %s\n","Quantita","Scadenza");
 	printf("------------------------------------\n");
@@ -304,13 +344,14 @@ int visualizza_quantita_scadenze(alimento alimenti[],int indiceAlimento){
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE LA QUANTITA	*
- * DELL'ALIMENTO CON INDICE indice PASSATO COME PARAMETRO		*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
- * VETTORE DI ALIMENTI CHE SU FILE 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione specifica che si occupa di tutto quello che riguarda
+ * la modifica della quantita di un alimento di cui viene passato l'indice
+ * all'interno del vettore di alimenti.
+ * Si accupa della richiesta delle nuove informazioni all'utente
+ * e degli opportuni controlli.
+ *
+ */
 int modifica_quantita_alimento(alimento alimenti[],int indiceAlimento){
 	printf("\n\nModifica Quantita alimento\n");
 
@@ -338,7 +379,10 @@ int modifica_quantita_alimento(alimento alimenti[],int indiceAlimento){
 
 	//modifica del file
 	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica della quantita avvenuta con successo!\n");
-	else printf("\nErrore nella modifica della quantita su file!\n");
+	else{
+		printf("\nErrore nella modifica della quantita su file!\n");
+		return 0;
+	}
 
 	return 1;
 }
@@ -348,14 +392,14 @@ int modifica_quantita_alimento(alimento alimenti[],int indiceAlimento){
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE IL VETTORE	*
- * SCADENZE DELL'ALIMENTO CON INDICE indice PASSATO COME 		*
- * PARAMETRO													*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT I VALORI E LI AGGIORNA SIA SUL 	*
- * VETTORE DI ALIMENTI CHE SU FILE 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione specifica che si occupa di tutto quello che riguarda
+ * la modifica delle scadenze di un alimento di cui viene passato l'indice
+ * all'interno del vettore di alimenti.
+ * Si accupa della richiesta delle nuove informazioni all'utente
+ * e degli opportuni controlli.
+ *
+ */
 int modifica_scadenze_alimento(alimento alimenti[],int indiceAlimento){
 	printf("\n\nModifica Scadenza alimento\n");
 
@@ -390,6 +434,7 @@ int modifica_scadenze_alimento(alimento alimenti[],int indiceAlimento){
 	if(modifica_alimento_su_file(alimenti[indiceAlimento]) == 1) printf("\nModifica della data di scadenza avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica della quantita su file!\n");
+		return 0;
 	}
 
 	return 1;
@@ -401,13 +446,16 @@ int modifica_scadenze_alimento(alimento alimenti[],int indiceAlimento){
 
 
 
-/* FUNZIONE CHE HA IL COMPITO DI SOTTRARRE AL VETTORE DI	*
- * SCADENZE E QUANTITA DELL'ELEMENTO UNA QUANTITA PASSATA	*
- * COME PARAMETRO. 											*
- * 															*
- * VIENE USATA QUANDO PER ESEMPIO VIENE CONSUMATO UN PASTO	*
- * E BISOGNA SOTTRARRE LE QUANTITA CONSUMATE A QUELLE 		*
- * DISPONIBILI												*/
+/**
+ * Funzione che ha il compito di sottrarre alle quantita del vettore
+ * di scadenze di un alimento,passato come parametro, una quantita
+ * anchessa passata come parametro.
+ * Viene usata quando viene consumato un pasto e bisogna sottrarre
+ * le quantita consumate a quelle disponibili.
+ *
+ * @pre la quantita da sottrarre deve essere minore o uguale
+ * della quantita totale disponibile dell'alimento.
+ */
 int decrementa_quantita_alimento(alimento* alim, int quantita){
 	int  j;
 	for (j = LUNGHEZZA_VET_SCADENZE-1; j >= 0; j--) {
@@ -424,8 +472,7 @@ int decrementa_quantita_alimento(alimento* alim, int quantita){
 			(*alim).Scadenze[j].Quantita=0;
 		}
 	}
-	modifica_alimento_su_file((*alim));
-	return 1;
+	return modifica_alimento_su_file((*alim));
 }
 
 
@@ -434,8 +481,15 @@ int decrementa_quantita_alimento(alimento* alim, int quantita){
 
 
 
-/* FUNZIONE CHE EFFETTUA LA MODIFICA DI UN DETERMINATO		*
- * ALIMENTO CHIESTO IN INPUT NELLA STESSA FUNZIONE			*/
+/**
+ * Funzione che gestisce tutte le operazioni per la modifica di un alimento.
+ * Chiede all'utente l'alimento da modificare e che tipo di modifica fare
+ * per poi richiamare le funzioni rispettive per effettuare la modifica.
+ *
+ * @pre il vettore di alimenti deve essere inizializzato.
+ * @pre la lunghezza del vettore di alimenti deve corrispondere con
+ * la reale lunghezza del vettore.
+ */
 int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 	printf("\n\n             Modifica Alimento\n");
@@ -508,6 +562,16 @@ int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 
 
+
+
+/**
+ * Funzione che ha il compito di richiamare l'algoritmo di ordinamento
+ * secondo la modalita di ordinamento passata come parametro
+ * e, successivamente, di visualizzare tutti gli alimenti ordinati.
+ *
+ * @pre il numero di modalita di ordinamento deve essere una modalita
+ * valida.
+ */
 int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAlimenti, int modalitaOrdinamento) {
 
 	int i;
@@ -515,26 +579,30 @@ int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAliment
 
 	printf("Ricette presenti \n");
 
-
 	sort_alimenti(alimenti, indici, lunghezzaVettoreAlimenti, modalitaOrdinamento);
 	int cont=0;
 
 	for (i = 0; i <lunghezzaVettoreAlimenti ; i++) {
-
 		if (alimenti[indici[i]].Visibilita==true){
 			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", ++cont,
 							alimenti[indici[i]].Nome, alimenti[indici[i]].Kcal_Pezzo, alimenti[indici[i]].ID_Alimento, alimenti[indici[i]].Utilizzo,(alimenti[indici[i]].Visibilita)?"true":"false");
 		}
-
-
 	}
-
-
 	return 1;
 }
 
 
 
+
+
+
+
+/**
+ * Funzione che gestisce tutte le operazioni di ordinamento del vettore di alimenti.
+ * La funzione chiede all'utente in che modalita di ordinamento si vuole
+ * visualizzare il vettore e richiama le opportune funzioni.
+ *
+ */
 int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti){
 	int numScelta=0;
 
@@ -568,18 +636,20 @@ int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlim
 			}
 		}while(numScelta != 0);
 
-		return 0;
+		return 1;
 }
 
 
 
 
 
-/* FUNZIONE CHE GESTISCE IL MENU RELATIVO AGLI ALIMENTI		*
- * CHIEDE ALL'UNTETE DI FARE UNA SCELTA E CONTROLLA CHE		*
- * LA SCELTA SIA VALIDA; 									*
- * SE LO E' RICHIAMA LE OPPORTUNE FUNZIONI CHE ESEGUONO		*
- * IL PARTOCOLARE COMPITO									*/
+/**
+ * Funzione che gestisce il menu riguardante tutte le opzioni
+ * relative agli alimenti.
+ * Chiede all'utente di fare una scelta e richiama le opportune funzioni
+ * per svolgere quel determinato compito.
+ *
+ */
 int scelta_opzioni_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 	int NumScelta=1;
 

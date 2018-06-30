@@ -197,6 +197,10 @@ typedef struct{
  */
 typedef struct{
 
+	/**
+	 * Numero intero che rappresenta la quantita di
+	 * alimenti aventi data di scadenza Data_Scadenza.
+	 */
 	int Quantita;
 	data_ora Data_Scadenza;
 
@@ -218,9 +222,11 @@ typedef struct{
 
 	/**
 	 * Numero progressivo dell'alimento utilizzato
-	 * per accedere in maniera diretta sul file.
+	 * per accedere in maniera diretta sul file
+	 * e per identificare univocamente gli alimenti.
 	 */
 	int ID_Alimento;
+
 	char Nome[LUNGHEZZA_STRINGA];
 
 	/**
@@ -229,7 +235,7 @@ typedef struct{
 	double Kcal_Pezzo;
 
 	/**
-	 * Peso di un singolo alimento non divisibile e consumabile
+	 * Peso in grammi di un singolo alimento non divisibile e consumabile
 	 * interamente.
 	 */
 	int Peso;					//Peso in grammi
@@ -266,11 +272,40 @@ typedef struct{
  */
 typedef struct{
 
+	/**
+	 * Numero progressivo della ricetta utilizzato
+	 * per accedere in maniera diretta sul file e per
+	 * identificare univocamente le ricette.
+	 */
 	int ID_Ricetta;
+
 	char Nome[LUNGHEZZA_STRINGA];
+
+	/**
+	 * Apporto calorico della ricetta per una
+	 * singola porzione.
+	 */
 	double Kcal_Porzione;
+
+	/**
+	 * Matrice che contiene gli alimenti che compongono la ricetta
+	 * e le rispettive quantita.
+	 * Nella prima riga abbiamo gli ID degli alimenti, nella
+	 * seconda riga le quantita necessarie, del rispettivo alimento,
+	 * per preparare la ricetta.
+	 */
 	int Alimenti_Quantita[2][NUMERO_MAX_ALIMENTI];
+
+	/**
+	 * Numero di volte che è stata consumata la ricetta.
+	 */
 	int Frequenza;
+
+	/**
+	 * Variabile booleana per indicare se la ricetta e'stato cancellata oppure no.
+	 * La cancellazione non e' effettiva in quanto potrebbero essere
+	 * presenti delle consumazioni con i riferimenti ad una ricetta cancellata e non disponibile.
+	 */
 	boolean Visibilita;
 
 }ricetta;
@@ -283,13 +318,29 @@ typedef struct{
 
 
 /**
- * Struttura per la gestione dei pasti
+ * Struttura per la gestione dei pasti e dello storico dei pasti.
  */
 typedef struct{
 
+	/**
+	 * Numero identificativo della ricetta che e' stata consumata
+	 * nel pasto.
+	 */
 	int ID_Ricetta;
+
+	/**
+	 * Numero di porzioni che vengono consumate nel pasto.
+	 */
 	int Porzioni;
+
+	/**
+	 * Data in cui viene consumato il pasto.
+	 */
 	data_ora Data_Ora;
+
+	/**
+	 * Variabile booleana per indicare se il pasto e'stato cancellata oppure no.
+	 */
 	boolean visibilita;
 
 }pasto;
@@ -306,8 +357,20 @@ typedef struct{
  */
 typedef struct{
 
+	/**
+	 * Numero identificativo dell'alimento che si e' acquistato (storico spesa)
+	 * oppure dell'alimento che si vuole suggerire di acquistare (lista della spesa).
+	 */
 	int ID_Alimento;
+
+	/**
+	 * Data di acquisto dell'alimento (storico spesa).
+	 */
 	data_ora Data_Ora;
+
+	/**
+	 * Quantita di alimento che si e' acquistata (storico spesa).
+	 */
 	int Quantita;
 
 }elemento_spesa;
