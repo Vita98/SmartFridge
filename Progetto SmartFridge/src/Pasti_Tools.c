@@ -8,12 +8,16 @@
  *  @copyright GNU Public License.
  */
 
+
+
+
 #include "Tipi_Dato.h"
 #include "Messaggi_Menu.h"
 #include "Ricette_Tools.h"
 #include "Data_Tools.h"
 #include "Alimenti_Tools.h"
 #include "Caricamento_Vettori_Tools.h"
+
 
 
 
@@ -551,7 +555,7 @@ pasto leggi_iesimo_pasto(int indicePasto){
  * @pre indiceRicetta deve essere un indice di ricetta valido.
  *
  */
-boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,ricetta ricette[],alimento alimenti[]){
+boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,ricetta ricette[],alimento alimenti[],data_ora data_pasto){
 
 	int i;
 	int numeroPorzioniPossibili=0;
@@ -593,6 +597,8 @@ boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,
 
 					//confronto le due date
 					if(data_compare(past.Data_Ora,elSpesa.Data_Ora)  <= 0){
+						//caso in cui il pasto e' successivo alla spesa
+
 						if(!feof(fileStoricoSpesa)){
 							//controllo che l'alimento della spesa si presente nella ricetta
 							int indiceAlim;
@@ -603,15 +609,32 @@ boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,
 						}
 
 					}else{
+
+						//controllo se il pasto che sto leggendo e' lo stesso di quello che voglio cambiare
 						if(past.ID_Ricetta == indiceRicetta){
 							flag=true;
 							for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 								if(quantitaAlimentiDisponibili[0][i] != -1){
 									quantitaAlimentiDisponibili[1][i] -= (ricette[indiceRicetta].Alimenti_Quantita[1][i]*past.Porzioni);
-									//mi memorizzo la quantita minima di tutta la cronologia di un pasto
-									if(vettoreQuantitaMinime[i] == -1 || quantitaAlimentiDisponibili[1][i] < vettoreQuantitaMinime[i]) vettoreQuantitaMinime[i] = quantitaAlimentiDisponibili[1][i];
+
+									//mi memorizzo la quantita minima di tutta la cronologia di un pasto solo se la data di consumazione e' successiva alla data del pasto che
+									//si vuole modificare
+									if((vettoreQuantitaMinime[i] == -1 || quantitaAlimentiDisponibili[1][i] < vettoreQuantitaMinime[i]) && data_compare(past.Data_Ora,data_pasto) >= 0) vettoreQuantitaMinime[i] = quantitaAlimentiDisponibili[1][i];
 								}
 							}
+						}else{
+							//se non lo è devo controllare se questa ricetta consumata ha gli stessi alimenti della
+							//ricetta che voglio modificare
+							int j;
+							for(i=0;i<NUMERO_MAX_ALIMENTI;i++)
+							for(j=0;j<NUMERO_MAX_ALIMENTI;j++){
+								//se l'alimento della ricetta consumata e' anche un alimento della ricetta che volgio modificare
+								if(ricette[past.ID_Ricetta].Alimenti_Quantita[0][i] == quantitaAlimentiDisponibili[0][j]){
+									quantitaAlimentiDisponibili[1][j] -= (ricette[past.ID_Ricetta].Alimenti_Quantita[1][i]*past.Porzioni);
+									break;
+								}
+							}
+
 						}
 						if(fread(&past,sizeof(pasto),1,fileStoricoPasti) <= 0) break;
 					}
@@ -698,7 +721,7 @@ int modifica_porzioni_pasto(int indicePasto,alimento alimenti[],ricetta ricette[
 
 		//richiamo la funzione che verifica se in quella data avevo disponibile la quantita
 		//di alimenti per consumare quelle porzioni in piu
-		if(is_possible_add_porzioni_pasto(iesimoPasto.ID_Ricetta,nuovePorzioni-iesimoPasto.Porzioni,ricette,alimenti) == true){
+		if(is_possible_add_porzioni_pasto(iesimoPasto.ID_Ricetta,nuovePorzioni-iesimoPasto.Porzioni,ricette,alimenti,iesimoPasto.Data_Ora) == true){
 			iesimoPasto.Porzioni=nuovePorzioni;
 
 			if(modifica_iesimo_pasto_su_file(iesimoPasto,indicePasto) == 1){
@@ -768,7 +791,7 @@ int cambio_pasto(int indicePasto,alimento alimenti[],ricetta ricette[],int lungh
 		//delle vecchie porzioni che sono almeno 1.
 		if(modifica_porzioni_pasto(indicePasto,alimenti,ricette,0) == 1){
 
-			if(is_possible_add_porzioni_pasto(indiceNuovaRicetta,porzioniNuovaRicetta,ricette, alimenti) == true){
+			if(is_possible_add_porzioni_pasto(indiceNuovaRicetta,porzioniNuovaRicetta,ricette, alimenti,pastoDaModificare.Data_Ora) == true){
 				//consumo il pasto al posto di quello di prima e con quella data
 				pastoDaModificare.ID_Ricetta = indiceNuovaRicetta;
 				pastoDaModificare.Porzioni = porzioniNuovaRicetta;
@@ -801,7 +824,13 @@ int cambio_pasto(int indicePasto,alimento alimenti[],ricetta ricette[],int lungh
 
 
 
-
+/**
+ * Funzione che gestisce tutto quello che riguarda la modifica
+ * di un pasto consumato nel passato quindi la richiesta delle informazioni
+ * in input e i richiami delle adeguate funzioni per i controlli e per
+ * l'effettiva modifica.
+ *
+ */
 int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[]){
 
 	data_ora dataPasto,dataOdierna;

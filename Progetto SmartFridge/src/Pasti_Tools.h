@@ -9,6 +9,8 @@
  *  @copyright GNU Public License.
  */
 
+
+
 #ifndef PASTI_TOOLS_H_
 #define PASTI_TOOLS_H_
 
@@ -156,10 +158,10 @@ int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
  * degli alimenti.
  *
  * @param[in] indicePasto indice su file del pasto che si vuole cancellare.
- * @param[in,ount] alimenti vettore di alimenti in cui verranno effettuate le
+ * @param[in,out] alimenti vettore di alimenti in cui verranno effettuate le
  * modifiche derivanti la cancellazione del pasto.
  *
- * @param[in,ount] ricette vettore di ricette in cui verranno effettuate le
+ * @param[in,out] ricette vettore di ricette in cui verranno effettuate le
  * modifiche derivanti la cancellazione del pasto.
  * @return 1 se la cencellazione su file e le modifiche sono andate a buon fine
  * 0 altrimenti.
@@ -186,7 +188,9 @@ int get_numero_settimane(int giorni);
 
 /**
  * Funzione che gestisce tutto quello che riguarda la modifica
- * di un pasto consumato nel passato.
+ * di un pasto consumato nel passato quindi la richiesta delle informazioni
+ * in input e i richiami delle adeguate funzioni per i controlli e per
+ * l'effettiva modifica.
  *
  * @param[in] ricette vettore di ricette.
  * @param[in] lunghezzaVettoreRicette lunghezza del vettore di ricette.

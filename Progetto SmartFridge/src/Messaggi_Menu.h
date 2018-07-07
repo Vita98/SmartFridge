@@ -1,17 +1,27 @@
-/*
- * Messaggi_Menu.h
+/**
+ *  @file 	   Messaggi_Menu.h
+ *  @brief     File contenente tutte le costanti definite per i messaggi da visualizzare nei vari menu
+ *  		   del programma.
  *
- *  Created on: 17 mag 2018
- *      Author: My-PC
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
 
 #ifndef MESSAGGI_MENU_H_
 #define MESSAGGI_MENU_H_
 
 
+/**
+ * Messaggio del menu principale per la scelta delle varie funzionalita' del programma.
+ */
 #define MENU_PRINCIPALE "\nCosa desidera scegliere?\n****************************************\n1 - Suggerimento della Lista della Spesa\n2 - Suggerimento delle Ricette\n3 - Ricerca Ricette per Alimento\n4 - Opzioni Alimenti\n5 - Opzioni Ricette\n6 - Opzioni Pasti e Menu Settimanale\n7 - Opzioni Spesa\n\n8 - Uscita\n****************************************\nScelta: "
 
-
+/**
+ * Messaggio del menu per la scelta delle opzioni del
+ */
 #define MENU_SUGGERIMENTO_SPESA "\n****************************************\nLa Lista generata rispetterà una soglia minima stabilita\n1 - Genera la Lista della Spesa\n2 - Visualizza l'ultima Lista generata\n3 - Modifica soglia limite\n\n0 - Indietro\n****************************************\nScelta: "
 
 

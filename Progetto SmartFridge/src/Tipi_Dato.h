@@ -164,6 +164,7 @@ typedef enum{
 /**
  * Variabile globale usata per memorizzare il limite spesa letto dal file
  * di configurazione.
+ * Viene utilizzata per determinara la lista della spesa.
  */
 int limite_spesa;
 

@@ -139,8 +139,7 @@ int get_data(char tipoOutput){
 		   //giorno della settimana con 0 la domenica invece
 		   //a me serve avere 0 il lunedi e 6 la domenica.
 		   if((*info).tm_wday == 0) return 6;
-		   else return (*info).tm_wday--;
-		   //return (*info).tm_wday;
+		   else return (*info).tm_wday-1;
    }
 
    return -1;

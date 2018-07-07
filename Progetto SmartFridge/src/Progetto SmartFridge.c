@@ -55,7 +55,7 @@ int main(void) {
 	//creazione e caricamento del vettore di alimenti
 	int lunghezzaVettoreAlimenti = Get_Lunghezza_File_Alimenti();
 	alimento *alimenti=(alimento*) calloc(lunghezzaVettoreAlimenti,sizeof(alimento));
-	Carica_Alimenti(alimenti);
+	if(Carica_Alimenti(alimenti) == 0) printf("\nIl file di alimenti non esiste o e' vuoto!\n");
 
 
 	//creazione e caricamento del vettore di ricette
