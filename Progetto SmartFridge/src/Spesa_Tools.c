@@ -275,7 +275,6 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
  * input all'utente di fare una scelta, di controllare se sia valida,
  * e di eseguire le relative funzioni in base alla scelta fatta.
  *
- *
  */
 int scelta_opzioni_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoAlimenti) {
 	int NumScelta=1;

@@ -1,9 +1,16 @@
-/*
- * Ricette_Tools.c
- *
- *  Created on: 22 mag 2018
- *      Author: My-PC
+/**
+ *  @file 	   Ricette_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Ricette_Tools.h
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
+
+
+
+
 
 #include "Tipi_Dato.h"
 #include <String.h>
@@ -16,14 +23,14 @@
 
 
 
-
-
-
-
-
-
-
-
+/**
+ * Funzione utilizzata per visualizzare all'utente, sul terminale, le ricette in maniera ordinata
+ * in base al parametro modalitaOrdinamento.
+ *
+ * @pre modalitaOrdinamento deve essere necessariamente una costante di ordinamento tra quelle
+ * definite in Tipi_dato.h.
+ *
+ */
 int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, int modalitaOrdinamento) {
 
 	int i;
@@ -32,20 +39,17 @@ int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, 
 	printf("Ricette presenti ");
 	printf ("(%d) :\n",lunghezzaVettoreRicette);
 
-
+	//richiamo la funzione di ordinamento delle ricette con la modalita desiderata
 	sort_ricette(ricette, indici, lunghezzaVettoreRicette, modalitaOrdinamento);
 
 	for (i = 0; i <lunghezzaVettoreRicette ; i++) {
 
+		//faccio visualizzare tutte le ricette non cancellate
 		if (ricette[indici[i]].Visibilita==true){
 			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
 							ricette[indici[i]].Nome, ricette[indici[i]].Kcal_Porzione, ricette[indici[i]].ID_Ricetta, ricette[indici[i]].Frequenza,(ricette[indici[i]].Visibilita)?"true":"false");
 		}
-
-
 	}
-
-
 	return 1;
 }
 
@@ -54,6 +58,11 @@ int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, 
 
 
 
+/**
+ * Funzione utilizzata per visualizzare all'utente, sul terminale, le ricette in ordine di lettura
+ * dal file quindi senza uno specifico ordinamento.
+ *
+ */
 int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	int i;
@@ -64,14 +73,12 @@ int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	for (i = 0; i <lunghezzaVettoreRicette ; i++) {
 
-			if (ricette[i].Visibilita==true ){
-				printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
-								ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
-			}
+		//faccio visualizzare tutte le ricette non cancellate
+		if (ricette[i].Visibilita==true ){
+			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
+							ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
+		}
 	}
-
-
-
 	return 1;
 }
 
@@ -82,7 +89,14 @@ int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 
 
-
+/**
+ * Funzione che gestisce il menu relativo alle opzioni di visualizzazione
+ * delle ricette cioe' permette all'utente di decidere in che modo
+ * visualizzare ordinatamente le ricette o se visualizzarle senza
+ * un ordine specifico.
+ * In base alla scelta, la funzione richiama le specifiche funzioni.
+ *
+ */
 int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette){
 	int numScelta=0;
 
@@ -116,7 +130,7 @@ int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette
 			}
 		}while(numScelta != 0);
 
-		return 0;
+		return 1;
 }
 
 
@@ -126,22 +140,30 @@ int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette
 
 
 
-/* FUNZIONE CHE APPLICA LE MODIFICHE EFFETTUATE		*
- * PRECEDENTEMENTE ALLA RICETTA ALL'INTERNO DEL 	*
- * FILE NELLA CORRETTA POSIZIONE					*
- * 													*
- * LA FUNZIONE RITORNA 1 SE LA PROCEDURA È ANDATA 	*
- * A BUON FINE ALTRIMENTI 0*/
+/**
+ * Data la ricetta passata come parametro, la funzione la sovrascrive
+ * alla sua vecchia versione all'interno del file Ricette.sf.
+ * Viene utilizzato per far riflettere le modifiche dal vettore
+ * al file.
+ *
+ * @pre il file Ricette.sf deve gia esistere.
+ * @pre non deve essere stato modificato l'ID della ricetta
+ * in quanto potrebbe andare a effettuare delle modifiche
+ * inopportune all'interno del file.
+ */
 int modifica_ricetta_su_file(ricetta rice){
 	FILE *file;
 
 	if ((file = fopen("Ricette.sf", "rb+")) == NULL) return 0;
 	else {
-		fseek(file,rice.ID_Ricetta*sizeof(ricetta),SEEK_SET);
-		fwrite(&rice,sizeof(ricetta),1,file);
 
-		fclose(file);
-		return 1;
+		//mi posiziono nella corretta posizione su file
+		fseek(file,rice.ID_Ricetta*sizeof(ricetta),SEEK_SET);
+
+		if(fwrite(&rice,sizeof(ricetta),1,file) > 0){
+			fclose(file);
+			return 1;
+		}else return 0;
 	}
 
 }
@@ -151,38 +173,38 @@ int modifica_ricetta_su_file(ricetta rice){
 
 
 
-/* FUNZIONE CHE SERVE PER VERIFICARE SE ESISTE LA RICETTA PASSATA	*
- * COME PARAMETRO Parametri_Ricerca NEL VETTORE DI RICETTE			*
- * 																	*
- * SE IL PARAMETRO Visibilita E' true CONTROLLA TRA TUTTE LE 		*
- * RICETTE CON VISIBILITA true 			   							*
- * ALTRIMENTI CONTROLLA ANCHE TRA QUALLI 'CANCELLATI'				*
- * 																	*
- * LA FUNZIONE ELIMINA TUTTI GLI SPAZI FINALI E INIZIALI DELLE DUE	*
- * STRINGHE E INOLTRE NE CREA UNA COPIA IN MINUSCOLO				*
- * 																	*
- * LA FUNZIONE RITORNA -1 SE NON VIENE TROVATA NESSUNA 				*
- * CORRISPONDENZA, ALTRIMENTI RITORNA LA POSIZIONE DELLA PRIMA 		*
- * OCCORRENZA														*/
+/**
+ * Data la stringa parametriRicerca come parametro, la funzione cerca se esiste
+ * una ricetta chiamata in quella maniera all'interno del vettore di ricette.
+ * Se il parametro visibilita e' TRUE allora la funzione cerchera la ricetta tra tutte
+ * le ricette con attributo visibilita uguale a true altrimenti la ricerchera anche tra
+ * le ricette 'cancellate'.
+ * Il matching non tiene conto dei caratteri minuscoli e maiuscoli e degli
+ * spazi iniziali e finali.
+ *
+ */
 int get_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,char parametriRicerca[],boolean visibilita){
 
 	int i;
 	char stringTempParametri[LUNGHEZZA_STRINGA];
-	remove_first_last_space(parametriRicerca, stringTempParametri,
-			LUNGHEZZA_STRINGA);
+
+	//rimuovo gli spazi iniziali e finali alla stringa di ricerca
+	remove_first_last_space(parametriRicerca, stringTempParametri,LUNGHEZZA_STRINGA);
 	to_lower_string(stringTempParametri, stringTempParametri);
 
 	for (i = 0; i < lunghezzaVettoreRicette; i++) {
 		char StringTempVettore[LUNGHEZZA_STRINGA];
-		remove_first_last_space(ricette[i].Nome, StringTempVettore,
-				LUNGHEZZA_STRINGA);
+
+		//rimuovo gli spazi iniziali e finali al nome della ricetta
+		remove_first_last_space(ricette[i].Nome, StringTempVettore,LUNGHEZZA_STRINGA);
+
+		//la converto in caratteri minuscoli
 		to_lower_string(StringTempVettore, StringTempVettore);
 
 		//se le due stringhe sono uguali
 		if (strcmp(stringTempParametri, StringTempVettore) == 0)
 		if(ricette[i].Visibilita || ricette[i].Visibilita==visibilita)	return i;
 	}
-
 	return -1;
 }
 
@@ -190,7 +212,12 @@ int get_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,char parametriRice
 
 
 
-
+/**
+ * Funzione che si occupa di tutto quello che riguarda la cancellazione di una ricetta
+ * cioe' chiede in input la ricetta da cancellare, applica i controlli adeguati
+ * e effettua la cancellazione sia sul vettore di ricette che sul file Ricette.sf.
+ *
+ */
 int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -203,9 +230,11 @@ int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 	printf("Inserisci il nome della ricetta che si vuole cancellare: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
 
+	//controllo se la ricetta inserita esiste
 	if((indiceRicetta=get_ricetta(ricette,lunghezzaVettoreRicette,scelta,true)) == -1) printf("\nLa ricetta \"%s\" non esistente!\n",scelta);
 	else{
 
+		//creo una stringa da passare alla funzione fai_scelta_booleana()
 		char StringaElab[LUNGHEZZA_STRINGA];
 		strcpy(StringaElab,"\nSei sicuro di voler cancellare la ricetta \"");
 		strcat(StringaElab,scelta);
@@ -220,12 +249,16 @@ int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 			ricette[indiceRicetta].Visibilita=false;
 
 			//applico le modifiche della ricetta su file
-			modifica_ricetta_su_file(ricette[indiceRicetta]);
+			if(modifica_ricetta_su_file(ricette[indiceRicetta]) == 0){
+				printf("\nErrore nella cancellazione della ricetta!\n");
 
-			printf("\nCancellazione della ricetta effettuata con successo!\n");
+				//annullo la cancellazione anche dal vettore
+				ricette[indiceRicetta].Visibilita=true;
+
+				return 0;
+			}else printf("\nCancellazione della ricetta effettuata con successo!\n");
 		}
 	}
-
 	return 1;
 }
 
@@ -235,16 +268,19 @@ int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE LE KCAL PER 	*
- * PORZIONE DELLA RICETTA CON INDICE indice PASSATO COME 		*
- * PARAMETRO													*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
- * VETTORE DI RICETTE CHE SU FILE 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+
+/**
+ * Funzione che si occupa di tutto quello che riguarda la modifica delle kcal
+ * per porzione di una ricetta il cui ID viene passato come parametro.
+ * La funzione chiede in input un nuovo valore e successivamente effettua la modifica
+ * sia sul vettore di ricette che sul file Ricette.sf.
+ *
+ * @pre indiceRicetta deve essere un indice di ricetta valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
 int modifica_kcalporzione_ricetta(ricetta ricette[],int indiceRicetta){
 	double kcal=0.0;
+	double vecchieCalorie=ricette[indiceRicetta].Kcal_Porzione;
 
 	kcal=fai_scelta_double("\nInserisci le nuove kcal per porzione della Ricetta:\n");
 
@@ -252,12 +288,15 @@ int modifica_kcalporzione_ricetta(ricetta ricette[],int indiceRicetta){
 	ricette[indiceRicetta].Kcal_Porzione=kcal;
 
 	//effettuo la modifica su file
-	if(modifica_ricetta_su_file(ricette[indiceRicetta]) == 1) printf("\nModifica delle Kcal per porzione della Ricetta avvenuta con successo!\n");
+	if(modifica_ricetta_su_file(ricette[indiceRicetta]) == 1) {
+		printf("\nModifica delle Kcal per porzione della Ricetta avvenuta con successo!\n");
+		return 1;
+	}
 	else{
 		printf("\nErrore nella modifica delle Kcal per porzione della Ricetta su file!\n");
+		ricette[indiceRicetta].Kcal_Porzione=vecchieCalorie;
+		return 0;
 	}
-
-	return 1;
 }
 
 
@@ -267,15 +306,16 @@ int modifica_kcalporzione_ricetta(ricetta ricette[],int indiceRicetta){
 
 
 
-/* FUNZIONE SPECIFICA CHE SI OCCUPA DI MODIFICARE IL NOME		*
- * DELLA RICETTA CON INDICE indice PASSATO COME PARAMETRO		*
- * 																*
- * LA FUNZIONE CHIDE IN INPUT IL VALORE E LO AGGIORNA SIA SUL 	*
- * VETTORE DI RICETTE CHE SU FILE E INOLTRE VIENE CONTROLLATO	*
- * SE IL NOME INSERITO DALL'UTENTE È GIA ESISTENTE E QUINDI		*
- * UTILIZZABILE O NO			 								*
- * 																*
- * LA FUNZIONE RITORNA 1 SE È ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione che si occupa di tutto quello che riguarda la modifica del nome
+ * di una ricetta il cui ID viene passato come parametro.
+ * La funzione chiede in input un nuovo nome, controlla se e' un nome valido
+ * e non ancora utilizzato e successivamente effettua la modifica sia sul vettore di ricette che
+ * sul file.
+ *
+ * @pre indiceRicetta deve essere un indice di ricetta valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
 int modifica_nome_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,int indiceRicetta){
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -301,6 +341,7 @@ int modifica_nome_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,int indi
 	if(modifica_ricetta_su_file(ricette[indiceRicetta]) == 1) printf("\nModifica del nome della Ricetta avvenuta con successo!\n");
 	else{
 		printf("\nErrore nella modifica del nome della Ricetta su file!\n");
+		return 0;
 	}
 
 	return 1;
@@ -312,7 +353,13 @@ int modifica_nome_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,int indi
 
 
 
-
+/**
+ * Funzione che, data una ricetta come parametro, visualizza tutti gli alimenti
+ * e le relative quantita che la ricetta necessita per essere preparata.
+ *
+ * @pre indiceRicetta deve essere un indice di ricetta valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
 int visualizza_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 	printf("\n\nAlimenti che formano \"%s\" \n\n",ricette[indiceRicetta].Nome);
 	printf("%s",STRINGASTERISCHI);
@@ -327,7 +374,10 @@ int visualizza_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento ali
 			printf("%15d   |%15s\n",quantita,alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]].Nome);
 		}
 	}
-	return 1;
+
+	//controllo se ho visualizzato almeno un alimento
+	if(cont != 0) return 1;
+	else return 0;
 }
 
 
@@ -335,19 +385,26 @@ int visualizza_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento ali
 
 
 
-
-int get_alimento_ricetta(ricetta ricette[],int indiceRicetta,int idAlimento){
+/**
+ * Funzione che, data una ricetta e un alimento come parametro, controlla se
+ * l'alimento serve per preparare la ricetta.
+ *
+ * @pre indiceRicetta deve essere un indice di ricetta valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ *
+ * @pre indiceAlimento deve essere un indice di alimento valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
+int get_alimento_ricetta(ricetta ricette[],int indiceRicetta,int indiceAlimento){
 
 	int i;
 
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
-		if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0 && ricette[indiceRicetta].Alimenti_Quantita[0][i]==idAlimento){
+		if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0 && ricette[indiceRicetta].Alimenti_Quantita[0][i]==indiceAlimento){
 			return i;
 		}
 	}
-
 	return -1;
-
 }
 
 
@@ -355,6 +412,16 @@ int get_alimento_ricetta(ricetta ricette[],int indiceRicetta,int idAlimento){
 
 
 
+/**
+ * Funzione che, data una ricetta e un alimento con una quantita, aggiunge l'alimento
+ * con la relativa quantita all'interno del vettore di alimenti che compongono
+ * la ricetta.
+ *
+ * @pre indiceAlimento deve essere un indice di alimento valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ *
+ * @pre quantita deve essere maggiore di 0.
+ */
 int salva_alimento_in_ricetta(ricetta *rice,int indiceAlimento,int quantita){
 
 	int i;
@@ -373,7 +440,16 @@ int salva_alimento_in_ricetta(ricetta *rice,int indiceAlimento,int quantita){
 
 
 
-
+/**
+ * Funzione che, data una ricetta come parametro, gestisce tutto quello che riguarda
+ * l'aggiunta di un alimento che compone la ricetta.
+ * La funzione chiede in input l'alimento da aggiungere alla ricetta, controlla se
+ * e' gia usato e successivamente applica la modifica sia sul vettore di ricette che
+ * sul file Ricette.sf.
+ *
+ * @pre indiceRicetta deve essere un indice di alimento valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
 int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -394,14 +470,22 @@ int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento al
 			int quantita;
 			do{
 				quantita=fai_scelta("\nInserisci la quantita di alimento di cui necessita la ricetta: ");
-				if(quantita==0) printf("\nDevi inserire obbligatoriamente un valore maggiore di zero! Riprova!\n");
-			}while(quantita==0);
+				if(quantita<=0) printf("\nDevi inserire obbligatoriamente un valore maggiore di zero! Riprova!\n");
+			}while(quantita<=0);
 
 			if(!salva_alimento_in_ricetta(&ricette[indiceRicetta],IndiceAlimento,quantita)) printf("\nNon puoi piu aggiungere alimenti alla ricetta perche hai raggiunto il numero massimo consentito!\n");
 			else{
 				if(modifica_ricetta_su_file(ricette[indiceRicetta])) printf("\nAggiunta dell'alimento alla ricetta \"%s\" avvenuta con successo!\n",ricette[indiceRicetta].Nome);
 				else{
 					printf("\nErrore nella scrittura della modifica dell'alimento della ricetta su file!\n");
+
+					int indiceAl;
+					//elimino l'aggiunta in quanto si e' verificato un errore nel salvataggio su file
+					if((indiceAl = get_alimento_ricetta(ricette,indiceRicetta,IndiceAlimento)) > -1){
+						ricette[indiceRicetta].Alimenti_Quantita[0][indiceAl]=0;
+						ricette[indiceRicetta].Alimenti_Quantita[0][indiceAl]=-1;
+					}
+
 					return 0;
 				}
 			}
@@ -412,7 +496,6 @@ int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento al
 	}
 
 	return 1;
-
 }
 
 
@@ -420,10 +503,21 @@ int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento al
 
 
 
-
+/**
+ * Funzione che, data una ricetta come parametro, gestisce tutto quello che riguarda
+ * la cancellazione di un alimento che compone la ricetta.
+ * La funzione chiede in input l'alimento da cancellare alla ricetta, controlla se
+ * fa parte della ricetta, effettua la cencellazione e successivamente applica la
+ * modifica sia sul vettore di ricette che sul file Ricette.sf.
+ *
+ * @pre indiceRicetta deve essere un indice di alimento valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
 int cancellazione_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
+	int vecchioIndiceAlimento=-1;
+	int vecchiaQuantitaAlimento=0;
 
 	printf("\nInserisci il nome dell'alimento da cancellare: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
@@ -446,6 +540,9 @@ int cancellazione_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento 
 				return 0;
 			}else{
 
+				vecchioIndiceAlimento=ricette[indiceRicetta].Alimenti_Quantita[1][IndiceAlimentoInRIcetta];
+				vecchiaQuantitaAlimento=ricette[indiceRicetta].Alimenti_Quantita[0][IndiceAlimentoInRIcetta];
+
 				//imposto i parametri prima presenti a zero
 				ricette[indiceRicetta].Alimenti_Quantita[1][IndiceAlimentoInRIcetta]=0;
 				ricette[indiceRicetta].Alimenti_Quantita[0][IndiceAlimentoInRIcetta]=-1;
@@ -455,6 +552,11 @@ int cancellazione_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento 
 					return 1;
 				}else{
 					printf("\nErrore nella cancellazione dell'alimento \"%s\" dalla ricetta \"%s\" !\n",alimenti[IndiceAlimento].Nome,ricette[indiceRicetta].Nome);
+
+					//ripristino i vecchi valori anche nel vettore dato che si e' verificato un errore nella modifica su file
+					ricette[indiceRicetta].Alimenti_Quantita[1][IndiceAlimentoInRIcetta]=vecchiaQuantitaAlimento;
+					ricette[indiceRicetta].Alimenti_Quantita[0][IndiceAlimentoInRIcetta]=vecchioIndiceAlimento;
+
 					return 0;
 				}
 			}
@@ -472,7 +574,16 @@ int cancellazione_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento 
 
 
 
-
+/**
+ * Funzione che, data una ricetta come parametro, gestisce tutto quello che riguarda
+ * la modifica della relativa quantita di un alimento che compone la ricetta.
+ * La funzione chiede in input l'alimento di cui si vuole cancellare la quantita, controlla se
+ * fa parte della ricetta, chiede la nuova quantita, effettua la modifica e successivamente applica la
+ * modifica sia sul vettore di ricette che sul file Ricette.sf.
+ *
+ * @pre indiceRicetta deve essere un indice di alimento valido. Se non lo dovesse essere potrebbe
+ * causare una lettura illecita della memoria o una modifica su file incorretta.
+ */
 int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -483,6 +594,8 @@ int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alime
 	int indiceAlimento;
 	int indiceAlimentoInRicetta;
 
+	int vecchiaQuantita;
+
 	//controllo se l'alimento inserito in input esiste nel vettore di alimenti
 	if((indiceAlimento=get_alimento(alimenti,lunghezzaVettoreAlimenti,scelta,false)) > -1){
 
@@ -491,6 +604,8 @@ int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alime
 			printf("\nL'alimento che stai cercando di cancellare non fa parte della ricetta \"%s\"\n",ricette[indiceRicetta].Nome);
 			return 0;
 		}else{
+
+			vecchiaQuantita=ricette[indiceRicetta].Alimenti_Quantita[1][indiceAlimentoInRicetta];
 
 			int quantita;
 			do{
@@ -507,6 +622,10 @@ int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alime
 				return 1;
 			}else{
 				printf("\nErrore nella modifica della quantita di \"%s\" della ricetta \"%s\" su file!\n",alimenti[indiceAlimento].Nome,ricette[indiceRicetta].Nome);
+
+				//annullo la modifica anche sul vettore in quanto si e' veirificato un errore nella modifica su file
+				ricette[indiceRicetta].Alimenti_Quantita[1][indiceAlimentoInRicetta]=vecchiaQuantita;
+
 				return 0;
 			}
 		}
@@ -522,7 +641,13 @@ int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alime
 
 
 
-
+/**
+ * Funzione che gestisce il menu che riguarda le opzioni di modifica degli
+ * alimenti che compongono una ricetta.
+ * La funzione chiede di scelgliere che tipo di modifica fare e successivamente
+ * richiama le opportune funzioni.
+ *
+ */
 int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	visualizza_alimenti_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
@@ -554,8 +679,6 @@ int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alime
 		}
 	}while(numScelta!=0);
 
-
-
 	return 1;
 }
 
@@ -567,9 +690,14 @@ int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alime
 
 
 
-/* FUNZIONE CHE EFFETTUA LA MODIFICA DI UNA DETERMINATA		*
- * RICETTA CHIESTA IN INPUT NELLA STESSA FUNZIONE			*/
-int modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
+/**
+ * Funzione che gestisce il menu che riguarda la scelta del tipo di modifica da effettuare
+ * sulla ricetta. La funzione chiede in input la ricetta da modificare, il tipo
+ * di modifica da fare , effettua i controlli adeguati e infine richiama le
+ * opportune funzioni in base al tipo di modifica.
+ *
+ */
+int scelta_modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	printf("\n\n             Modifica Ricetta\n");
 	printf("\n%s\n",STRINGASTERISCHI);
@@ -584,8 +712,6 @@ int modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alim
 	if ((indice=get_ricetta(ricette, lunghezzaVettoreRicette,scelta,true)) > -1) {
 		//se ritorna un valore >-1 vuol dire che ha trovato una corrispondenza
 		printf("\n\nRicetta Trovata\n\n");
-
-
 
 		//devo fare la modifica effettiva
 		int NumScelta=1;
@@ -618,12 +744,9 @@ int modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alim
 				default:
 					printf("Scelta errata! Riprova!\n");
 			}
-
 		} while (NumScelta != 0);
 
-
-	} else
-		printf("\n\nNon esiste nessuna ricetta che si chiama in quel modo!\n\n");
+	}else printf("\n\nNon esiste nessuna ricetta che si chiama in quel modo!\n\n");
 
 	return 1;
 }
@@ -634,13 +757,12 @@ int modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alim
 
 
 
-/* FUNZIONE CHE CALCOLA IL NUMERO DI POSSIBILI 	*
- * PORZIONI IN BASE ALLE QUANTITA DI ALIMENTI 	*
- * DISPONIBILI DI UNA RICETTA PASSATA COME 		*
- * PARAMETRO.									*
- * 												*
- * LA FUNZIONE RITORNA IL NUMERO DI PORZIONI	*
- * POSSIBILI SE CI SONO,ALTRIMENTI -1			*/
+/**
+ * Data una ricetta passata come parametro, la funzione calcola il numero
+ * di porzioni che e' possibile preparare per quella ricetta in base alle
+ * quantita degli alimenti presenti nel frigo.
+ *
+ */
 int get_numero_porzioni_possibili_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int indiceRicetta){
 
 	int i;
@@ -650,15 +772,21 @@ int get_numero_porzioni_possibili_ricetta(ricetta ricette[],int lunghezzaVettore
 	//for che scorre il vettore di alimenti della ricetta
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
 		alimento alim=alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]];
+
+		//controllo se la quantita disponibile dell'alimento e' >= della quantita di alimento che necessita la ricetta
 		if(get_quantita(alim) >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
 			if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0){
+
+				//calcolo il numero di porzioni possibili per quel alimento
 				porzPoss[i]= (int)(get_quantita(alim)/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
+
+				//il numero di porzioni possibili finale sara il minimo tra tutte le porzioni possibili
+				//dei singoli alimenti
 				if(min==-1) min=porzPoss[i];
 				if(min>porzPoss[i]) min=porzPoss[i];
 			}
-		}else return -1;
+		}else return 0;
 	}
-
 	return min;
 }
 
@@ -672,12 +800,15 @@ int get_numero_porzioni_possibili_ricetta(ricetta ricette[],int lunghezzaVettore
 
 
 
-/* FUNZIONE CHE HA IL COMPITO DI SOTTRARRE LE QUANTITA	*
- * DEGLI ALIMENTI PER CONSUMARE UNA RICETTA PASSATA 	*
- * COME PARAMETRO										*
- * 														*
- * LA FUNZIONE ESEGUE LE MODIFICHE SIA SUL VETTORE DI 	*
- * ALIMENTI CHE SUL FILE								*/
+/**
+ * Data la ricetta come parametro, la funzione ha il compito di decrementare tutte le quantita
+ * disponibili degli alimenti che compongono una ricetta in maniera tale a rendere
+ * effettiva la consumazione di una determinata ricetta.
+ *
+ * @pre controllare se e' effettivamente possibile consumare quella ricetta e quelle quantita
+ * tramite la funzione get_numero_porzioni_possibili_ricetta() in quanto si potrebbero
+ * verificare errori nelle quantita degli alimenti disponibili.
+ */
 int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int indiceRicetta,int porzioni){
 	int i;
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
@@ -687,14 +818,9 @@ int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,al
 			alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]].Utilizzo+=(quantita*porzioni);
 
 			decrementa_quantita_alimento(&alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]],(quantita*porzioni));
-
-
-			//modifica_alimento_su_file(alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]]);
 		}
-
 	}
 	return 1;
-
 }
 
 
@@ -702,16 +828,18 @@ int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,al
 
 
 
-/* FUNZIONE CHE SI OCCUPA DI TUTTO QUELLO CHE RIGUARDA 	*
- * L'AGGIUNTA DELLE RICETTE ALL'INTERNO DEL VETTORE	    *
- * E ALL'INTERNO DEL FILE								*
- * 														*
- * LA FUNZIONE RICEVE COME PARAMETRI IL VETTORE DI 		*
- * RICETTE E DI ALIMENTI E LE LORO LUNGHEZZE E INOLTRE 	*
- * UN PUNTATORE 										*
- * AD INTERO PER LA MEMORIZZAZIONE DELL'INDIRIZZO 		*
- * DOVE RISIEDE IL NUONO VETTORE DI RICETTE IN CASO DI	*
- * AGGIUNTA DI UNA RICETTA IN CODA AL VETTORE			*/
+
+/**
+ * Funzione che si occupa di tutto quello che rigurda l'aggiunta di una ricetta.
+ * La funzione chiede in input tutti gli attributi della ricetta, fa gli
+ * opportuni controlli e la aggiunge sia sul vettore di alimenti
+ * che sul file Ricette.sf.
+ * L'aggiunta sul file viene fatta dichiarando un altro vettore di ricette
+ * di lunghezza maggiore di 1. Il vecchio vettore viene deallocato e viene
+ * passato come valore di ritorno l'indirizzo del nuovo vettore
+ * all'interno del puntatore nuovoIndirizzoRicette passato come parametro.
+ *
+ */
 int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta ricette[],int lunghezzaVettoreRicette,int *nuovoIndirizzoRicette){
 
 	printf("\n\n            Inserimento Ricette\n%s\n\n",STRINGASTERISCHI);
@@ -809,11 +937,17 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 
 
 
-
+/**
+ * Funzione che gestisce il menu relativo alle opzioni delle ricette cioe'
+ * chiede all'utente di fare una scelta di opzione, effettua i controlli
+ * e richiama le specifiche funzioni.
+ *
+ */
 int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoRicette){
 
 	int NumScelta;
 
+	//imposto come nuovo indirizzo del vettore di ricette, il suo stesso indirizzo
 	(*nuovoIndirizzoRicette)=(int)ricette;
 
 	do {
@@ -838,7 +972,7 @@ int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,aliment
 		case 3:
 
 			//modifica ricetta
-			modifica_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
+			scelta_modifica_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 		case 4:

@@ -22,8 +22,8 @@
 
 /**
  * Funzione che gestisce il menu relativo alla spesa cioe' chiede in
- * input all'utente di fare una scelta, di controllare se sia valida,
- * e di eseguire le relative funzioni in base alla scelta fatta.
+ * input all'utente di fare una scelta,controlla se e' valida,
+ * e richiama le relative funzioni in base alla scelta fatta.
  *
  * @param[in] alimenti vettore di alimenti.
  * @param[in] lunghezzaVettoreAlimenti lunghezza del vettore alimenti.
