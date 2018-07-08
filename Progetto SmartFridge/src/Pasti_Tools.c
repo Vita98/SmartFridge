@@ -42,7 +42,7 @@ int aggiungi_pasto_su_file(int numPorzioni,int idRicetta){
 
 	get_data_pointer(&pp.Data_Ora);
 
-	if ((file = fopen("src/Storico_Pasti.sf", "ab+")) == NULL) {
+	if ((file = fopen("Storico_Pasti.sf", "ab+")) == NULL) {
 			printf("Errore nell'apertura del file!\n");
 			return 0;
 	} else {
@@ -64,7 +64,7 @@ int visualizza_file_pasti(ricetta ricette[]){
 
 	pasto past;
 
-	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb")) != NULL)
+	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb")) != NULL)
 	{
 		printf("\n\nStorico Pasti\n%s\n",STRINGASTERISCHI);
 		printf("%20s | %20s | %20s | Visibilita","Alimento Acquistato","Quantita Acquistata","Data di Acquisto");
@@ -176,7 +176,7 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 		delay=NUMERO_MASSIMO_GIORNI-delay;
 	}
 
-	if ((file = fopen("src/Storico_Pasti.sf", "rb")) == NULL || NumeroSettimana < 0) {
+	if ((file = fopen("Storico_Pasti.sf", "rb")) == NULL || NumeroSettimana < 0) {
 				return 0;
 	} else {
 		printf("\n\n%15s   %10s | %20s | %15s\n","Giorno","Data","Pasto","Porzioni");
@@ -370,7 +370,7 @@ int cancella_iesimo_pasto_da_file(int indicePasto,alimento alimenti[],ricetta ri
 	FILE *fileStoricoPasti;
 	pasto pp;
 
-	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb+")) == NULL) {
+	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb+")) == NULL) {
 		printf("Errore nell'apertura del file!\n");
 		return 0;
 	} else {
@@ -440,7 +440,7 @@ int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 		//data inserita e' uguale o meno recente del giorno odierno
 		if(get_distanza_in_giorni(dataPasto,dataOdierna,0) < 0 ) printf("\nData non valida! Reinseriscila!\n");
 		else{
-			if ((file_Storico_Pasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+			if ((file_Storico_Pasti = fopen("Storico_Pasti.sf", "rb")) == NULL) {
 				printf("Errore nell'apertura del file!\n");
 				return 0;
 			} else {
@@ -500,7 +500,7 @@ int modifica_iesimo_pasto_su_file(pasto iesimoPasto,int indicePasto){
 
 	FILE *fileStoricoPasti;
 
-	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb+")) == NULL) {
+	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb+")) == NULL) {
 		return 0;
 	} else {
 		fseek(fileStoricoPasti,indicePasto*sizeof(pasto),SEEK_SET);
@@ -527,7 +527,7 @@ pasto leggi_iesimo_pasto(int indicePasto){
 	FILE *fileStoricoPasti;
 	pasto pp;
 
-	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb")) == NULL) {
 		return pp;
 	} else {
 		fseek(fileStoricoPasti,indicePasto*sizeof(pasto),SEEK_SET);
@@ -567,9 +567,9 @@ boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,
 	//la modifica che si vuole fare e cronologicamente antecedente alla prima spesa
 	//degli alimenti della ricetta.
 	FILE *fileStoricoPasti,*fileStoricoSpesa;
-	if ((fileStoricoPasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb")) == NULL) {
 		return false;
-	} else if ((fileStoricoSpesa = fopen("src/Storico_Spesa.sf", "rb")) == NULL) {
+	} else if ((fileStoricoSpesa = fopen("Storico_Spesa.sf", "rb")) == NULL) {
 		return false;
 	} else {
 		//tutti e 2 i file sono stati aperti con successo
@@ -634,7 +634,6 @@ boolean is_possible_add_porzioni_pasto(int indiceRicetta,int porzioniAggiuntive,
 									break;
 								}
 							}
-
 						}
 						if(fread(&past,sizeof(pasto),1,fileStoricoPasti) <= 0) break;
 					}
@@ -852,7 +851,7 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 		//data inserita e' uguale o meno recente del giorno odierno
 		if(get_distanza_in_giorni(dataPasto,dataOdierna,0) < 0 ) printf("\nData non valida! Reinseriscila!\n");
 		else{
-			if ((file_Storico_Pasti = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+			if ((file_Storico_Pasti = fopen("Storico_Pasti.sf", "rb")) == NULL) {
 				printf("Errore nell'apertura del file!\n");
 				return 0;
 			} else {

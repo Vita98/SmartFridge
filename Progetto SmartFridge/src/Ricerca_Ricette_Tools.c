@@ -173,7 +173,7 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 		else if(indiceVettoreIndici==0) printf("\nDevi inserire almeno un alimento per cercare le ricette!\n");
 
 
-	}while(flag==true || indiceVettoreIndici==0 || indiceVettoreIndici < NUMERO_MAX_ALIMENTI );
+	}while((flag==true || indiceVettoreIndici==0 ) && indiceVettoreIndici < NUMERO_MAX_ALIMENTI );
 
 
 	//richiamo la funzione che ricerca tutte le ricette con quei alimenti

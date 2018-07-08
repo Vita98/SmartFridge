@@ -164,7 +164,7 @@ int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 int modifica_alimento_su_file(alimento alim){
 	FILE *file;
 
-	if ((file = fopen("src/Alimenti.sf", "rb+")) == NULL) return 0;
+	if ((file = fopen("Alimenti.sf", "rb+")) == NULL) return 0;
 	else {
 		fseek(file,alim.ID_Alimento*sizeof(alimento),SEEK_SET);
 		fwrite(&alim,sizeof(alimento),1,file);
@@ -189,7 +189,7 @@ int modifica_alimento_su_file(alimento alim){
 int aggiungi_alimento_su_file(alimento alim){
 	FILE *file;
 
-	if ((file = fopen("src/Alimenti.sf", "ab+")) == NULL) {
+	if ((file = fopen("Alimenti.sf", "ab+")) == NULL) {
 			printf("Errore nell'apertura del file!\n");
 			return 0;
 	} else {

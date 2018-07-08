@@ -24,9 +24,9 @@
 int Carica_Configurazione() {
 	FILE *file;
 
-	if ((file = fopen("src/Config.txt", "r+")) == NULL) {
+	if ((file = fopen("Config.txt", "r+")) == NULL) {
 																//In caso di errore, apre il file in scrittura (lo crea)
-		if((file = fopen("src/Config.txt", "w")) == NULL) return 0;
+		if((file = fopen("Config.txt", "w")) == NULL) return 0;
 		else{
 			limite_spesa = SOGLIA_SPESA;											//stabilisce la soglia e la scrive sul file
 			fprintf(file,"%d ",limite_spesa);
@@ -59,7 +59,7 @@ int Get_Lunghezza_File_Alimenti(){
 
 	FILE *file;
 
-	if ((file = fopen("src/Alimenti.sf", "rb")) == NULL) {
+	if ((file = fopen("Alimenti.sf", "rb")) == NULL) {
 		return 0;
 	} else {
 		//mi posiziono alla fine del file
@@ -91,7 +91,7 @@ int Get_Lunghezza_File_Ricette(){
 
 	FILE *file;
 
-	if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
+	if ((file = fopen("Ricette.sf", "rb")) == NULL) {
 		return 0;
 	} else {
 		//mi posiziono alla fine del file
@@ -121,7 +121,7 @@ int Get_Lunghezza_File_Storico_Pasti(){
 
 	FILE *file;
 
-	if ((file = fopen("src/Storico_Pasti.sf", "rb")) == NULL) {
+	if ((file = fopen("Storico_Pasti.sf", "rb")) == NULL) {
 		return 0;
 	} else {
 		//mi posiziono alla fine del file
@@ -149,7 +149,7 @@ int Carica_Ricette(ricetta ricette[]){
 	FILE *file;
 	int i = 0;
 
-	if ((file = fopen("src/Ricette.sf", "rb")) == NULL) {
+	if ((file = fopen("Ricette.sf", "rb")) == NULL) {
 		return 0;
 	} else {
 
@@ -181,7 +181,7 @@ int Carica_Alimenti(alimento alimenti[]){
 	FILE *file;
 	int i = 0;
 
-	if ((file = fopen("src/Alimenti.sf", "rb")) == NULL) {
+	if ((file = fopen("Alimenti.sf", "rb")) == NULL) {
 		return 0;
 	} else {
 

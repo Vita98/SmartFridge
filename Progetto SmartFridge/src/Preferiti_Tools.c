@@ -18,7 +18,7 @@ boolean exist_preferito(ricetta ricette[], int* indiceRicetta){
 	//controllo se la ricetta inserita in input esiste nel vettore di ricette
 	FILE *filePreferiti;
 
-	if ((filePreferiti = fopen("src/Preferiti.sf", "rb")) == NULL) {
+	if ((filePreferiti = fopen("Preferiti.sf", "rb")) == NULL) {
 		return false;
 
 	} else {
@@ -105,7 +105,7 @@ int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 		return 0;
 
 	} else {
-		if (((filePreferiti = fopen("src/Preferiti.sf", "ab")) == NULL)
+		if (((filePreferiti = fopen("Preferiti.sf", "ab")) == NULL)
 				|| (indiceRicetta < 0)) {
 			return 0;
 
@@ -159,7 +159,7 @@ int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	} else {
 
-		if ((filePreferiti = fopen("src/Preferiti.sf", "rb")) == NULL)
+		if ((filePreferiti = fopen("Preferiti.sf", "rb")) == NULL)
 			return 0;
 		else {
 
@@ -197,7 +197,7 @@ int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 			fclose(filePreferiti);
 
-			if ((filePreferiti = fopen("src/Preferiti.sf", "wb")) == NULL) {
+			if ((filePreferiti = fopen("Preferiti.sf", "wb")) == NULL) {
 				return 0;
 
 			} else {
@@ -236,7 +236,7 @@ int visualizza_preferiti(ricetta ricette[]) {
 
 	FILE *filePreferiti;
 
-	if ((filePreferiti = fopen("src/Preferiti.sf", "rb")) == NULL)
+	if ((filePreferiti = fopen("Preferiti.sf", "rb")) == NULL)
 		return 0;
 	else {
 

@@ -32,7 +32,7 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 	int i, quantita = 0;
 	int flag=false;
 
-	if ((fileSpesa = fopen("src/Lista_Spesa.sf", "wb+")) == NULL) return 0;
+	if ((fileSpesa = fopen("Lista_Spesa.sf", "wb+")) == NULL) return 0;
 	else {
 
 		elemento_spesa elemento;
@@ -81,7 +81,7 @@ int visualizza_lista_spesa(alimento alimenti[]) {
 	boolean flag=false;
 
 
-	if ((fileSpesa = fopen("src/Lista_Spesa.sf", "rb")) == NULL) return 0;
+	if ((fileSpesa = fopen("Lista_Spesa.sf", "rb")) == NULL) return 0;
 	else {
 
 		elemento_spesa elemento;
@@ -145,7 +145,7 @@ int modifica_soglia_spesa() {
 	} while (!is_number(scelta));
 
 
-	if ((file = fopen("src/Config.txt", "w")) == NULL) return 0;
+	if ((file = fopen("Config.txt", "w")) == NULL) return 0;
 	else {
 		fprintf(file, "%d ", limite_spesa);
 		printf("\nNuova soglia limite impostata \n");

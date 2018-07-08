@@ -199,7 +199,7 @@ void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta
 		pp.Data_Ora.Giorno = day;
 		pp.Data_Ora.Mese = 1;
 
-		if ((file = fopen("src/Storico_Pasti.sf", "ab+")) == NULL) {
+		if ((file = fopen("Storico_Pasti.sf", "ab+")) == NULL) {
 				printf("Errore nell'apertura del file!\n");
 		} else {
 			fwrite(&pp,sizeof(pasto),1,file);
@@ -268,7 +268,7 @@ void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti){
 
 		modifica_alimento_su_file(alimenti[elemento.ID_Alimento]);
 
-		if ((fileStoricoSpesa = fopen("src/Storico_Spesa.sf", "ab+")) != NULL)
+		if ((fileStoricoSpesa = fopen("Storico_Spesa.sf", "ab+")) != NULL)
 		{
 
 			fwrite(&elemento,sizeof(elemento_spesa),1,fileStoricoSpesa);

@@ -1,9 +1,15 @@
-/*
- * Spesa_Tools.c
- *
- *  Created on: 30 mag 2018
- *      Author: My-PC
+/**
+ *  @file      Spesa_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Spesa_Tools.h
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
+
+
+
 
 #include "Tipi_Dato.h"
 #include "Alimenti_Tools.h"
@@ -15,8 +21,13 @@
 
 
 
-/* FUNZIONE PER LA VISUALIZZAZIONE DI TUTTO LO STORICO SPESA	*
- * E QUINDI DI TUTTE LE SPESE EFFETTUATE						*/
+/**
+ * Funzione che visualizza in output all'utente, una tabella con la lista
+ * di tutte le spese effettuate dalla prima accensione dello smart fridge.
+ *
+ * @pre il file Storico_Spesa.sf deve esistere e i dati all'interno devono
+ * essere organizzati utilizzando la struct elemento_spesa.
+ */
 int visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 	FILE *fileStoricoSpesa;
 
@@ -24,15 +35,14 @@ int visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	boolean flag=false;
 
-	if ((fileStoricoSpesa = fopen("src/Storico_Spesa.sf", "rb")) != NULL)
+	if ((fileStoricoSpesa = fopen("Storico_Spesa.sf", "rb")) != NULL)
 	{
 		printf("\n\nStorico Spesa\n%s\n",STRINGASTERISCHI);
 		printf("%20s | %20s | %20s","Alimento Acquistato","Quantita Acquistata","Data di Acquisto");
 		printf("\n-----------------------------------------------------------------");
 
 		do{
-			int a=fread(&elemento,sizeof(elemento_spesa),1,fileStoricoSpesa);
-			if(a>0){
+			if(fread(&elemento,sizeof(elemento_spesa),1,fileStoricoSpesa)>0){
 				flag=true;
 				printf("\n%20s | %20d | ",alimenti[elemento.ID_Alimento].Nome,elemento.Quantita);
 				printf("%d/%d/%d %d:%d",elemento.Data_Ora.Giorno,elemento.Data_Ora.Mese,elemento.Data_Ora.Anno,elemento.Data_Ora.Ora,elemento.Data_Ora.Minuti);
@@ -51,13 +61,11 @@ int visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 
 
-/* FUNZIONE CHE MEMORIZZA LA SPESA FATTA ALL'INTERNO	*
- * DEL FILE IN CUI VENGONO MEMORIZZATE TUTTI I 			*
- * CHE RIGUARDANO LA SPESA								*
- * 														*
- * LA FUNZIONE HA COME PARAMETRI L'INDICE DELL'ALIMENTO *
- * E LA QUANTITA CHE È STATA AGGIUNTA O RIMOSSA			*
- * E RITORNA 1 SE E' ANDATO TUTTO BENE, 0 ALTRIMENTI	*/
+/**
+ * Funzione che memorizza la spesa fatta all'interno del file Storico_Spesa.sf
+ * che contiene lo storico di tutte le spese in ordine cronologico.
+ *
+ */
 int memorizza_in_storico_spesa(int indiceAlimento,int quantita){
 	FILE *fileStoricoSpesa;
 	elemento_spesa elemento;
@@ -71,7 +79,7 @@ int memorizza_in_storico_spesa(int indiceAlimento,int quantita){
 
 	elemento.Quantita=quantita;
 
-	if ((fileStoricoSpesa = fopen("src/Storico_Spesa.sf", "ab+")) == NULL) return 0;
+	if ((fileStoricoSpesa = fopen("Storico_Spesa.sf", "ab+")) == NULL) return 0;
 	else {
 
 		fwrite(&elemento,sizeof(elemento_spesa),1,fileStoricoSpesa);
@@ -87,15 +95,13 @@ int memorizza_in_storico_spesa(int indiceAlimento,int quantita){
 
 
 
-/* FUNZIONE CHE SI OCCUPA DI TUTTO QUELLO CHE RIGUARDA 	*
- * L'AGGIUNTA DEGLI ALIMENTI ALL'INTERNO DEL VETTORE	*
- * E ALL'INTERNO DEL FILE								*
- * 														*
- * LA FUNZIONE RICEVE COME PARAMETRI IL VETTORE DI 		*
- * ALIMENTI E LA SUA LUNGHEZZA E INOLTRE UN PUNTATORE 	*
- * AD INTERO PER LA MEMORIZZAZIONE DELL'INDIRIZZO 		*
- * DOVE RISIEDE IL NUONO VETTORE DI ALIMENTI IN CASO DI	*
- * AGGIUNTA DI UN ALIMENTO IN CODA AL VETTORE*/
+/**
+ * Funzione che si occupa di tutto quello che riguarda l'aggiunta dei
+ * nuovi alimenti comprati,inserendoli sia all'inerno del vettore che del file Storico_Spesa.sf.
+ * Essa chiede tutti i dati dell'acquisto all'utente e richiama le relative funzioni per salvare
+ * i dati su file.
+ *
+ */
 int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoAlimenti){
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -264,15 +270,13 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
 
 
 
-/* FUNZIONE CHE GESTISCE IL MENU RELATIVO AGLI ALIMENTI		*
- * CHIEDE ALL'UNTETE DI FARE UNA SCELTA E CONTROLLA CHE		*
- * LA SCELTA SIA VALIDA; 									*
- * SE LO E' RICHIAMA LE OPPORTUNE FUNZIONI CHE ESEGUONO		*
- * IL PARTOCOLARE COMPITO									*
+/**
+ * Funzione che gestisce il menu relativo alla spesa cioe' chiede in
+ * input all'utente di fare una scelta, di controllare se sia valida,
+ * e di eseguire le relative funzioni in base alla scelta fatta.
  *
- * Ha come parametro anche un puntatore chiamato 			*
- * NuovoIndirizzoAlimenti per la gestione dell'aggiunta		*
- * degli alimenti e del vettore di Alimenti*/
+ *
+ */
 int scelta_opzioni_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoAlimenti) {
 	int NumScelta=1;
 

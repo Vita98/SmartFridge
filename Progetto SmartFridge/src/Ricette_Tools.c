@@ -135,7 +135,7 @@ int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette
 int modifica_ricetta_su_file(ricetta rice){
 	FILE *file;
 
-	if ((file = fopen("src/Ricette.sf", "rb+")) == NULL) return 0;
+	if ((file = fopen("Ricette.sf", "rb+")) == NULL) return 0;
 	else {
 		fseek(file,rice.ID_Ricetta*sizeof(ricetta),SEEK_SET);
 		fwrite(&rice,sizeof(ricetta),1,file);
