@@ -1,9 +1,16 @@
-/*
- * Preferiti_Tools.c
- *
- *  Created on: 06 giu 2018
- *      Author: giutu
+/**
+ *  @file 	   Preferiti_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Preferiti_Tools.h
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
+
+
+
+
 #include "Tipi_Dato.h"
 #include "Ricette_Tools.h"
 #include <String.h>
@@ -13,7 +20,14 @@
 
 
 
-
+/**
+ * Dato il vettore di ricette, la funzione apre il file di ricette preferite(Preferiti.sf)
+ * e controlla se la ricetta inserita sia presente al suo interno.
+ *
+ * @pre il vettore di ricette deve essere pieno o inizializzato.
+ * @pre l'indice passato deve essere un indice valido.
+ *
+ */
 boolean exist_preferito(ricetta ricette[], int* indiceRicetta){
 	//controllo se la ricetta inserita in input esiste nel vettore di ricette
 	FILE *filePreferiti;
@@ -44,15 +58,17 @@ boolean exist_preferito(ricetta ricette[], int* indiceRicetta){
 
 
 
-/*	FUNZIONE CHE PERMETTE DI CONTROLLARE SE UNA DATA RICETTA PASSATA TRAMITE STRINGA 	*
- * 	SIA PRESENTE ALL'INTERNO DEL FILE DEI PREFERITI										*
- *																						*
- * 	SONO PASSATI COME PARAMETRI IL VETTORE DI RICETTE E LA SUA LUNGHEZZA, LA STRINGA 	*
- *	CONTENENTE IL VALORE DA CERCARE, UN PUNTATORE DI INTERI (ALLA QUALE VARIABILE SARA'	*
- * 	PASSATO L'INDICE DELL'ELEMENTO TROVATO, SE ESISTE) 									*
- *																						*
- * 	LA FUNZIONE RESTITUISCE UN VALORE DI TIPO BOOLEANO, RESTITUIRA' VERO SE LA RICETTA 	*
- * 	CERCATA ESISTE, RESTITUIRA FALSO ALTRIMENTI											*/
+
+/**
+* Dato il vettore di ricette, la funzione controlla se la ricetta inserita sia esistenze
+ * e presente all'interno dei preferiti.
+ *
+ * @pre il vettore di ricette deve essere pieno o inizializzato.
+ *
+ * @warning la lunghezza del vettore deve essere la lunghezza effettiva
+ * in quanto una discordanza potrebbe causare una lettura di porzioni
+ * di memoria non allocate.
+ */
 boolean controllo_preferiti(ricetta ricette[], int lunghezzaVettoreRicette,
 		char scelta[], int* indiceRicetta) {
 
@@ -83,9 +99,16 @@ boolean controllo_preferiti(ricetta ricette[], int lunghezzaVettoreRicette,
 
 
 
-/*	FUNZIONE CHE ACQUISISCE UNA STRINGA (UNA RICETTA), VERIFICA SE LA RICETTA INSERITA	*
- * 	ESISTA ALL'INTERNO DEL FILE DEI PREFERITI E SE NON E' PRESENTE VIENE SCRITTA 		*
- * 	IN CODA ALLA FINE DEL FILE															*/
+/**
+ * Data la ricetta inserita da tastiera, la funzione lo aggiunge in coda
+ * al file dei preferiti una volta controllato se non e' gia' presente.
+ *
+ * @pre il vettore di ricette deve essere pieno o inizializzato.
+ *
+ * @warning la lunghezza del vettore deve essere la lunghezza effettiva
+ * in quanto una discordanza potrebbe causare una lettura di porzioni
+ * di memoria non allocate.
+ */
 int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -132,13 +155,16 @@ int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 
 
-/*	FUNZIONE CHE PERMETTE DI CANCELLARE DAL FILE DEI PREFERITI LA RICETTA VOLUTA	*
- * 	LEGGENDO IL FILE E CARICANDO UN VETTORE DI RICETTE DI LUNGHEZZA PARI AL NUMERO	*
- * 	DI RICETTE DEL FILE MENO 1, IL NUOVO VETTORE SARA PRIVO DELLA RICETTA DA 		*
- * 	CANCELLARE
+/**
+ * Data la ricetta passata come parametro, la funzione lo cancella dal
+ * file dei preferiti una volta controllato se e' presente.
  *
- * 	INFINE, IL FILE DEI PREFERITI SARA' RIEMPITO DAGLI ELEMENTI DEL VETTORE APPENA 	*
- * 	RISULTANDO UGUALE ALLA VERSIONE PRECEDENTE, SOLO PRIVA DELLA RICETTA CANCELLATA	*/
+ * @pre il vettore di ricette deve essere pieno o inizializzato.
+ *
+ * @warning la lunghezza del vettore deve essere la lunghezza effettiva
+ * in quanto una discordanza potrebbe causare una lettura di porzioni
+ * di memoria non allocate.
+ */
 int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -231,7 +257,11 @@ int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 
 
-/*	FUNZIONE CHE LEGGENDO IL FILE DEI PREFERITI, RIPRODUCE IN OUTPUT LE RICETTE SALVATE	*/
+/**
+  * Funzione che permette di visualizzare tutte le ricette preferite
+ * nell'ordine in cui sono state inserite.
+ *
+ */
 int visualizza_preferiti(ricetta ricette[]) {
 
 	FILE *filePreferiti;
@@ -270,7 +300,16 @@ int visualizza_preferiti(ricetta ricette[]) {
 
 
 
-
+/**
+ * Funzione che gestisce il menu riguardante tutte le opzioni
+ * relative alle ricette preferite.
+ * Chiede all'utente di fare una scelta e richiama le opportune funzioni
+ * per svolgere quel determinato compito.
+ *
+ * @pre il vettore di ricette deve essere inizializzato.
+ * @pre la lunghezza del vettore di ricette deve corrispondere con
+ * la reale lunghezza del vettore.
+ */
 int scelta_opzioni_preferiti(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	int NumScelta;

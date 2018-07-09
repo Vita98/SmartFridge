@@ -1,9 +1,20 @@
-/*
- * Spesa_Tools.c
- *
- *  Created on: 17 mag 2018
- *      Author: giutu
+/**
+ *  @file 	   Lista_Spesa_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Lista_Spesa_Tools.h
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
+
+
+
+
+
+
+
+
 #include "Tipi_Dato.h"
 #include "Alimenti_Tools.h"
 #include <string.h>
@@ -16,15 +27,18 @@
 
 
 
-
-
-
-
-
-
-
-
-
+/**
+ * Dato il vettore di alimenti, la funzione leggera tutti gli alimenti
+ * presenti in frigo e scrivera' sul file (Lista_Spesa.sf)
+ * le informazioni relative a quelli aventi una quantita'
+ * inferiore alla soglia minima stabilta.
+ *
+ * @pre il vettore degli alimenti deve essere pieno o inizializzato.
+ *
+ * @warning la lunghezza del vettore deve essere la lunghezza effettiva
+ * in quanto una discordanza potrebbe causare una lettura di porzioni
+ * di memoria non allocate.
+ */
 int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 
 
@@ -74,7 +88,10 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 
 
 
-
+/**
+ * Funzione che legge il file (Lista_Spesa.sf) e visualizza l'ultima lista generata, se presente.
+ *
+ */
 int visualizza_lista_spesa(alimento alimenti[]) {
 
 	FILE *fileSpesa;
@@ -91,7 +108,6 @@ int visualizza_lista_spesa(alimento alimenti[]) {
 
 		while (!feof(fileSpesa)) {
 
-			//bisogna visualizzare anche la data e l'ora della generazione
 			if(fread(&elemento, sizeof(elemento_spesa), 1, fileSpesa) > 0){
 				flag=true;
 				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[elemento.ID_Alimento].Nome,
@@ -117,11 +133,16 @@ int visualizza_lista_spesa(alimento alimenti[]) {
 
 
 
-//E impostato al momento solo sulla prima riga dato che l'unico parametro sino ad ora visto è la soglia degli alimenti
+/**
+ * Funzione che permette di modificare la quantita' minima degli alimenti
+ * in base alla quale viene generata la lista, e salvarla sul file di configurazione (Config.txt).
+ *
+ * @pre In assenza di modifica lo soglia prevista e' quella di preimpostata.
+ */
 int modifica_soglia_spesa() {
 
 	FILE *file;
-	char scelta[LUNGHEZZA_STRINGA];		//penso che questa lunghezza sia un po eccessiva e si può introdurre una lunghezza minore per questi controlli
+	char scelta[LUNGHEZZA_STRINGA];
 
 	printf("\nL'attuale soglia stabilita è : %d\n", limite_spesa);
 	printf("Inserici la nuova soglia limite : ");
@@ -158,6 +179,21 @@ int modifica_soglia_spesa() {
 
 
 
+
+
+/**
+ * Funzione che gestisce il menu riguardante tutte le opzioni
+ * relative alla lsta della spesa.
+ * Chiede all'utente di fare una scelta e richiama le opportune funzioni
+ * per svolgere quel determinato compito.
+ *
+ * @pre il vettore degli alimenti deve essere pieno o inizializzato.
+ *
+ * @warning la lunghezza del vettore deve essere la lunghezza effettiva
+ * in quanto una discordanza potrebbe causare una lettura di porzioni
+ * di memoria non allocate.
+ *
+ */
 int scelte_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	int NumScelta;

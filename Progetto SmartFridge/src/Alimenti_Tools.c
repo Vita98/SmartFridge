@@ -1,6 +1,6 @@
 /**
  *  @file 	   Alimenti_Tools.c
- *  @brief     File contenente le implementazioni delle funzioni definite in Alimenti_Tools.c
+ *  @brief     File contenente le implementazioni delle funzioni definite in Alimenti_Tools.h
  *  @author    Vitandrea Sorino.
  *  @author    Giuseppe Tutino.
  *  @version   1.0.
