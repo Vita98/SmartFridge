@@ -183,6 +183,8 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 	if(numeroRicetteTrovate == 0) printf("\n\nNon e' possibile preparare nessuna ricetta con gli alimenti inseriti!\n\n");
 	else{
 
+		printf("\nLe ricette saranno ordinate per freferiti e per frequenza\n");
+
 		//faccio salire le ricette preferite
 		merge_sort_ricette(ricette,0,numeroRicetteTrovate-1,indiciRicette,MODALITA_ORDINAMENTO_PREFERITI);
 
@@ -318,7 +320,7 @@ int suggerimento_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicet
 	int i;
 	boolean flag=false;
 
-	if(numeroRicetteInScadenza == 0) printf("\nNon ci sono ricette con alimenti in scadenza\n");
+	if(numeroRicetteInScadenza == 0) printf("\nNon ci sono ricette con alimenti in scadenza\n\n\n");
 	else{
 		printf("\nLe ricette che hanno degli alimenti in scadenza sono:\n");
 		for(i=0;i<numeroRicetteInScadenza;i++){
@@ -332,7 +334,52 @@ int suggerimento_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicet
 			printf("%d - %25s \t| Kcal per porzione: %5.2f \t| %s\n", i,
 										ricette[vettoreRicetteScadenza[i]].Nome, ricette[vettoreRicetteScadenza[i]].Kcal_Porzione,(exist_preferito(ricette,&vettoreRicetteScadenza[i]) == true)? "PREF":"");
 		}
+		printf("\n\n");
 	}
+
+	return 1;
+}
+
+
+
+
+
+
+
+
+/**
+ * Funzione che gestisce il menu che riguarda la scelta del tipo di suggerimento
+ * sulle ricette.
+ * La funzione chiede all'utente di fare una scelta, effettua tutti i controlli
+ * del caso e richiama le opportune funzioni.
+ *
+ */
+int scelta_opzioni_suggerimento_ricette(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
+
+	printf("\n\nSuggerimento delle ricette\n%s\n",STRINGASTERISCHI);
+
+	int numScelta;
+
+	do{
+
+		numScelta=fai_scelta(MENU_OPZIONI_SUGGERIMENTO_RICETTA);
+
+		switch(numScelta){
+			case 1:
+				//visualizzazione ricette con alimenti in scadenza
+				suggerimento_ricette_in_scadenza(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
+				break;
+			case 2:
+				//visualizzazione delle ricette che e' possibile preparare
+				visualizza_ricette_che_si_possono_cucinare(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
+				break;
+			case 0:
+
+				break;
+			default: printf("\nErrore!Riprova!\n");
+		}
+
+	}while(numScelta!=0);
 
 	return 1;
 }

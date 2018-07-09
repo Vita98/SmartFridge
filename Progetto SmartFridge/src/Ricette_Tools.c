@@ -89,6 +89,7 @@ int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 
 
+
 /**
  * Funzione che gestisce il menu relativo alle opzioni di visualizzazione
  * delle ricette cioe' permette all'utente di decidere in che modo
@@ -928,6 +929,96 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 	}
 
 	return lunghezzaVettoreRicette;
+}
+
+
+
+
+
+
+/**
+ * Funzione che cerca all'interno del vettore di ricette tutte le ricette che e' possibile
+ * cucinare in base alle quantita e alle disponibilita degli alimenti.
+ *
+ */
+int* get_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int* numeroRicettePossibili){
+	int i;
+
+	int* vettoreRicettePossibili = (int*)calloc(lunghezzaVettoreRicette,sizeof(int));
+
+	int indiceVettoreRicettePossibili=0;
+
+	for(i=0;i<lunghezzaVettoreRicette;i++){
+
+		//verifico che e' possibile cucinare almeno una porzione della ricetta
+		if(get_numero_porzioni_possibili_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,i) > 0){
+
+			//se la ricetta si puo cucinare la salvo nel vettore di indici
+			vettoreRicettePossibili[indiceVettoreRicettePossibili]=i;
+			indiceVettoreRicettePossibili++;
+		}
+	}
+
+	//creo un vettore di lunghezza pari al numero di ricette trovate
+	//in maniera da deallocare quello di grandezza massima e continuare a
+	//lavorare con il numero giusto di locazioni di memoria
+	int* vettore= (int*)calloc(indiceVettoreRicettePossibili-1,sizeof(int));
+
+	for(i=0;i<indiceVettoreRicettePossibili;i++){
+		vettore[i]=vettoreRicettePossibili[i];
+	}
+
+	(*numeroRicettePossibili) = indiceVettoreRicettePossibili;
+
+	return vettore;
+}
+
+
+
+
+
+
+/**
+ * Funzione che ha il compito di visualizzare in console all'utente tutte le ricette che
+ * e' possibile cucinare in base alle disponibilita degli alimenti.
+ * La visualizzaione delle ricette e' fatta in maniera ordinata facendo vedere prima
+ * i preferiti e poi il resto in ordine di frequenza.
+ *
+ */
+int visualizza_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
+
+	int numeroRicettePossibili=0;
+
+	//richiamo la funzione che cerca le ricette che si possono cucinare
+	int* vettoreRicettePossibili=get_ricette_che_si_possono_cucinare(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,&numeroRicettePossibili);
+
+	int i;
+	boolean flag=false;
+
+	if(numeroRicettePossibili == 0) printf("\nNon puoi cucinare nessuna ricetta in quanto non hai abbastanza ingredienti per qualunque ricetta!\n\n\n");
+	else{
+
+		printf("\nLe ricette saranno ordinate per freferiti e per frequenza\n");
+
+		//ordino per preferiti
+		merge_sort_ricette(ricette,0,numeroRicettePossibili-1,vettoreRicettePossibili,MODALITA_ORDINAMENTO_PREFERITI);
+
+		printf("\nLe ricette che e' possibile preparare sono:\n");
+		for(i=0;i<numeroRicettePossibili;i++){
+
+			//se e' la prima volta che trovo un elemento non preferito, ordino tutto il resto del vettore
+			//in base alla frequenza quindi ordino tutti i non preferiti per frequenza
+			if(exist_preferito(ricette,&vettoreRicettePossibili[i]) == false && flag==false){
+				merge_sort_ricette(ricette,i,numeroRicettePossibili-1,vettoreRicettePossibili,MODALITA_ORDINAMENTO_FREQUENZA);
+				flag=true;
+			}
+			printf("%d - %25s \t| Kcal per porzione: %5.2f \t| %s\n", i,
+										ricette[vettoreRicettePossibili[i]].Nome, ricette[vettoreRicettePossibili[i]].Kcal_Porzione,(exist_preferito(ricette,&vettoreRicettePossibili[i]) == true)? "PREF":"");
+		}
+		printf("\n\n");
+	}
+
+	return 1;
 }
 
 

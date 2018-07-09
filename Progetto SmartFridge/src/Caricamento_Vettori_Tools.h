@@ -30,7 +30,7 @@
  *
  * @return 1 se tutto e' andato a buon fine.
  */
-int Carica_Configurazione();
+int carica_configurazione();
 
 
 
@@ -44,7 +44,7 @@ int Carica_Configurazione();
  * @return 1 se il caricamento e' andato a buon fine, 0 se non esiste il file o
  * se e' vuoto.
  */
-int Carica_Alimenti(alimento alimenti[]);
+int carica_alimenti(alimento alimenti[]);
 
 
 
@@ -56,7 +56,7 @@ int Carica_Alimenti(alimento alimenti[]);
  *
  * @return il numero di alimenti memorizzati all'interno del file Alimenti.sf.
  */
-int Get_Lunghezza_File_Alimenti();
+int get_lunghezza_file_alimenti();
 
 
 
@@ -70,7 +70,7 @@ int Get_Lunghezza_File_Alimenti();
  * @return 1 se il caricamento e' andato a buon fine, 0 se non esiste il file o
 * se e' vuoto.
  */
-int Carica_Ricette(ricetta ricette[]);
+int carica_ricette(ricetta ricette[]);
 
 
 
@@ -82,7 +82,7 @@ int Carica_Ricette(ricetta ricette[]);
  *
  * @return il numero di ricette memorizzati all'interno del file Ricette.sf.
  */
-int Get_Lunghezza_File_Ricette();
+int get_lunghezza_file_ricette();
 
 
 
@@ -94,7 +94,7 @@ int Get_Lunghezza_File_Ricette();
  *
  * @return il numero di pasti memorizzati all'interno del file Storico_Pasti.sf.
  */
-int Get_Lunghezza_File_Storico_Pasti();
+int get_lunghezza_file_storico_pasti();
 
 
 

@@ -21,7 +21,7 @@
  * Se non esiste lo crea e imposta la configurazione predefinita.
  *
  */
-int Carica_Configurazione() {
+int carica_configurazione() {
 	FILE *file;
 
 	if ((file = fopen("Config.txt", "r+")) == NULL) {
@@ -55,7 +55,7 @@ int Carica_Configurazione() {
  * struct alimenti, altrimenti la lettura del numero di alimenti
  * sara' inesatta.
  */
-int Get_Lunghezza_File_Alimenti(){
+int get_lunghezza_file_alimenti(){
 
 	FILE *file;
 
@@ -87,7 +87,7 @@ int Get_Lunghezza_File_Alimenti(){
  * struct ricette, altrimenti la lettura del numero di ricette
  * sara' inesatta.
  */
-int Get_Lunghezza_File_Ricette(){
+int get_lunghezza_file_ricette(){
 
 	FILE *file;
 
@@ -117,7 +117,7 @@ int Get_Lunghezza_File_Ricette(){
  * struct pasti, altrimenti la lettura del numero di pasti
  * sara' inesatta.
  */
-int Get_Lunghezza_File_Storico_Pasti(){
+int get_lunghezza_file_storico_pasti(){
 
 	FILE *file;
 
@@ -144,7 +144,7 @@ int Get_Lunghezza_File_Storico_Pasti(){
  * bisogna necessariamente richiamare la funzione Get_Lunghezza_File_Ricette
  * prima di richiamare questa funzione.
  */
-int Carica_Ricette(ricetta ricette[]){
+int carica_ricette(ricetta ricette[]){
 
 	FILE *file;
 	int i = 0;
@@ -176,7 +176,7 @@ int Carica_Ricette(ricetta ricette[]){
  * bisogna necessariamente richiamare la funzione Get_Lunghezza_File_Alimenti
  * prima di richiamare questa funzione.
  */
-int Carica_Alimenti(alimento alimenti[]){
+int carica_alimenti(alimento alimenti[]){
 
 	FILE *file;
 	int i = 0;

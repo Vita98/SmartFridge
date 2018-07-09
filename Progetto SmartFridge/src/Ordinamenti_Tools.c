@@ -35,7 +35,8 @@ int merging_ricette(ricetta ricette[], int inizio, int medio, int fine, int inde
     int n2 =  fine - medio;
 
     //creo i due vettori temporanei di destra e di sinistra
-    int L[n1], R[n2];
+    int L[n1];
+    int R[n2];
 
     //copio tutti gli indici del vettore di indici all'interno dei vettori temporanei
     for (i = 0; i < n1; i++) L[i] = index[inizio + i];
@@ -89,6 +90,9 @@ int merging_ricette(ricetta ricette[], int inizio, int medio, int fine, int inde
 				if(ricette[L[i]].Frequenza > ricette[R[j]].Frequenza){
 					index[k] = L[i];
 					i++;
+				}else{
+					index[k] = R[j];
+					j++;
 				}
 			}else{
 				index[k] = R[j];

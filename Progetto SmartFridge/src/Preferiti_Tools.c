@@ -28,6 +28,7 @@ boolean exist_preferito(ricetta ricette[], int* indiceRicetta){
 
 			if(fread(&ric, sizeof(ricetta), 1, filePreferiti) > 0){
 				if (strcmp(ric.Nome, ricette[*indiceRicetta].Nome) == 0) {
+					fclose(filePreferiti);
 					return true;
 					break;
 				}
@@ -105,20 +106,13 @@ int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 		return 0;
 
 	} else {
-		if (((filePreferiti = fopen("Preferiti.sf", "ab")) == NULL)
-				|| (indiceRicetta < 0)) {
+		if (((filePreferiti = fopen("Preferiti.sf", "ab")) == NULL) || (indiceRicetta < 0)) {
 			return 0;
-
-		} else {
-
+		}else{
 			fwrite(&ricette[indiceRicetta], sizeof(ricetta), 1, filePreferiti);
-			printf("\nLa Ricetta '%s' è stata aggiunta ai Preferiti.\n",
-					ricette[indiceRicetta].Nome);
-
+			printf("\nLa Ricetta '%s' è stata aggiunta ai Preferiti.\n",ricette[indiceRicetta].Nome);
 		}
-
 		fclose(filePreferiti);
-
 		return 1;
 	}
 

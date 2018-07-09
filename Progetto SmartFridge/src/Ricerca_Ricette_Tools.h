@@ -115,4 +115,26 @@ int suggerimento_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicet
  */
 int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int *numeroRicetteTrovate);
 
+
+
+
+
+/**
+ * Funzione che gestisce il menu che riguarda la scelta del tipo di suggerimento
+ * sulle ricette.
+ * La funzione chiede all'utente di fare una scelta, effettua tutti i controlli
+ * del caso e richiama le opportune funzioni.
+ *
+ * @param[in] ricette vettore di ricette.
+ * @param[in] lunghezzaVettoreRicette lunghezza del vettore di ricette.
+ * @param[in] alimenti vettore di alimenti.
+ * @param[in] lunghezzaVettoreAlimenti lunghezza del vettore di alimenti.
+ * @return 1 se la funzione e' andata a buon fine.
+ */
+int scelta_opzioni_suggerimento_ricette(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti);
+
+
+
+
+
 #endif /* RICERCA_RICETTE_TOOLS_H_ */

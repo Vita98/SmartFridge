@@ -346,7 +346,6 @@ int scelta_opzioni_visualizza_menu_settimanale(ricetta ricette[],int lunghezzaVe
 
 	}while(numScelta!=0);
 
-
 	return 1;
 }
 
@@ -425,7 +424,7 @@ int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 	FILE *file_Storico_Pasti;
 	pasto past;
 	int indice=0;
-	int lunghezzaVettoreIndici=Get_Lunghezza_File_Storico_Pasti();
+	int lunghezzaVettoreIndici=get_lunghezza_file_storico_pasti();
 	int indiciSuFile[lunghezzaVettoreIndici];
 	int indiceVetIndici=0;
 
@@ -836,7 +835,7 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 	FILE *file_Storico_Pasti;
 	pasto past;
 	int indice=0;
-	int lunghezzaVettoreIndici=Get_Lunghezza_File_Storico_Pasti();
+	int lunghezzaVettoreIndici=get_lunghezza_file_storico_pasti();
 	int indiciSuFile[lunghezzaVettoreIndici];
 	int indiceVetIndici=0;
 

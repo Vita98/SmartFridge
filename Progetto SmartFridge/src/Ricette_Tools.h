@@ -376,4 +376,40 @@ int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,al
 int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta ricette[],int lunghezzaVettoreRicette,int *nuovoIndirizzoRicette);
 
 
+
+
+
+/**
+ * Funzione che cerca all'interno del vettore di ricette tutte le ricette che e' possibile
+ * cucinare in base alle quantita e alle disponibilita degli alimenti.
+ *
+ * @param[in] ricette vettore di ricette.
+ * @param[in] lunghezzaVettoreRicette lunghezza del vettore di ricette.
+ * @param[in] alimenti vettore di alimenti.
+ * @param[in] lunghezzaVettoreAlimenti lunghezza del vettore di alimenti.
+ * @param[in,out] numeroRicettePossibili numero di ricette che si possono cucinare.
+ * @return puntatore ad un vettore di interi contenente tutti gli ID delle ricette che si possono
+ * consumare e inoltre all'interno del puntatore passato come parametro viene messo il
+ * numero di ricette trovate.
+ */
+int* get_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int* numeroRicettePossibili);
+
+
+
+
+
+/**
+ * Funzione che ha il compito di visualizzare in console all'utente tutte le ricette che
+ * e' possibile cucinare in base alle disponibilita degli alimenti.
+ * La visualizzaione delle ricette e' fatta in maniera ordinata facendo vedere prima
+ * i preferiti e poi il resto in ordine di frequenza.
+ *
+ * @param[in] ricette vettore di ricette.
+ * @param[in] lunghezzaVettoreRicette lunghezza del vettore di ricette.
+ * @param[in] alimenti vettore di alimenti.
+ * @param[in] lunghezzaVettoreAlimenti lunghezza del vettore di alimenti.
+ * @return 1 se la funzione e' andata a buon fine.
+ */
+int visualizza_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti);
+
 #endif /* RICETTE_TOOLS_H_ */

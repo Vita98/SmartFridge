@@ -22,7 +22,7 @@
 /**
  * Messaggio del menu per la scelta delle opzioni del
  */
-#define MENU_SUGGERIMENTO_SPESA "\n****************************************\nLa Lista generata rispetterà una soglia minima stabilita\n1 - Genera la Lista della Spesa\n2 - Visualizza l'ultima Lista generata\n3 - Modifica soglia limite\n\n0 - Indietro\n****************************************\nScelta: "
+#define MENU_SUGGERIMENTO_SPESA "\n****************************************\nLa Lista generata rispettera' una soglia minima stabilita\n1 - Genera la Lista della Spesa\n2 - Visualizza l'ultima Lista generata\n3 - Modifica soglia limite\n\n0 - Indietro\n****************************************\nScelta: "
 
 
 #define MENU_ALIMENTI "\n****************************************\n1 - Visualizza la Lista degli Alimenti\n2 - Modifica Alimento\n\n0 - Indietro\n****************************************\nScelta: "
@@ -65,6 +65,9 @@
 
 
 #define MENU_MODIFICA_PASTO "Cosa vuoi modificare del pasto?\n1 - Numero porzioni\n2 - Cambiare totalmente pasto consumato\n\n0 - Annulla\n****************************************\nScelta:"
+
+
+#define MENU_OPZIONI_SUGGERIMENTO_RICETTA "Che ricette vuoi essere suggerito?\n1 - Ricette con alimenti in scadenza\n2 - Ricette che e' possibile preparare\n\n0 - Indietro\n****************************************\nScelta:"
 
 #endif /* MESSAGGI_MENU_H_ */
 

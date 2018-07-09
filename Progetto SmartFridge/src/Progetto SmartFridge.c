@@ -53,33 +53,26 @@ int main(void) {
 	int numScelta;
 
 	//creazione e caricamento del vettore di alimenti
-	int lunghezzaVettoreAlimenti = Get_Lunghezza_File_Alimenti();
+	int lunghezzaVettoreAlimenti = get_lunghezza_file_alimenti();
 	alimento *alimenti=(alimento*) calloc(lunghezzaVettoreAlimenti,sizeof(alimento));
-	if(Carica_Alimenti(alimenti) == 0) printf("\nIl file di alimenti non esiste o e' vuoto!\n");
+	if(carica_alimenti(alimenti) == 0) printf("\nIl file di alimenti non esiste o e' vuoto!\n");
 
 
 	//creazione e caricamento del vettore di ricette
-	int lunghezzaVettoreRicette=Get_Lunghezza_File_Ricette();
+	int lunghezzaVettoreRicette=get_lunghezza_file_ricette();
 	ricetta *ricette=(ricetta*) calloc(lunghezzaVettoreRicette,sizeof(ricetta));
-	Carica_Ricette(ricette);
+	if(carica_ricette(ricette) == 0) printf("\nIl file di ricette non esiste o e' vuoto!\n");
 
 
 	//Caricamento delle impostazioni dal file di configurazione
-	Carica_Configurazione();
+	carica_configurazione();
 
-	visualizza_storico_spesa(alimenti,lunghezzaVettoreAlimenti);
+	/*visualizza_storico_spesa(alimenti,lunghezzaVettoreAlimenti);
 	visualizza_file_pasti(ricette);
-
-	/*pasto pp;
-	pp=leggi_iesimo_pasto(1);
-	if(pp.ID_Ricetta == 2){
-		pp.Porzioni=1;
-		modifica_iesimo_pasto_su_file(pp,1);
-	}*/
 
 
 	visualizza_alimenti(alimenti,lunghezzaVettoreAlimenti);
-	visualizza_ricette(ricette,lunghezzaVettoreRicette);
+	visualizza_ricette(ricette,lunghezzaVettoreRicette);*/
 
 
 	//genera_consumazioni_pasti(alimenti,lunghezzaVettoreAlimenti,ricette,lunghezzaVettoreRicette);
@@ -102,7 +95,7 @@ int main(void) {
 
 		case 2:		//Suggerimento Ricette
 
-			suggerimento_ricette_in_scadenza(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
+			scelta_opzioni_suggerimento_ricette(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
 
 			break;
 
