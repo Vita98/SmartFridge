@@ -75,7 +75,7 @@ boolean controllo_preferiti(ricetta ricette[], int lunghezzaVettoreRicette,
 
 	//controllo se la ricetta inserita in input esiste nel vettore di ricette
 	if ((*indiceRicetta = get_ricetta(ricette, lunghezzaVettoreRicette, scelta,
-			false)) > -1) {
+			true)) > -1) {
 
 		if(exist_preferito(ricette,indiceRicetta) == true) return true;
 		else return false;
@@ -125,7 +125,7 @@ int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 			&indiceRicetta);
 
 	if (controllo == true) {
-		printf("\nLa Ricetta è già presente nei Preferiti.\n");
+		printf("\nLa Ricetta e' gia' presente nei Preferiti.\n");
 		return 0;
 
 	} else {
@@ -133,7 +133,7 @@ int aggiungi_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 			return 0;
 		}else{
 			fwrite(&ricette[indiceRicetta], sizeof(ricetta), 1, filePreferiti);
-			printf("\nLa Ricetta '%s' è stata aggiunta ai Preferiti.\n",ricette[indiceRicetta].Nome);
+			printf("\nLa Ricetta '%s' e' stata aggiunta ai Preferiti\n",ricette[indiceRicetta].Nome);
 		}
 		fclose(filePreferiti);
 		return 1;
@@ -174,7 +174,7 @@ int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 	//Controllo se la ricetta è preente nel file dei preferiti
 	if (controllo == false) {
-		printf("\nLa Ricetta non è presente nei Preferiti.\n");
+		printf("\nLa Ricetta non e' presente nei Preferiti.\n");
 		return 0;
 
 	} else {
@@ -231,7 +231,7 @@ int cancella_preferito(ricetta ricette[], int lunghezzaVettoreRicette) {
 
 				fclose(filePreferiti);
 
-				printf("\nLa Ricetta è stata cancellata.\n");
+				printf("\nLa Ricetta e' stata cancellata.\n");
 				return 1;
 			}
 
@@ -306,12 +306,18 @@ int visualizza_preferiti(ricetta ricette[]) {
  */
 int scelta_opzioni_preferiti(ricetta ricette[], int lunghezzaVettoreRicette) {
 
-	int NumScelta;
+	int numScelta;
 
 	do {
-		NumScelta = fai_scelta(MENU_GESTISCI_PREFERTI);
 
-		switch (NumScelta) {
+		//pulisco lo schermo
+		system("cls");
+
+		printf("\nGESTIONE DEI PREFERITI\n");
+
+		numScelta = fai_scelta(MENU_GESTISCI_PREFERTI);
+
+		switch (numScelta) {
 
 		case 1:
 			//Visualizza PREFERITI
@@ -336,7 +342,14 @@ int scelta_opzioni_preferiti(ricetta ricette[], int lunghezzaVettoreRicette) {
 			printf("Scelta errata! Riprova!\n");
 
 		}
-	} while (NumScelta != 0);
+
+		if(numScelta != 0 || numScelta > 3) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
+		}
+
+	} while (numScelta != 0);
 
 	return 0;
 

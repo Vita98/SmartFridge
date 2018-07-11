@@ -59,7 +59,7 @@ int scelta_opzioni_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti);
  *
  * @param[in] alimenti vettore di alimenti.
  * @param[in] lunghezzaVettoreAlimenti lunghezza del vettore di alimenti.
- * @return 1 se l'operazione e' andata a buon fine.
+ * @return 1 se e' stato visualizzato almeno 1 alimento, 0 altrimenti.
  */
 int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti);
 
@@ -281,7 +281,7 @@ int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlim
  * @param[in] alimenti vettore di alimenti.
  * @param[in] lunghezzaVettoreAlimenti lunghezza del vettore di alimenti.
  * @param modalitaOrdinamento numero che identifica la modalita di ordinamento.
- * @return 1 se la visualizzazione e' adata a buon fine.
+ * @return 1 se e' stato visualizzato almeno 1 alimento, 0 altrimenti.
  */
 int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAlimenti, int modalitaOrdinamento);
 

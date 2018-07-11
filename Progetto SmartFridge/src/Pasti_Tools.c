@@ -12,7 +12,6 @@
 
 
 #include "Tipi_Dato.h"
-#include "Messaggi_Menu.h"
 #include "Ricette_Tools.h"
 #include "Data_Tools.h"
 #include "Alimenti_Tools.h"
@@ -321,11 +320,14 @@ int visualizza_menu_settimane_passate(ricetta ricette[],int lunghezzaVettoreRice
  */
 int scelta_opzioni_visualizza_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette){
 
-	printf("\n\nVisualizzazione Menu Settimanale\n%s\n",STRINGASTERISCHI);
-
 	int numScelta;
 
 	do{
+
+		//pulisco lo schermo
+		system("cls");
+
+		printf("\nVISUALIZZAZIONE MENU SETTIMANALE\n\n%s\n",STRINGASTERISCHI);
 
 		numScelta=fai_scelta(MENU_OPZIONI_VISUALIZZAZIONE_MENU_SETTIMANALE);
 
@@ -342,6 +344,13 @@ int scelta_opzioni_visualizza_menu_settimanale(ricetta ricette[],int lunghezzaVe
 
 				break;
 			default: printf("\nErrore!Riprova!\n");
+		}
+
+
+		if(numScelta != 0 || numScelta > 2) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
 		}
 
 	}while(numScelta!=0);
@@ -428,7 +437,10 @@ int cancella_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 	int indiciSuFile[lunghezzaVettoreIndici];
 	int indiceVetIndici=0;
 
-	printf("\n\nCancellazione Pasto\n\%s\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nCANCELLAZIONE PASTO\n\n%s\n",STRINGASTERISCHI);
 
 	do{
 		indice=0;
@@ -525,6 +537,7 @@ int modifica_iesimo_pasto_su_file(pasto iesimoPasto,int indicePasto){
 pasto leggi_iesimo_pasto(int indicePasto){
 	FILE *fileStoricoPasti;
 	pasto pp;
+	pp.ID_Ricetta=-1;
 
 	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb")) == NULL) {
 		return pp;
@@ -839,7 +852,10 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 	int indiciSuFile[lunghezzaVettoreIndici];
 	int indiceVetIndici=0;
 
-	printf("\nModifica Pasto\n\%s\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA PASTO\n\%s\n",STRINGASTERISCHI);
 
 	do{
 		indice=0;
@@ -855,13 +871,13 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 				return 0;
 			} else {
 
-				printf("\n%5s | %20s | %5s\n","N","Ricetta","Porzioni");
+				printf("\n%5s | %30s | %5s\n","N","Ricetta","Porzioni");
 				printf("-----------------------------------------------------");
 				while(!feof(file_Storico_Pasti)){
 					if(fread(&past,sizeof(past),1,file_Storico_Pasti) > 0){
 						//se le date sono le stesse avranno una distanza in giorni pari a 0
 						if(get_distanza_in_giorni(past.Data_Ora,dataPasto,0) == 0 && past.visibilita==true){
-							printf("\n%5d | %20s | %5d",indiceVetIndici,ricette[past.ID_Ricetta].Nome,past.Porzioni);
+							printf("\n%5d | %30s | %5d",indiceVetIndici,ricette[past.ID_Ricetta].Nome,past.Porzioni);
 							indiciSuFile[indiceVetIndici]=indice;
 							indiceVetIndici++;
 						}
@@ -887,7 +903,15 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 					int returnValore;
 					int nuovePorzioni;
 
+					pasto pp=leggi_iesimo_pasto(sceltaIndice);
+
 					do{
+
+						//pulisco lo schermo
+						system("cls");
+
+						printf("\nMODIFICA DEL PASTO \"%s\" del %d/%d/%d\n\n%s\n\n",ricette[pp.ID_Ricetta].Nome,pp.Data_Ora.Giorno,pp.Data_Ora.Mese,pp.Data_Ora.Anno,STRINGASTERISCHI);
+
 						numScelta= fai_scelta(MENU_MODIFICA_PASTO);
 
 						switch(numScelta){
@@ -918,6 +942,12 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
 								printf("\nScelta errata!\n");
 						}
 
+						if(numScelta != 0) {
+							char c[LUNGHEZZA_STRINGA];
+							printf("\nPremi per continuare....");
+							fgets(c,LUNGHEZZA_STRINGA,stdin);
+						}
+
 					}while(numScelta != 0);
 
 					/*if(cancella_iesimo_pasto_da_file(indiciSuFile[sceltaIndice],alimenti,ricette)) printf("\nCancellazione del pasto effettuata con successo!\n");
@@ -942,12 +972,17 @@ int modifica_pasto(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimen
  */
 int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	int NumScelta;
+	int numScelta;
 
 	do {
-		NumScelta = fai_scelta(MENU_PASTI);
+		//pulisco lo schermo
+		system("cls");
 
-		switch (NumScelta) {
+		printf("\nOPZIONI DEI PASTI E MENU SETTIMANALE\n");
+
+		numScelta = fai_scelta(MENU_PASTI);
+
+		switch (numScelta) {
 		case 1:
 
 			//Visualizzazione del menu settimanale
@@ -958,6 +993,7 @@ int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento 
 
 			//aggiungi pasto
 			aggiungi_pasto(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti);
+			numScelta=5; /*lo faccio per far visualizzare il Premi per continuare */
 
 			break;
 		case 3:
@@ -970,6 +1006,7 @@ int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento 
 
 			//cancella pasto
 			cancella_pasto(ricette,lunghezzaVettoreRicette,alimenti);
+			numScelta=5; /*lo faccio per far visualizzare il Premi per continuare */
 
 			break;
 		case 0:
@@ -979,7 +1016,13 @@ int scelta_opzioni_pasti(ricetta ricette[],int lunghezzaVettoreRicette,alimento 
 			printf("Scelta errata! Riprova!\n");
 		}
 
-	} while (NumScelta != 0);
+		if(numScelta != 0 && numScelta > 4) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
+		}
+
+	} while (numScelta != 0);
 
 	return 1;
 }

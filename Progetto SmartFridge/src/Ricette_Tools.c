@@ -33,7 +33,7 @@
  */
 int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, int modalitaOrdinamento) {
 
-	int i;
+	int i,cont=0;
 	int indici[lunghezzaVettoreRicette];
 
 	printf("Ricette presenti ");
@@ -48,7 +48,13 @@ int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, 
 		if (ricette[indici[i]].Visibilita==true){
 			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
 							ricette[indici[i]].Nome, ricette[indici[i]].Kcal_Porzione, ricette[indici[i]].ID_Ricetta, ricette[indici[i]].Frequenza,(ricette[indici[i]].Visibilita)?"true":"false");
+			cont++;
 		}
+	}
+
+	if(cont == 0){
+		printf("\nNon ci sono ricette!\n");
+		return 0;
 	}
 	return 1;
 }
@@ -65,7 +71,7 @@ int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, 
  */
 int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 
-	int i;
+	int i,cont=0;
 
 	printf("Ricette presenti ");
 	printf ("(%d) :\n",lunghezzaVettoreRicette);
@@ -77,8 +83,15 @@ int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette) {
 		if (ricette[i].Visibilita==true ){
 			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", i,
 							ricette[i].Nome, ricette[i].Kcal_Porzione, ricette[i].ID_Ricetta, ricette[i].Frequenza,(ricette[i].Visibilita)?"true":"false");
+			cont++;
 		}
 	}
+
+	if(cont == 0){
+		printf("\nNon ci sono ricette!\n");
+		return 0;
+	}
+
 	return 1;
 }
 
@@ -102,6 +115,11 @@ int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette
 	int numScelta=0;
 
 		do {
+			//pulisco lo schermo
+			system("cls");
+
+			printf("\nVISUALIZZAZIONE DELLE RICETTE\n");
+
 			numScelta = fai_scelta(MENU_ORDINAMENTO_RICETTE);
 
 			switch (numScelta) {
@@ -129,6 +147,13 @@ int scelta_visualizzazione_ricette(ricetta ricette[],int lunghezzaVettoreRicette
 				printf("Scelta errata! Riprova!\n");
 
 			}
+
+			if(numScelta != 0) {
+				char c[LUNGHEZZA_STRINGA];
+				printf("\nPremi per continuare....");
+				fgets(c,LUNGHEZZA_STRINGA,stdin);
+			}
+
 		}while(numScelta != 0);
 
 		return 1;
@@ -224,9 +249,10 @@ int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 	char scelta[LUNGHEZZA_STRINGA];
 	int indiceRicetta;
 
-	printf("\n\n\n%s\n",STRINGASTERISCHI);
-	printf("         CANCELLAZIONE RICETTA\n");
-	printf("%s\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nCANCELLAZIONE RICETTA\n\n%s\n\n",STRINGASTERISCHI);
 
 	printf("Inserisci il nome della ricetta che si vuole cancellare: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
@@ -260,6 +286,11 @@ int cancella_ricetta(ricetta ricette[],int lunghezzaVettoreRicette){
 			}else printf("\nCancellazione della ricetta effettuata con successo!\n");
 		}
 	}
+
+	char c[LUNGHEZZA_STRINGA];
+	printf("\nPremi per continuare....");
+	fgets(c,LUNGHEZZA_STRINGA,stdin);
+
 	return 1;
 }
 
@@ -455,7 +486,7 @@ int inserimento_alimento_ricetta(ricetta ricette[],int indiceRicetta,alimento al
 
 	char scelta[LUNGHEZZA_STRINGA];
 
-	printf("\nInserisci il nome dell'alimento da aggiungere: ");
+	printf("\nInserisci il nome dell'alimento da aggiungere alla ricetta: ");
 	fgets(scelta,LUNGHEZZA_STRINGA,stdin);
 
 	int IndiceAlimento;
@@ -651,11 +682,17 @@ int modifica_quantita_alimento_ricetta(ricetta ricette[],int indiceRicetta,alime
  */
 int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	visualizza_alimenti_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
-
 	int numScelta;
 
 	do{
+
+		//pulisco lo schermo
+		system("cls");
+
+		printf("\nMODIFICA ALIMENTI CHE FORMANO \"%s\"\n",ricette[indiceRicetta].Nome);
+
+		visualizza_alimenti_ricetta(ricette,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
+
 		numScelta=fai_scelta(MENU_MODIFICA_ALIMENTI_RICETTA);
 		switch(numScelta){
 			case 1:
@@ -678,6 +715,13 @@ int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alime
 
 			default:printf("Scelta errata! Riprova!\n");
 		}
+
+		if(numScelta != 0) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
+		}
+
 	}while(numScelta!=0);
 
 	return 1;
@@ -700,7 +744,10 @@ int modifica_alimenti_ricetta(ricetta ricette[],int indiceRicetta,alimento alime
  */
 int scelta_modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	printf("\n\n             Modifica Ricetta\n");
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA RICETTA\n");
 	printf("\n%s\n",STRINGASTERISCHI);
 
 	char scelta[LUNGHEZZA_STRINGA];
@@ -715,11 +762,17 @@ int scelta_modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimen
 		printf("\n\nRicetta Trovata\n\n");
 
 		//devo fare la modifica effettiva
-		int NumScelta=1;
+		int numScelta=1;
 		do{
-			NumScelta=fai_scelta(MENU_MODIFICA_RICETTE);
 
-			switch(NumScelta){
+			//pulisco lo schermo
+			system("cls");
+
+			printf("\nMODIFICA DELLA RICETTA \"%s\" \n",ricette[indice].Nome);
+
+			numScelta=fai_scelta(MENU_MODIFICA_RICETTE);
+
+			switch(numScelta){
 				case 1:
 					//modifica nome
 
@@ -745,7 +798,14 @@ int scelta_modifica_ricetta(ricetta ricette[],int lunghezzaVettoreRicette,alimen
 				default:
 					printf("Scelta errata! Riprova!\n");
 			}
-		} while (NumScelta != 0);
+
+			if(numScelta != 0 && numScelta > 3) {
+				char c[LUNGHEZZA_STRINGA];
+				printf("\nPremi per continuare..23..");
+				fgets(c,LUNGHEZZA_STRINGA,stdin);
+			}
+
+		} while (numScelta != 0);
 
 	}else printf("\n\nNon esiste nessuna ricetta che si chiama in quel modo!\n\n");
 
@@ -843,7 +903,10 @@ int consuma_ricetta_su_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,al
  */
 int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta ricette[],int lunghezzaVettoreRicette,int *nuovoIndirizzoRicette){
 
-	printf("\n\n            Inserimento Ricette\n%s\n\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nINSERIMENTO DI UNA RICETTA\n\n%s\n",STRINGASTERISCHI);
 	char scelta[LUNGHEZZA_STRINGA];
 	int indiceRicetta=-1;
 
@@ -893,7 +956,7 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 
 
 			//aggiunta degli alimenti alla ricetta
-			printf("\nInserimento alimenti della ricetta\n%s\n",STRINGASTERISCHI);
+			printf("\n\nINSERIMENTO ALIMENTI DELLA RICETTA\n\n%s\n",STRINGASTERISCHI);
 			boolean flag;
 			int flag1=0;
 			do{
@@ -906,11 +969,11 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 				visualizza_alimenti_ricetta(ricette2,indiceRicetta,alimenti,lunghezzaVettoreAlimenti);
 
 				if(fai_scelta_booleana("\n\nVuoi aggiungere un altro alimento alla ricetta? ") == true) flag=true;
+				if(flag1 == 0) printf("\n\nDevi inserire almeno un alimento!\n\n");
 			}while(flag==true || flag1 == 0);
 
 
 			printf("\nRicetta inserita con successo!\n");
-
 
 		}else{
 
@@ -987,6 +1050,12 @@ int* get_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreR
  */
 int visualizza_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nSUGGERIMENTO DELLE RICETTE CHE SI POSSONO PREPARARE\n\n%s\nLe ricette saranno ordinate prima\nper i preferiti e poi per frequenza\n\n",STRINGASTERISCHI);
+
+
 	int numeroRicettePossibili=0;
 
 	//richiamo la funzione che cerca le ricette che si possono cucinare
@@ -1036,19 +1105,26 @@ int visualizza_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVe
  */
 int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoRicette){
 
-	int NumScelta;
+	int numScelta;
 
 	//imposto come nuovo indirizzo del vettore di ricette, il suo stesso indirizzo
 	(*nuovoIndirizzoRicette)=(int)ricette;
 
 	do {
-		NumScelta = fai_scelta(MENU_RICETTE);
 
-		switch (NumScelta) {
+		//pulisco lo schermo
+		system("cls");
+
+		printf("\nOPZIONI DELLE RICETTE\n");
+
+		numScelta = fai_scelta(MENU_RICETTE);
+
+		switch (numScelta) {
 		case 1:
 
 			//viualizza lista ricette
 			scelta_visualizzazione_ricette(ricette, lunghezzaVettoreRicette);
+			numScelta=0;
 			break;
 
 		case 2:
@@ -1087,7 +1163,13 @@ int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,aliment
 			printf("Scelta errata! Riprova!\n");
 		}
 
-	} while (NumScelta != 0);
+		if(numScelta != 0 && numScelta > 5) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
+		}
+
+	} while (numScelta != 0);
 
 	return lunghezzaVettoreRicette;
 }

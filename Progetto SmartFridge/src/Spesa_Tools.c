@@ -35,9 +35,12 @@ int visualizza_storico_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 
 	boolean flag=false;
 
+	//pulisco lo schermo
+	system("cls");
+
 	if ((fileStoricoSpesa = fopen("Storico_Spesa.sf", "rb")) != NULL)
 	{
-		printf("\n\nStorico Spesa\n%s\n",STRINGASTERISCHI);
+		printf("\nSTORICO SPESA\n\n%s\n\n",STRINGASTERISCHI);
 		printf("%20s | %20s | %20s","Alimento Acquistato","Quantita Acquistata","Data di Acquisto");
 		printf("\n-----------------------------------------------------------------");
 
@@ -111,7 +114,10 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
 	int quantita;
 	boolean flagRipetizione;
 
-	printf("\n\n            Inserimento Spesa\n%s\n\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nINSERIMENTO SPESA\n%s\n\n",STRINGASTERISCHI);
 
 	do{
 
@@ -277,17 +283,21 @@ int inserimento_alimenti_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,
  *
  */
 int scelta_opzioni_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *nuovoIndirizzoAlimenti) {
-	int NumScelta=1;
+	int numScelta=1;
 
 	//come NuovoIndirizzoImposto quello di se stesso nel caso non venisse mai richiamata
 	//la funzionalita di Inserimento degli alimenti
 	(*nuovoIndirizzoAlimenti)=(int)alimenti;
 
 	do {
-		printf("\nOpzioni Spesa\n");
-		NumScelta = fai_scelta(MENU_OPZIONI_SPESA);
 
-		switch(NumScelta){
+		//pulisco lo schermo
+		system("cls");
+
+		printf("\nOPZIONI SPESA\n");
+		numScelta = fai_scelta(MENU_OPZIONI_SPESA);
+
+		switch(numScelta){
 			case 1:
 				//Inserimento della spesa
 				lunghezzaVettoreAlimenti=inserimento_alimenti_spesa(alimenti,lunghezzaVettoreAlimenti,nuovoIndirizzoAlimenti);
@@ -300,7 +310,7 @@ int scelta_opzioni_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *n
 			case 2:
 				//visualizzazione dello storico spese
 				if(visualizza_storico_spesa(alimenti,lunghezzaVettoreAlimenti) == 0){
-					printf("\n\nNon sono mai state fatte spese!\n\n");
+					printf("\n\nNon e' mai stata fatta la spesa!\n\n");
 				}else printf("\n\n");
 				break;
 
@@ -312,7 +322,13 @@ int scelta_opzioni_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti,int *n
 				printf("\nScelta errata!\n");
 		}
 
-	} while (NumScelta != 0);
+		if(numScelta != 0) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
+		}
+
+	} while (numScelta != 0);
 
 	return lunghezzaVettoreAlimenti;
 }

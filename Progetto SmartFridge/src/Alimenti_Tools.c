@@ -141,7 +141,10 @@ int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 	}
 
 	//controllo se ha visualizzato almento un elemento
-	if (cont == 0) printf("\nNon ci sono alimenti disponibili!\n");
+	if (cont == 0){
+		printf("\nNon ci sono alimenti disponibili!\n");
+		return 0;
+	}
 	return 1;
 }
 
@@ -222,6 +225,11 @@ int modifica_nome_alimento(alimento alimenti[],int lunghezzaVettoreAlimenti,int 
 	char scelta[LUNGHEZZA_STRINGA];
 	boolean flag;
 
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA DEL NOME DELL'ALIMENTO \"%s\"\n\n%s\n",alimenti[indiceAlimento].Nome,STRINGASTERISCHI);
+
 	do{
 		flag=false;
 		printf("\nInserisci il nuovo nome dell'Alimento:\n");
@@ -264,6 +272,11 @@ int modifica_nome_alimento(alimento alimenti[],int lunghezzaVettoreAlimenti,int 
 int modifica_kcal_alimento(alimento alimenti[],int indiceAlimento){
 	double Kcal=0.0;
 
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA DELle KCAL DELL'ALIMENTO \"%s\"\n\n%s\n",alimenti[indiceAlimento].Nome,STRINGASTERISCHI);
+
 	Kcal=fai_scelta_double("\nInserisci le nuove kcal dell'Alimento:\n");
 
 	//effettuo la modifica nel vettore
@@ -295,6 +308,11 @@ int modifica_kcal_alimento(alimento alimenti[],int indiceAlimento){
 int modifica_peso_alimento(alimento alimenti[],int indiceAlimento){
 	int peso=0;
 	char stringa[LUNGHEZZA_STRINGA];
+
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA DEL PESO DELL'ALIMENTO \"%s\"\n\n%s\n",alimenti[indiceAlimento].Nome,STRINGASTERISCHI);
 
 	do{
 		printf("\nInserisci il nuovo peso dell'Alimento:\n");
@@ -353,7 +371,12 @@ int visualizza_quantita_scadenze(alimento alimenti[],int indiceAlimento){
  *
  */
 int modifica_quantita_alimento(alimento alimenti[],int indiceAlimento){
-	printf("\n\nModifica Quantita alimento\n");
+
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA DELLA QUANTITA' DELL'ALIMENTO \"%s\"\n\n%s\n",alimenti[indiceAlimento].Nome,STRINGASTERISCHI);
+
 
 	visualizza_quantita_scadenze(alimenti,indiceAlimento);
 
@@ -401,7 +424,11 @@ int modifica_quantita_alimento(alimento alimenti[],int indiceAlimento){
  *
  */
 int modifica_scadenze_alimento(alimento alimenti[],int indiceAlimento){
-	printf("\n\nModifica Scadenza alimento\n");
+
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA DELLE SCADENZE DELL'ALIMENTO \"%s\"\n\n%s\n",alimenti[indiceAlimento].Nome,STRINGASTERISCHI);
 
 	visualizza_quantita_scadenze(alimenti,indiceAlimento);
 
@@ -492,8 +519,10 @@ int decrementa_quantita_alimento(alimento* alim, int quantita){
  */
 int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
-	printf("\n\n             Modifica Alimento\n");
-	printf("\n%s\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nMODIFICA DELL'ALIMENTO\n\n%s\n",STRINGASTERISCHI);
 
 	char scelta[LUNGHEZZA_STRINGA];
 
@@ -509,11 +538,16 @@ int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 
 
 		//devo fare la modifica effettiva
-		int NumScelta=1;
+		int numScelta=1;
 		do{
-			NumScelta=fai_scelta(MENU_MODIFICA_ALIMENTI);
+			//pulisco lo schermo
+			system("cls");
 
-			switch(NumScelta){
+			printf("\nMODIFICA DELL'ALIMENTO \"%s\"\n",alimenti[indice].Nome);
+
+			numScelta=fai_scelta(MENU_MODIFICA_ALIMENTI);
+
+			switch(numScelta){
 				case 1:
 					//modifica nome
 
@@ -551,10 +585,24 @@ int modifica_alimento(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 					printf("Scelta errata! Riprova!\n");
 			}
 
-		} while (NumScelta != 0);
+			if(numScelta != 0) {
+				char c[LUNGHEZZA_STRINGA];
+				printf("\nPremi per continuare....");
+				fgets(c,LUNGHEZZA_STRINGA,stdin);
+			}
+
+		} while (numScelta != 0);
 
 
-	} else printf("\n\nNon esiste nessun alimento che si chiama in quel modo!\n\n");
+	} else{
+		printf("\n\nNon esiste nessun alimento che si chiama in quel modo!\n\n");
+
+		char c[LUNGHEZZA_STRINGA];
+		printf("\nPremi per continuare....");
+		fgets(c,LUNGHEZZA_STRINGA,stdin);
+	}
+
+
 
 	return 1;
 }
@@ -577,7 +625,7 @@ int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAliment
 	int i;
 	int indici[lunghezzaVettoreAlimenti];
 
-	printf("Ricette presenti \n");
+	printf("\nRicette presenti \n");
 
 	sort_alimenti(alimenti, indici, lunghezzaVettoreAlimenti, modalitaOrdinamento);
 	int cont=0;
@@ -588,6 +636,12 @@ int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAliment
 							alimenti[indici[i]].Nome, alimenti[indici[i]].Kcal_Pezzo, alimenti[indici[i]].ID_Alimento, alimenti[indici[i]].Utilizzo,(alimenti[indici[i]].Visibilita)?"true":"false");
 		}
 	}
+
+	if(cont == 0){
+		printf("\nNon ci sono alimenti disponibili!\n");
+		return 0;
+	}
+
 	return 1;
 }
 
@@ -607,6 +661,10 @@ int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlim
 	int numScelta=0;
 
 		do {
+			//pulisco lo schermo
+			system("cls");
+
+			printf("\nVISUALIZZAZIONE DEGLI ALIMENTI\n");
 			numScelta = fai_scelta(MENU_ORDINAMENTO_RICETTE);
 
 			switch (numScelta) {
@@ -634,6 +692,13 @@ int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlim
 				printf("Scelta errata! Riprova!\n");
 
 			}
+
+			if(numScelta != 0) {
+				char c[LUNGHEZZA_STRINGA];
+				printf("\nPremi per continuare....");
+				fgets(c,LUNGHEZZA_STRINGA,stdin);
+			}
+
 		}while(numScelta != 0);
 
 		return 1;
@@ -651,12 +716,16 @@ int scelta_visualizzazione_alimenti(alimento alimenti[],int lunghezzaVettoreAlim
  *
  */
 int scelta_opzioni_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
-	int NumScelta=1;
+	int numScelta=1;
 
 	do {
-		NumScelta = fai_scelta(MENU_ALIMENTI);
+		//pulisco lo schermo
+		system("cls");
 
-		switch (NumScelta) {
+		printf("\nOPZIONI DEGLI ALIMENTI\n");
+		numScelta = fai_scelta(MENU_ALIMENTI);
+
+		switch (numScelta) {
 		case 1:
 
 			//visualizza alimenti
@@ -676,7 +745,7 @@ int scelta_opzioni_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 			printf("Scelta errata! Riprova!\n");
 		}
 
-	} while (NumScelta != 0);
+	} while (numScelta != 0);
 
 	/*AGGIUNTA DELL'ALIMENTO CON LA SPESA*/
 

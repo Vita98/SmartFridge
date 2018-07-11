@@ -40,7 +40,7 @@
 #define MENU_ORDINAMENTO_ALIMENTI "\n****************************************\nCome desidera Ordinare gli Alimenti?\n1 - Nessun Ordinamento\n2 - Ordinamento per kcal\n3 - Ordinamento per frequenza di utilizzo\n\n0 - Indietro\n****************************************\nScelta: "
 
 
-#define MENU_PASTI "\nOpzioni pasti e Menu settimanale\n****************************************\n1 - Visualizza il Menu Settimanale\n2 - Aggiungi Pasto\n3 - Modifica Pasto\n4 - Cancella Pasto\n\n0 - Indietro\n****************************************\nScelta: "
+#define MENU_PASTI "\n****************************************\n1 - Visualizza il Menu Settimanale\n2 - Aggiungi Pasto\n3 - Modifica Pasto\n4 - Cancella Pasto\n\n0 - Indietro\n****************************************\nScelta: "
 
 
 #define MENU_MODIFICA_ALIMENTI "\n****************************************\n1 - Modifica Nome Alimento\n2 - Modifica le kcal per pezzo dell'Alimento\n3 - Modifica il peso dell'Alimento\n4 - Modifica la quantita dell'Alimento\n5 - Modifica le scadenze dell'Alimento\n\n0 - Indietro\n****************************************\nScelta: "
@@ -64,7 +64,7 @@
 #define MENU_GESTISCI_PREFERTI "\n****************************************\n1 - Visualizza le Ricette Preferite\n2 - Aggiungi un Preferito\n3 - Cancella un Preferito\n\n0 - Indietro\n****************************************\nScelta: "
 
 
-#define MENU_MODIFICA_PASTO "Cosa vuoi modificare del pasto?\n1 - Numero porzioni\n2 - Cambiare totalmente pasto consumato\n\n0 - Annulla\n****************************************\nScelta:"
+#define MENU_MODIFICA_PASTO "Cosa vuoi modificare del pasto?\n\n1 - Numero porzioni\n2 - Cambiare totalmente pasto consumato\n\n0 - Annulla\n****************************************\nScelta:"
 
 
 #define MENU_OPZIONI_SUGGERIMENTO_RICETTA "Che ricette vuoi essere suggerito?\n1 - Ricette con alimenti in scadenza\n2 - Ricette che e' possibile preparare\n\n0 - Indietro\n****************************************\nScelta:"

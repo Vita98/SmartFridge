@@ -29,7 +29,6 @@
 
 
 
-
 #include "Tipi_Dato.h"
 #include "Caricamento_Vettori_Tools.h"
 #include "Ricette_Tools.h"
@@ -41,10 +40,9 @@
 #include "Ricerca_Ricette_Tools.h"
 #include <time.h>
 
+
 void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta ricette[],int lunghezzaRicette);
 void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti);
-
-void pressToContinue();
 
 int main(void) {
 
@@ -81,8 +79,9 @@ int main(void) {
 
 	int nuovoIndirizzoAlimenti;
 	int nuovoIndirizzoRicette;
-	printf("Benvenuto in SMARTFRIDGE\n");
+
 	do {
+		printf("Benvenuto in SMARTFRIDGE\n");
 
 		numScelta = fai_scelta(MENU_PRINCIPALE);
 
@@ -141,6 +140,9 @@ int main(void) {
 		default:
 			printf("\nScelta non valida!\n");
 		}
+
+		//pulisco lo schermo
+		system("cls");
 
 	} while (numScelta != 8);
 
@@ -270,16 +272,5 @@ void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti){
 		}
 	}
 
-}
-
-
-
-
-/*FUNZIONE CHE SI METTE IN ATTESA CHE   *
- *L'UTENTE PREMA QUALCHE TASTO			*/
-void pressToContinue() {
-	printf("Premi per continuare....");
-	getchar();
-	system("cls");
 }
 

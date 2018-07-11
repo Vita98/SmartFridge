@@ -50,43 +50,57 @@
 
 
 /**
- * Carattere usato per esplicitare l'anno nelle funzioni
+ * Carattere usato per esplicitare l'anno nelle funzioni.
+ * Costante utilizzata per scegliere di avere l’anno attuale
+ * come output della funzione get_data().
  */
 #define CARATTERE_ANNO 'Y'
 
 
 /**
- * Carattere usato per esplicitare il mese nelle funzioni
+ * Carattere usato per esplicitare il mese nelle funzioni.
+ * Costante utilizzata per scegliere di avere il mese attuale
+ * come output della funzione get_data().
  */
 #define CARATTERE_MESE 'M'
 
 
 /**
- * Carattere usato per esplicitare il giorno del mese nelle funzioni
+ * Carattere usato per esplicitare il giorno del mese nelle funzioni.
+ * Costante utilizzata per scegliere di avere il giorno del mese attuale
+ * come output della funzione get_data().
  */
 #define CARATTERE_GIORNO 'D'
 
 
 /**
- * Carattere usato per esplicitare l'ora nelle funzioni
+ * Carattere usato per esplicitare l'ora nelle funzioni.
+ * Costante utilizzata per scegliere di avere l’ora attuale
+ * come output della funzione get_data().
  */
 #define CARATTERE_ORA 'H'
 
 
 /**
- * Carattere usato per esplicitare i minuti nelle funzioni
+ * Carattere usato per esplicitare i minuti nelle funzioni.
+ * Costante utilizzata per scegliere di avere i minuti attuali
+ * come output della funzione get_data().
  */
 #define CARATTERE_MINUTI 'm'
 
 
 /**
- * Carattere usato per esplicitare i secondi nelle funzioni
+ * Carattere usato per esplicitare i secondi nelle funzioni.
+ * Costante utilizzata per scegliere di avere i secondi attuali
+ * come output della funzione get_data().
  */
 #define CARATTERE_SECONDI 'S'
 
 
 /**
- * Carattere usato per esplicitare il giorno della settimana nelle funzioni
+ * Carattere usato per esplicitare il giorno della settimana nelle funzioni.
+ * Costante utilizzata per scegliere di avere il giorno della settimana
+ * attuale come output della funzione get_data().
  */
 #define CARATTERE_GIORNO_SETTIMANA 'W'
 
@@ -167,7 +181,6 @@ typedef enum{
  * Viene utilizzata per determinara la lista della spesa.
  */
 int limite_spesa;
-
 
 
 

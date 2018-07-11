@@ -78,6 +78,7 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 
 	if(flag==false){
 		printf("\n\nNon ci sono elementi sotto la soglia!\n\n");
+		return 0;
 	}
 	return 1;
 
@@ -196,12 +197,17 @@ int modifica_soglia_spesa() {
  */
 int scelte_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	int NumScelta;
+	int numScelta;
 
 	do{
-		NumScelta=fai_scelta(MENU_SUGGERIMENTO_SPESA);
+		//pulisco lo schermo
+		system("cls");
 
-		switch(NumScelta){
+		printf("\nSUGGERIMENTO DELLA SPESA\n");
+
+		numScelta=fai_scelta(MENU_SUGGERIMENTO_SPESA);
+
+		switch(numScelta){
 			case 1:
 				if(!genera_lista_spesa(alimenti, lunghezzaVettoreAlimenti)) printf("Si e' verificato un errore nell'apertura dei file! Controllarli!\n");
 				break;
@@ -218,7 +224,14 @@ int scelte_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti){
 				printf("Scelta errata! Riprova!\n");
 		}
 
-	}while(NumScelta!=0);
+		if(numScelta != 0) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
+		}
+
+
+	}while(numScelta!=0);
 
 	return 0;
 }

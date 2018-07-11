@@ -102,12 +102,12 @@ int controllo_data(char *dataN,char *giorno,char *mese,int *anno){
  * Dato il carattere passato come parametro, la funzione restituisce
  * il corrispondente valore della data di sistema in fuso orario europeo(CEST).
  * anno: 					'Y'
- * mese: 					'M'
- * giorno: 					'D'
+ * mese: 					'M' (da 1 a 12)
+ * giorno: 					'D' (da 1 a 31)
  * ora: 					'H'
  * minuti: 					'm'
  * secondi: 				's'
- * giorno della settimana: 	'W'
+ * giorno della settimana: 	'W' (da 0 a 6 da lunedi)
  *
  * @warning Se la data di sistema e' antecedente al 1900 i risultati potrebbero
  * essere non veritieri.

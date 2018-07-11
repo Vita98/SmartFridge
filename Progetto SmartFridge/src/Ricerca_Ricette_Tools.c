@@ -138,6 +138,9 @@ int* get_ricette_per_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti,i
  */
 int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
+	//pulisco lo schermo
+	system("cls");
+
 	boolean flag;
 
 	//creo un vettore che conterra gli indici degli alimenti chiesti all'utente
@@ -147,7 +150,7 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 	int indice=0,i;
 	char alimentoInput[LUNGHEZZA_STRINGA];
 
-	printf("\n\nRicerca delle ricette in base agli alimenti\n%s\n",STRINGASTERISCHI);
+	printf("\nRICERCA DELLE RICETTE IN BASE AGLI ALIMENTI\n\n%s\n",STRINGASTERISCHI);
 
 	do{
 		flag=false;
@@ -170,7 +173,7 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 		}
 
 		if(fai_scelta_booleana("\nVuoi cercare le ricette con altri alimenti oltre a quelli gia inseriti? ") == true) flag=true;
-		else if(indiceVettoreIndici==0) printf("\nDevi inserire almeno un alimento per cercare le ricette!\n");
+		else if(indiceVettoreIndici==0) printf("\nDevi inserire almeno un alimento per cercare le ricette!\n\n");
 
 
 	}while((flag==true || indiceVettoreIndici==0 ) && indiceVettoreIndici < NUMERO_MAX_ALIMENTI );
@@ -206,6 +209,11 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 		}
 	}
 
+
+	//deve inserire qualcosa per andare avanti
+	char c[LUNGHEZZA_STRINGA];
+	printf("\nPremi per continuare....");
+	fgets(c,LUNGHEZZA_STRINGA,stdin);
 
 	return 1;
 }
@@ -306,7 +314,10 @@ int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alime
  */
 int suggerimento_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	printf("\n\nSuggerimento delle ricette in scadenza\n%s\nLe ricette saranno ordinate prima\nper i preferiti e poi per frequenza\n\n",STRINGASTERISCHI);
+	//pulisco lo schermo
+	system("cls");
+
+	printf("\nSUGGERIMENTO DELLE RICETTE IN SCADENZA\n\n%s\nLe ricette saranno ordinate prima\nper i preferiti e poi per frequenza\n\n",STRINGASTERISCHI);
 
 	int numeroRicetteInScadenza=0;
 
@@ -356,12 +367,15 @@ int suggerimento_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicet
  */
 int scelta_opzioni_suggerimento_ricette(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti){
 
-	printf("\n\nSuggerimento delle ricette\n%s\n",STRINGASTERISCHI);
+
 
 	int numScelta;
 
 	do{
+		//pulisco lo schermo
+		system("cls");
 
+		printf("\nSUGGERIMENTO DELLE RICETTE\n\n%s\n",STRINGASTERISCHI);
 		numScelta=fai_scelta(MENU_OPZIONI_SUGGERIMENTO_RICETTA);
 
 		switch(numScelta){
@@ -377,6 +391,12 @@ int scelta_opzioni_suggerimento_ricette(ricetta ricette[],int lunghezzaVettoreRi
 
 				break;
 			default: printf("\nErrore!Riprova!\n");
+		}
+
+		if(numScelta != 0) {
+			char c[LUNGHEZZA_STRINGA];
+			printf("\nPremi per continuare....");
+			fgets(c,LUNGHEZZA_STRINGA,stdin);
 		}
 
 	}while(numScelta!=0);

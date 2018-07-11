@@ -51,7 +51,7 @@ int scelta_opzioni_ricette(ricetta ricette[],int lunghezzaVettoreRicette,aliment
  * @param[in] lunghezzaVettoreRicette lunghezza del vettore di ricette.
  * @param[in] modalitaOrdinamento tipo di ordinamento che si vuole applicare (per kcal,frequenza o preferiti).
  * Utilizzare le opportune costanti (MODALITA_...).
- * @return 1 se la visualizzazione e' andata a buon fine.
+ * @return 1 se ha visualizzato almeno una ricetta, 0 altrimenti.
  */
 int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, int modalitaOrdinamento);
 
@@ -65,7 +65,7 @@ int visualizza_ricette_ordinate(ricetta ricette[], int lunghezzaVettoreRicette, 
  *
  * @param[in] ricette vettore di ricette.
  * @param[in] lunghezzaVettoreRicette lunghezza del vettore di ricette.
- * @return 1 se la visualizzazione e' andata a buon fine.
+ * @return 1 se ha visualizzato almeno una ricetta, 0 altrimenti.
  */
 int visualizza_ricette(ricetta ricette[], int lunghezzaVettoreRicette);
 
