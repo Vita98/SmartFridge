@@ -1,22 +1,55 @@
-/*
- ============================================================================
- Name        : Progetto.c
- Author      : Vitandrea Sorino
- Version     :
- Copyright   : Your copyright notice
- Description : Hel1lo World in C, Ansi-style
- ============================================================================
+/**
+ *  @file 	   "Progetto SmartFridge.c"
+ *  @brief     File contenente la funzione principale del programma cioe' il main().
+ *
+ *  @details   All'interno del main e' presente l'inclusione di tutte le librerie che servono
+ *  		   al corretto funzionamento e avviene inoltre il caricamento iniziale dei dati dai vari file.
+ *  		   Viene anche visualizzato e gestito tutto il menu principale con i vari richiami.
+ *  		   ad altre funzioni per svolgere le funzionalita' del programma.
+ *  @author    Vitandrea Sorino.
+ *  @author    Giuseppe Tutino.
+ *  @version   1.0.
+ *  @date      18/06/2018.
+ *  @copyright GNU Public License.
  */
 
 
 
 
 /**
- * @mainpage Documentazione progetto "Smart Fridge" sviluppato da Vitandrea Sorino e Giuseppe Tutino
+ * @mainpage Documentazione del progetto "Smart Fridge" dei laureandi Sorino Vitandrea e Tutino Giuseppe
  *
- * \section intro_sec Introduzione
+ * \section sezione_intro Desc rizione del Sistema
  *
- * Inserire l'introduzione del progetto
+ * La soluzione proposta simula i comportamenti di quello che viene nominato "Frigo Intelligente", ossia un elettrodomestico in grado di
+ * tenere traccia degli alimenti contenuti al suo interno, registrare i piatti preparati durante la giornata (e in un arco di tempo
+ * maggiore, es. settimanalmente e mensilmente) e allo stesso tempo deve saper interagire con l'utente, rendendo piu' semplice il suo utilizzo.\n
+ * Quando il programma viene eseguito dal frigorifero, carica in memoria tutte le informazioni necessarie per il suo corretto funzionamento: prima di tutto
+ * la lista degli alimenti conosciuti, successivamente le ricette e le impostazioni personalizzate del gruppo di utenti.\n
+ * Lo Smart Fridge e' pensato per rispondere alle esigenze di una famiglia, senza differenziare i membri della stessa in quanto non si dispone di stumenti
+ * avanzati di riconoscimento immediato di un componente (riconoscimento facciale o impronta digitale).\n
+ * L'unico strumento a disposizione e' un pannello touch con una tastiera virtuale che renderebbe il riconoscimento degli utenti, tramite l'inserimento di
+ * credenziali, lento e macchinoso.\n
+ * Sul pannello touch dello Smart Fridge e' possibile accedere a tutte le funzionalita' messe a dsposizione come la visualizzazione, senza l'apertura del frigo,
+ * degli alimenti presenti e delle ricette, il tutto con degli opportuni filtri (ricette preferite, ricette/alimenti piu' frequentemente usati, ricette che fanno
+ * uso di alimenti in scadenza).\n
+ * Queste visualizzazioni vengono ordinate in base alle abitudini familiari (se la maggior parte dei componenti della famiglia consuma una determinata ricetta
+ * o alimento, esso avra priorita' maggiore rispetto a quelli meno consumati).\n
+ * Un'altra funzionalita' dello smart fridge permette di tenere traccia degli alimenti acquistati, registrando uno storico delle spese effettuate.\n
+ * Le esigenze della famiglia vengono cosi' riconosciute per comprendere se si necessita di acquistare ulteriori alimenti, notificando all'utente gli stessi.\n
+ * In seguito ad una spesa, l'utente ha la possibilita' di inserire nuovi alimenti
+ * acquistati e di incrementarne le relative quantita'.\n
+ * Inoltre e' possibile modificare le informazioni relative a ciascun alimento e, in base alle quantita di alimenti presenti nel frigo e alle loro relative scadenze,
+ * l'utente puo' decidere quali ricette preparare in seguito ad un suggerimento delle stesse da parte dello Smart Fridge.\n
+ * Inoltre viene generato un calendario delle consumazioni a cui e' possibile accedervi per la visualizzazione e l'eventuale modifica.\n
+ * Da quest'ultimo e' possibile consultare il menu settimanale sia della settimana corrente sia di settimane passate fino al primo avvio dello Smart Fridge,
+ * salvo errori o danneggiamenti sul file non coperti dalla garanzia.\n
+ * L'utente ha anche la possibilita' di gestire tutte le informazioni riguardanti le ricette ovvero l'aggiunta di nuove e la modifica e la cancellazione delle stesse.\n
+ * Un'altra funzionalita' offerta dallo Smart Fridge e' la possibilita' di cercare le ricette che necessitano di determinati alimenti inseriti dall'utente
+ * per essere preparate.\n
+ * Tutte queste funzionalita' sono viusalizzate sul pannello touch attraverso un menu principale dove ad ogni voce corrisponde una macro funzione.
+ *
+ *
  *
  * \section install_sec Installation
  *
@@ -44,6 +77,12 @@
 void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta ricette[],int lunghezzaRicette);
 void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti);
 
+
+/**
+ * Funzione principale del programma.
+ *
+ * @return 1 se il programma e' andato a buon fine.
+ */
 int main(void) {
 
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -113,7 +152,7 @@ int main(void) {
 
 			lunghezzaVettoreRicette=scelta_opzioni_ricette(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,&nuovoIndirizzoRicette);
 
-			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di una nuovo ricetta
+			//aggiorno il vettore con quello nuovo nel caso c'e' stata l'aggiunta di una nuovo ricetta
 			ricette=(ricetta *)nuovoIndirizzoRicette;
 
 			break;
@@ -128,7 +167,7 @@ int main(void) {
 
 			lunghezzaVettoreAlimenti=scelta_opzioni_spesa(alimenti,lunghezzaVettoreAlimenti,&nuovoIndirizzoAlimenti);
 
-			//aggiorno il vettore con quello nuovo nel caso c'è stata l'aggiunta di un nuovo alimento
+			//aggiorno il vettore con quello nuovo nel caso c'e' stata l'aggiunta di un nuovo alimento
 			alimenti=(alimento *)nuovoIndirizzoAlimenti;
 
 
@@ -145,8 +184,6 @@ int main(void) {
 		system("cls");
 
 	} while (numScelta != 8);
-
-	//system("pause");
 
 	return 0;
 }

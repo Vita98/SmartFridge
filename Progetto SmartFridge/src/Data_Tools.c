@@ -80,7 +80,10 @@ int controllo_data(char *dataN,char *giorno,char *mese,int *anno){
                         	if(is_bisestile(*anno)) giorniMesi[1]=29;
                         	else giorniMesi[1]=28;
 
-                        	if(*giorno<=giorniMesi[(*mese-1)]) return 1;
+                        	if(*giorno<=giorniMesi[(*mese-1)]){
+                        		giorniMesi[1]=28;
+                        		return 1;
+                        	}
                         }
                     }
                 }
@@ -196,7 +199,7 @@ time_t rawtime;
    /* Get GMT time */
    info = gmtime(&rawtime );
 
-   int ora=(*info).tm_hour+2;
+   int ora=((*info).tm_hour+CEST)%24;
 
    if(ora >= 12 && ora <= 15) return "Buon Pranzo!";
    else if(ora > 15 && ora <= 18) return "Buona pausa Break!";
@@ -247,7 +250,7 @@ char* indice_to_giorni_settimana(int giorno){
  */
 int get_data_in_giorni(data_ora data){
 	long int giorni;
-	int anniBisest=data.Anno/4;
+	int anniBisest=(data.Mese > 2 ) ? data.Anno/4 : ((data.Anno > 4) ? (data.Anno/4)-1 : 0);
 	giorni=data.Anno*365 + anniBisest;
 	int i;
 	for(i=0;i<data.Mese-1;i++){
@@ -297,7 +300,7 @@ int data_to_giorni_settimana(data_ora data){
 	giorni=giorni % NUMERO_GIORNI + 4;
 	giorni=giorni % NUMERO_GIORNI;
 
-	return (giorni>=1 && giorni<=7) ? giorni : -1;
+	return (giorni>=0 && giorni<=NUMERO_MASSIMO_GIORNI) ? giorni : -1;
 
 }
 

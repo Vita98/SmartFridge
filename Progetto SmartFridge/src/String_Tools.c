@@ -66,7 +66,7 @@ int is_double(char stringa[]){
 	boolean flag=false;
 	for(i=0;i<strlen(stringa)-1;i++){
 		if(i==0 && stringa[i] == '.') return 0;
-		else if(i==strlen(stringa)-2 && stringa[i] == '.') return 0;
+		else if(i==strlen(stringa)-1 && stringa[i] == '.') return 0;
 		if(isdigit(stringa[i]) || (stringa[i]=='.' && flag==false)){
 			cont++;
 			if(stringa[i]=='.') flag=true;
@@ -96,7 +96,7 @@ int remove_first_last_space(char string[],char stringDest[],int lenghtString){
 
 	//Elimino il carattere di newline se e' presente all'interno della stringa
 	for(i=0;i<lenghtString;i++) if(string[i] == '\n') string[i]= '\0';
-
+	i=0;
 	while(string[i]==' ' && i < lenghtString){
 		countFirst++;
 		i++;

@@ -134,7 +134,7 @@ int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 	printf("Alimenti presenti:\n");
 	for (i = 0; i < lunghezzaVettoreAlimenti ; i++) {
 
-		if(alimenti[i].Visibilita == true || alimenti[i].Visibilita == false )
+		if(alimenti[i].Visibilita == true)
 		printf("%d - %30s \t| Utilizzo: %5d \t| Id: %3d   |   Quantita: %5d   | Kcal: %5.3f  | V:%s\n", ++cont,
 		alimenti[i].Nome, alimenti[i].Utilizzo, alimenti[i].ID_Alimento,
 		get_quantita(alimenti[i]),alimenti[i].Kcal_Pezzo,(alimenti[i].Visibilita)?"true":"false");
@@ -170,10 +170,10 @@ int modifica_alimento_su_file(alimento alim){
 	if ((file = fopen("Alimenti.sf", "rb+")) == NULL) return 0;
 	else {
 		fseek(file,alim.ID_Alimento*sizeof(alimento),SEEK_SET);
-		fwrite(&alim,sizeof(alimento),1,file);
-
-		fclose(file);
-		return 1;
+		if(fwrite(&alim,sizeof(alimento),1,file)> 0){
+			fclose(file);
+			return 1;
+		}else return 0;
 	}
 
 }
@@ -485,6 +485,9 @@ int modifica_scadenze_alimento(alimento alimenti[],int indiceAlimento){
  */
 int decrementa_quantita_alimento(alimento* alim, int quantita){
 	int  j;
+
+	if(get_quantita((*alim)) < quantita || quantita < 0) return 0;
+
 	for (j = LUNGHEZZA_VET_SCADENZE-1; j >= 0; j--) {
 		if((*alim).Scadenze[j].Quantita>=quantita){
 			(*alim).Scadenze[j].Quantita-=quantita;
@@ -627,7 +630,7 @@ int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAliment
 
 	printf("\nRicette presenti \n");
 
-	sort_alimenti(alimenti, indici, lunghezzaVettoreAlimenti, modalitaOrdinamento);
+	if(lunghezzaVettoreAlimenti > 0) sort_alimenti(alimenti, indici, lunghezzaVettoreAlimenti, modalitaOrdinamento);
 	int cont=0;
 
 	for (i = 0; i <lunghezzaVettoreAlimenti ; i++) {
