@@ -45,6 +45,7 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 	FILE *fileSpesa;
 	int i, quantita = 0;
 	int flag=false;
+	int cont=0;
 
 	if ((fileSpesa = fopen("Lista_Spesa.sf", "wb+")) == NULL) return 0;
 	else {
@@ -68,8 +69,8 @@ int genera_lista_spesa(alimento alimenti[],int lunghezzaVettoreAlimenti) {
 				elemento.Data_Ora.Anno=get_data('Y');
 
 				fwrite(&elemento, sizeof(elemento_spesa), 1, fileSpesa);
-				printf("%3d - %25s \t| quantità: %3d \t| Id: %3d\n", i, alimenti[i].Nome,
-						elemento.Quantita, elemento.ID_Alimento);
+				printf("%3d - %25s \t| quantita': %3d\n", cont++, alimenti[i].Nome,
+						elemento.Quantita);
 			}
 		}
 
@@ -111,8 +112,8 @@ int visualizza_lista_spesa(alimento alimenti[]) {
 
 			if(fread(&elemento, sizeof(elemento_spesa), 1, fileSpesa) > 0){
 				flag=true;
-				printf("%d - %s \t| quantità: %d \t| Id: %d\n", i, alimenti[elemento.ID_Alimento].Nome,
-						elemento.Quantita, elemento.ID_Alimento);
+				printf("%5d - %30s \t| quantita': %5d\n", i, alimenti[elemento.ID_Alimento].Nome,
+						elemento.Quantita);
 				i++;
 			}
 		}

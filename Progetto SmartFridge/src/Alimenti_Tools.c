@@ -135,9 +135,9 @@ int visualizza_alimenti(alimento alimenti[], int lunghezzaVettoreAlimenti) {
 	for (i = 0; i < lunghezzaVettoreAlimenti ; i++) {
 
 		if(alimenti[i].Visibilita == true)
-		printf("%d - %30s \t| Utilizzo: %5d \t| Id: %3d   |   Quantita: %5d   | Kcal: %5.3f  | V:%s\n", ++cont,
+		printf("%d - %30s \t| Utilizzo: %5d \t| Id: %3d   |   Quantita: %5d   | Kcal: %5.3f \n", ++cont,
 		alimenti[i].Nome, alimenti[i].Utilizzo, alimenti[i].ID_Alimento,
-		get_quantita(alimenti[i]),alimenti[i].Kcal_Pezzo,(alimenti[i].Visibilita)?"true":"false");
+		get_quantita(alimenti[i]),alimenti[i].Kcal_Pezzo);
 	}
 
 	//controllo se ha visualizzato almento un elemento
@@ -635,8 +635,8 @@ int visualizza_alimenti_ordinati(alimento alimenti[],int lunghezzaVettoreAliment
 
 	for (i = 0; i <lunghezzaVettoreAlimenti ; i++) {
 		if (alimenti[indici[i]].Visibilita==true){
-			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d  |  Visib: %s\n", ++cont,
-							alimenti[indici[i]].Nome, alimenti[indici[i]].Kcal_Pezzo, alimenti[indici[i]].ID_Alimento, alimenti[indici[i]].Utilizzo,(alimenti[indici[i]].Visibilita)?"true":"false");
+			printf("%d - %30s \t| Kcal per porzione: %5.2f \t| Id: %3d  |  Freq: %5d\n", ++cont,
+							alimenti[indici[i]].Nome, alimenti[indici[i]].Kcal_Pezzo, alimenti[indici[i]].ID_Alimento, alimenti[indici[i]].Utilizzo);
 		}
 	}
 

@@ -991,6 +991,11 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 		printf("\nLa ricetta che stai cercando di inserire esiste gia!\n");
 	}
 
+	printf("Premi per continuare....");
+	getchar();
+	system("cls");
+
+
 	return lunghezzaVettoreRicette;
 }
 

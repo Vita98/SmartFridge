@@ -19,7 +19,7 @@
 /**
  * @mainpage Documentazione del progetto "Smart Fridge" dei laureandi Sorino Vitandrea e Tutino Giuseppe
  *
- * \section sezione_intro Desc rizione del Sistema
+ * \section sezione_intro Descrizione del Sistema
  *
  * La soluzione proposta simula i comportamenti di quello che viene nominato "Frigo Intelligente", ossia un elettrodomestico in grado di
  * tenere traccia degli alimenti contenuti al suo interno, registrare i piatti preparati durante la giornata (e in un arco di tempo
@@ -51,13 +51,6 @@
  *
  *
  *
- * \section install_sec Installation
- *
- * This is a section.
- *
- * \subsection step1 Step 1: Opening the box
- *
- * This is a subsection
  */
 
 
@@ -196,10 +189,10 @@ void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta
 	int idRicettaDaConsumare;
 	int porzioniDaConsumare;
 	int porzioniPossibili;
-	int day=1;
+	int day=12;
 
 	int i;
-	for(i=0;i<10;i++){
+	for(i=0;i<5;i++){
 
 		do{
 
@@ -229,7 +222,7 @@ void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta
 		get_data_pointer(&pp.Data_Ora);
 		day += 1+(rand() % 2);
 		pp.Data_Ora.Giorno = day;
-		pp.Data_Ora.Mese = 1;
+		pp.Data_Ora.Mese = 3;
 
 		if ((file = fopen("Storico_Pasti.sf", "ab+")) == NULL) {
 				printf("Errore nell'apertura del file!\n");
@@ -257,19 +250,19 @@ void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti){
 
 	int j;
 	int day=1;
-	for(j=0;j<15;j++){
+	for(j=0;j<55;j++){
 		get_data_pointer(&elemento.Data_Ora);
 
 		elemento.Data_Ora.Anno=2018;
-		elemento.Data_Ora.Mese=2;
+		elemento.Data_Ora.Mese=6;
 		day +=1 + (rand() % 2);
-		day=3;
+		day=5;
 		elemento.Data_Ora.Giorno=day;
 
 
 
 
-		elemento.Quantita=1 + (rand() % 16);
+		elemento.Quantita=1 + (rand() % 3);
 
 		boolean flag;
 
