@@ -144,6 +144,7 @@ int modifica_soglia_spesa() {
 
 	FILE *file;
 	char scelta[LUNGHEZZA_STRINGA];
+	boolean flag=false;
 
 	printf("\nL'attuale soglia stabilita è : %d\n", limite_spesa);
 	printf("Inserici la nuova soglia limite : ");
@@ -160,11 +161,19 @@ int modifica_soglia_spesa() {
 		//altrimenti la funzione ritorna il numero preso in input convertito in intero
 		if (!is_number(scelta))
 			printf("\nSoglia errata, riprova: ");
-		else
+		else{
 			limite_spesa = to_number(scelta);
+			if(limite_spesa>0){
+				flag = true;
+			} else{
+				printf("\nSoglia errata, riprova: ");
+			}
+
+		}
+
 
 		//continuo a chiedere in input la scelta fino a che non e' valida
-	} while (!is_number(scelta));
+	} while (flag == false);
 
 
 	if ((file = fopen("Config.txt", "w")) == NULL) return 0;
