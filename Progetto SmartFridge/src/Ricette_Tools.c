@@ -829,24 +829,29 @@ int get_numero_porzioni_possibili_ricetta(ricetta ricette[],int lunghezzaVettore
 	int i;
 	int porzPoss[NUMERO_MAX_ALIMENTI];
 	int min=-1;
+	alimento alim;
 
 	//for che scorre il vettore di alimenti della ricetta
 	for(i=0;i<NUMERO_MAX_ALIMENTI;i++){
-		alimento alim=alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]];
 
-		//controllo se la quantita disponibile dell'alimento e' >= della quantita di alimento che necessita la ricetta
-		if(get_quantita(alim) >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
-			if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0){
+		if(ricette[indiceRicetta].Alimenti_Quantita[0][i] != -1){
+			alim=alimenti[ricette[indiceRicetta].Alimenti_Quantita[0][i]];
 
-				//calcolo il numero di porzioni possibili per quel alimento
-				porzPoss[i]= (int)(get_quantita(alim)/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
+			//controllo se la quantita disponibile dell'alimento e' >= della quantita di alimento che necessita la ricetta
+			if(get_quantita(alim) >= ricette[indiceRicetta].Alimenti_Quantita[1][i]){
+				if(ricette[indiceRicetta].Alimenti_Quantita[1][i]!=0){
 
-				//il numero di porzioni possibili finale sara il minimo tra tutte le porzioni possibili
-				//dei singoli alimenti
-				if(min==-1) min=porzPoss[i];
-				if(min>porzPoss[i]) min=porzPoss[i];
-			}
-		}else return 0;
+					//calcolo il numero di porzioni possibili per quel alimento
+					porzPoss[i]= (int)(get_quantita(alim)/ricette[indiceRicetta].Alimenti_Quantita[1][i]);
+
+					//il numero di porzioni possibili finale sara il minimo tra tutte le porzioni possibili
+					//dei singoli alimenti
+					if(min==-1) min=porzPoss[i];
+					if(min>porzPoss[i]) min=porzPoss[i];
+				}
+			}else return 0;
+		}
+
 	}
 	return min;
 }
@@ -1012,7 +1017,7 @@ int inserimento_ricetta(alimento alimenti[],int lunghezzaVettoreAlimenti,ricetta
 int* get_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreRicette,alimento alimenti[],int lunghezzaVettoreAlimenti,int* numeroRicettePossibili){
 	int i;
 
-	int* vettoreRicettePossibili = (int*)calloc(lunghezzaVettoreRicette,sizeof(int));
+	int* vettoreRicettePossibili = (int*) calloc(lunghezzaVettoreRicette,sizeof(int));
 
 	int indiceVettoreRicettePossibili=0;
 
@@ -1030,7 +1035,7 @@ int* get_ricette_che_si_possono_cucinare(ricetta ricette[],int lunghezzaVettoreR
 	//creo un vettore di lunghezza pari al numero di ricette trovate
 	//in maniera da deallocare quello di grandezza massima e continuare a
 	//lavorare con il numero giusto di locazioni di memoria
-	int* vettore= (int*)calloc(indiceVettoreRicettePossibili-1,sizeof(int));
+	int* vettore= (int*) calloc(indiceVettoreRicettePossibili,sizeof(int));
 
 	for(i=0;i<indiceVettoreRicettePossibili;i++){
 		vettore[i]=vettoreRicettePossibili[i];

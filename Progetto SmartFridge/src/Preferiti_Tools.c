@@ -272,8 +272,8 @@ int visualizza_preferiti(ricetta ricette[]) {
 		while (!feof(filePreferiti)) {
 
 			if (fread(&ric, sizeof(ricetta), 1, filePreferiti) > 0) {
-				printf("%d - %s \t| frequenza: %d \t| Id: %d\n", i, ricette[ric.ID_Ricetta].Nome,
-						ricette[ric.ID_Ricetta].Frequenza, ric.ID_Ricetta);
+				printf("%5d - %30s \t| frequenza: %5d\n", i, ricette[ric.ID_Ricetta].Nome,
+						ricette[ric.ID_Ricetta].Frequenza);
 				i++;
 			}
 

@@ -55,6 +55,10 @@ int* get_ricette_per_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti,i
 	int contatore;
 	int IndiciRicetteOK[lunghezzaVettoreRicette];
 	int IndiceVettoreRicetteOK=0;
+	char stringaTemp1[LUNGHEZZA_STRINGA];
+	char stringaTemp2[LUNGHEZZA_STRINGA];
+	//char stringaTemp3[LUNGHEZZA_STRINGA];
+	//char stringaTemp4[LUNGHEZZA_STRINGA];
 
 	//for che scorre il vettore di ricette
 	for(i=0;i<lunghezzaVettoreRicette;i++){
@@ -70,8 +74,11 @@ int* get_ricette_per_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti,i
 				char StringheEsploseAlimento[LUNGHEZZA_STRINGA/2][LUNGHEZZA_STRINGA];
 
 				//esplodo i nomi delle ricette per avere un matching piu accurato
-				int quantitaStringaEsplosaAlimentoRicetta=explode_string(alimenti[ricette[i].Alimenti_Quantita[0][j]].Nome,StringheEsploseAlimentoRicetta);
-				int quantitaStringaEsplosaAlimento=explode_string(alimenti[vettoreIndiciAlimenti[k]].Nome,StringheEsploseAlimento);
+				strcpy(stringaTemp1,alimenti[ricette[i].Alimenti_Quantita[0][j]].Nome);
+				strcpy(stringaTemp2,alimenti[vettoreIndiciAlimenti[k]].Nome);
+
+				int quantitaStringaEsplosaAlimentoRicetta=explode_string(stringaTemp1,StringheEsploseAlimentoRicetta);
+				int quantitaStringaEsplosaAlimento=explode_string(stringaTemp2,StringheEsploseAlimento);
 
 
 				int f,g;
@@ -114,7 +121,7 @@ int* get_ricette_per_alimenti(alimento alimenti[],int lunghezzaVettoreAlimenti,i
 
 	//salvo le ricette trovate nel vettore e passo il suo indirizzo nel punatore
 	//passato come parametro che ha la funzionalita anche di valore di ritorno
-	int *c=(int*) calloc(IndiceVettoreRicetteOK-1,sizeof(int));
+	int *c=(int*) calloc(IndiceVettoreRicetteOK,sizeof(int));
 	for(i=0;i<IndiceVettoreRicetteOK;i++){
 		c[i]=IndiciRicetteOK[i];
 	}
@@ -189,7 +196,7 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 		printf("\nLe ricette saranno ordinate per freferiti e per frequenza\n");
 
 		//faccio salire le ricette preferite
-		merge_sort_ricette(ricette,0,numeroRicetteTrovate-1,indiciRicette,MODALITA_ORDINAMENTO_PREFERITI);
+		//merge_sort_ricette(ricette,0,numeroRicetteTrovate-1,indiciRicette,MODALITA_ORDINAMENTO_PREFERITI);
 
 		printf("\n\nRicette che e' possibile preparare con gli alimenti inseriti:\n");
 		printf("%20s | %20s\n","Nome","Kcal per porzione");
@@ -198,14 +205,14 @@ int ricerca_ricette_per_alimenti(ricetta ricette[],int lunghezzaVettoreRicette,a
 		flag=false;
 
 		for(i=0;i<numeroRicetteTrovate;i++){
-
 			//se e' la prima volta che trovo un elemento non preferito, ordino tutto il resto del vettore
 			//in base alla frequenza quindi ordino tutti i non preferiti per frequenza
 			if(exist_preferito(ricette,&indiciRicette[i]) == false && flag==false){
-				merge_sort_ricette(ricette,i,numeroRicetteTrovate-1,indiciRicette,MODALITA_ORDINAMENTO_FREQUENZA);
+				//merge_sort_ricette(ricette,i,numeroRicetteTrovate-1,indiciRicette,MODALITA_ORDINAMENTO_FREQUENZA);
 				flag=true;
 			}
-			printf("%20s | %18.2f | freq:%d\n",ricette[indiciRicette[i]].Nome,ricette[indiciRicette[i]].Kcal_Porzione,ricette[indiciRicette[i]].Frequenza);
+
+			printf("%20s | %18.2f | freq:%5d | %s\n",ricette[indiciRicette[i]].Nome,ricette[indiciRicette[i]].Kcal_Porzione,ricette[indiciRicette[i]].Frequenza,(exist_preferito(ricette,&indiciRicette[i])) ? "PREF" : "");
 		}
 	}
 
@@ -236,14 +243,15 @@ int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alime
 	//Sono costretto ad allocare le stesse posizioni del vettore di ricette in quanto,
 	//non sapendo ancora quante ricette in scadenza ci sono, suppongo che siano
 	//tutte in scadenza.
-	int *vettoreRicetteScadenza = (int*) calloc(lunghezzaVettoreRicette,sizeof(int));
-
+	int vettoreRicetteScadenza[lunghezzaVettoreRicette];
 
 	int indiceVetRicetteScadenza=-1;
 
 	int i,j,k;
 	data_ora dataAttuale;
 	get_data_pointer(&dataAttuale);
+
+
 	boolean flag;
 
 	//ciclo che scorre tutte le ricette
@@ -251,8 +259,9 @@ int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alime
 		if(ricette[i].Visibilita == true)
 
 		//controllo se la iesima ricetta ha la possibilita di essere preparata
-		if(get_numero_porzioni_possibili_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,i) > 0){
+		if(get_numero_porzioni_possibili_ricetta(ricette,lunghezzaVettoreRicette,alimenti,lunghezzaVettoreAlimenti,i) >= 0){
 			flag=false;
+
 
 			//vettore che scorre gli alimenti della ricetta
 			//per ferificare se qualcuno e' in scadenza
@@ -267,6 +276,7 @@ int* get_ricette_in_scadenza(ricetta ricette[],int lunghezzaVettoreRicette,alime
 						//sa la distanza e' in un range tra 0 e la costante DISTANZA_GIORNI_SCADENZA allora
 						//la ricetta e' sicuramente in scadenza
 						if(distanza >= 0 && distanza <= DISTANZA_GIORNI_SCADENZA ){
+
 							indiceVetRicetteScadenza++;
 							vettoreRicetteScadenza[indiceVetRicetteScadenza]=i;
 							flag=true;

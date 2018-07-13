@@ -130,8 +130,6 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 
 
 
-int visualizza_file_pasti(ricetta[]);
-
 
 
 

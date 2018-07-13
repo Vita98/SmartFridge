@@ -57,34 +57,6 @@ int aggiungi_pasto_su_file(int numPorzioni,int idRicetta){
 
 
 
-/* FUNZIONE TEMPORANEA PER LA VISUALIZZAZIONE DELLA SITUAZIONE SU FILE*/
-int visualizza_file_pasti(ricetta ricette[]){
-	FILE *fileStoricoPasti;
-
-	pasto past;
-
-	if ((fileStoricoPasti = fopen("Storico_Pasti.sf", "rb")) != NULL)
-	{
-		printf("\n\nStorico Pasti\n%s\n",STRINGASTERISCHI);
-		printf("%20s | %20s | %20s | Visibilita","Alimento Acquistato","Quantita Acquistata","Data di Acquisto");
-		printf("\n-----------------------------------------------------------------");
-
-		do{
-			int a=fread(&past,sizeof(past),1,fileStoricoPasti);
-			if(a>0){
-				printf("\n%20s | %20d | ",ricette[past.ID_Ricetta].Nome,past.Porzioni);
-				printf("%d/%d/%d %d:%d | %s",past.Data_Ora.Giorno,past.Data_Ora.Mese,past.Data_Ora.Anno,past.Data_Ora.Ora,past.Data_Ora.Minuti,(past.visibilita)?"true":"false");
-			}
-		}while(!feof(fileStoricoPasti));
-
-		fclose(fileStoricoPasti);
-	}
-	return 1;
-}
-
-
-
-
 
 
 
@@ -178,7 +150,7 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 	if ((file = fopen("Storico_Pasti.sf", "rb")) == NULL || NumeroSettimana < 0) {
 				return 0;
 	} else {
-		printf("\n\n%15s   %10s | %20s | %15s\n","Giorno","Data","Pasto","Porzioni");
+		printf("\n\n%15s   %10s | %30s | %15s\n","Giorno","Data","Pasto","Porzioni");
 		printf("-----------------------------------------------------------------------------");
 		//scorro i giorni da lunedi fino al giorno della settimana corrente
 		for(i=giornoSettimana;i>=0;i--){
@@ -194,13 +166,13 @@ int stampa_iesimo_menu_settimanale(ricetta ricette[],int lunghezzaVettoreRicette
 
 					//controllo se e' il primo ad essere trovato o no
 					if(flag==false){
-						printf("\n%15s - %2d/%2d/%4d | %20s | %15d",indice_to_giorni_settimana(giornoSettimana-i),pp.Data_Ora.Giorno,pp.Data_Ora.Mese,pp.Data_Ora.Anno,ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
+						printf("\n%15s - %2d/%2d/%4d | %30s | %15d",indice_to_giorni_settimana(giornoSettimana-i),pp.Data_Ora.Giorno,pp.Data_Ora.Mese,pp.Data_Ora.Anno,ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
 
 						flag=true;
-					}else printf("\n%15s   %10s | %20s | %15d","-","-",ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
+					}else printf("\n%15s   %10s | %30s | %15d","-","-",ricette[pp.ID_Ricetta].Nome,pp.Porzioni);
 				}
 			}
-			if(flag==false) printf("\n%15s   %10s | %20s | %15s",indice_to_giorni_settimana(giornoSettimana-i)," ","-","-");
+			if(flag==false) printf("\n%15s   %10s | %30s | %15s",indice_to_giorni_settimana(giornoSettimana-i)," ","-","-");
 			rewind(file);
 		}
 

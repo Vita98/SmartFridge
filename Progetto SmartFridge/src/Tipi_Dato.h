@@ -192,12 +192,34 @@ int limite_spesa;
  */
 typedef struct{
 
+	/**
+	 * Numero del giorno della data (da 1 a 31)
+	 */
 	char Giorno;
+
+	/**
+	 * Numero del mese della data(da 1 a 12)
+	 */
 	char Mese;
+
+	/**
+	 * Numero di anno della data
+	 */
 	int Anno;
 
+	/**
+	 * Numero di ore della data(da 0 a 23)
+	 */
 	char Ora;
+
+	/**
+	 * Numero di minuti della data
+	 */
 	char Minuti;
+
+	/**
+	 * Numero di secondi della data
+	 */
 	char Secondi;
 
 }data_ora;
@@ -216,6 +238,10 @@ typedef struct{
 	 * alimenti aventi data di scadenza Data_Scadenza.
 	 */
 	int Quantita;
+
+	/**
+	 * Data di scadenza relativa alla quantita'
+	 */
 	data_ora Data_Scadenza;
 
 }scadenza;
@@ -241,6 +267,9 @@ typedef struct{
 	 */
 	int ID_Alimento;
 
+	/**
+	 * Nome dell'alimento
+	 */
 	char Nome[LUNGHEZZA_STRINGA];
 
 	/**
@@ -293,6 +322,9 @@ typedef struct{
 	 */
 	int ID_Ricetta;
 
+	/**
+	 * Nome della ricetta
+	 */
 	char Nome[LUNGHEZZA_STRINGA];
 
 	/**

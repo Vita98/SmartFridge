@@ -67,8 +67,7 @@
 #include <time.h>
 
 
-void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta ricette[],int lunghezzaRicette);
-void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti);
+
 
 
 /**
@@ -96,17 +95,6 @@ int main(void) {
 
 	//Caricamento delle impostazioni dal file di configurazione
 	carica_configurazione();
-
-	/*visualizza_storico_spesa(alimenti,lunghezzaVettoreAlimenti);
-	visualizza_file_pasti(ricette);
-
-
-	visualizza_alimenti(alimenti,lunghezzaVettoreAlimenti);
-	visualizza_ricette(ricette,lunghezzaVettoreRicette);*/
-
-
-	//genera_consumazioni_pasti(alimenti,lunghezzaVettoreAlimenti,ricette,lunghezzaVettoreRicette);
-	//genera_acquisto_spesa(alimenti,lunghezzaVettoreAlimenti);
 
 
 	int nuovoIndirizzoAlimenti;
@@ -181,126 +169,4 @@ int main(void) {
 	return 0;
 }
 
-
-
-void genera_consumazioni_pasti(alimento alimenti[],int lunghezzaAlimenti,ricetta ricette[],int lunghezzaRicette){
-	srand(time(NULL));
-
-	int idRicettaDaConsumare;
-	int porzioniDaConsumare;
-	int porzioniPossibili;
-	int day=12;
-
-	int i;
-	for(i=0;i<5;i++){
-
-		do{
-
-			idRicettaDaConsumare = rand() % lunghezzaRicette;
-
-			porzioniDaConsumare = 1 + (rand() % 3);
-
-			porzioniPossibili=get_numero_porzioni_possibili_ricetta(ricette,lunghezzaRicette,alimenti,lunghezzaAlimenti,idRicettaDaConsumare);
-
-		}while(porzioniPossibili == 0 || porzioniDaConsumare > porzioniPossibili);
-
-		//incremento la frequenza del pasto
-		ricette[idRicettaDaConsumare].Frequenza+=porzioniDaConsumare;
-		modifica_ricetta_su_file(ricette[idRicettaDaConsumare]);
-
-		//decremento le quantita di alimenti utilizzate nel vettore alimenti
-		consuma_ricetta_su_alimenti(ricette,lunghezzaRicette,alimenti,lunghezzaAlimenti,idRicettaDaConsumare,porzioniDaConsumare);
-
-		FILE *file;
-		pasto pp;
-
-
-		pp.ID_Ricetta=idRicettaDaConsumare;
-		pp.Porzioni=porzioniDaConsumare;
-		pp.visibilita=true;
-
-		get_data_pointer(&pp.Data_Ora);
-		day += 1+(rand() % 2);
-		pp.Data_Ora.Giorno = day;
-		pp.Data_Ora.Mese = 3;
-
-		if ((file = fopen("Storico_Pasti.sf", "ab+")) == NULL) {
-				printf("Errore nell'apertura del file!\n");
-		} else {
-			fwrite(&pp,sizeof(pasto),1,file);
-
-			fclose(file);
-		}
-	}
-
-
-}
-
-
-
-
-void genera_acquisto_spesa(alimento alimenti[],int lunghezzaAlimenti){
-	FILE *fileStoricoSpesa;
-	elemento_spesa elemento;
-
-	int indiciUsati[lunghezzaAlimenti];
-	int contIndici=0;
-
-	srand(time(NULL));
-
-	int j;
-	int day=1;
-	for(j=0;j<55;j++){
-		get_data_pointer(&elemento.Data_Ora);
-
-		elemento.Data_Ora.Anno=2018;
-		elemento.Data_Ora.Mese=6;
-		day +=1 + (rand() % 2);
-		day=5;
-		elemento.Data_Ora.Giorno=day;
-
-
-
-
-		elemento.Quantita=1 + (rand() % 3);
-
-		boolean flag;
-
-		do{
-			flag=false;
-			int i;
-
-			elemento.ID_Alimento = rand() % lunghezzaAlimenti;
-
-			for(i=0;i<contIndici;i++){
-				if(indiciUsati[i] == elemento.ID_Alimento){
-					flag=true;
-					break;
-				}
-			}
-		}while(flag == true);
-
-		indiciUsati[contIndici]= elemento.ID_Alimento;
-		contIndici++;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Quantita+=elemento.Quantita;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Data_Scadenza.Anno =2018+ rand() % 3;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Data_Scadenza.Mese = 1+rand()%11;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Data_Scadenza.Giorno= 1 + rand()%20;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Data_Scadenza.Minuti=0;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Data_Scadenza.Secondi = 0;
-		alimenti[elemento.ID_Alimento].Scadenze[0].Data_Scadenza.Ora = 0;
-		alimenti[elemento.ID_Alimento].Visibilita = true;
-
-		modifica_alimento_su_file(alimenti[elemento.ID_Alimento]);
-
-		if ((fileStoricoSpesa = fopen("Storico_Spesa.sf", "ab+")) != NULL)
-		{
-
-			fwrite(&elemento,sizeof(elemento_spesa),1,fileStoricoSpesa);
-
-			fclose(fileStoricoSpesa);
-		}
-	}
-
-}
 
